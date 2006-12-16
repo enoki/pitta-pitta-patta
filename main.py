@@ -6,25 +6,20 @@
 
 import pygame
 import sys
-from CardGroup import CardGroup
-from Card import Card
 from Deck import Deck
+from CardDraggingEventHandler import CardDraggingEventHandler
 
 def main():
+    """ Pitta-pitta-patta game. """
+
     pygame.init()
 
     screen = pygame.display.set_mode((640, 480))
 
     pygame.display.set_caption('Pitta Pitta Patta')
 
-    
     deck = Deck()
-
-    selected_card = None
-
-    (DEFAULT, DRAGGING) = range(2)
-    mode = DEFAULT
-
+    handler = CardDraggingEventHandler(deck)
 
     while True:
         pygame.time.wait(30)
@@ -35,27 +30,8 @@ def main():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button in [1,2,3]:
-                    if mode == DEFAULT:
-                        selected_card = deck.get_card(event.pos[0], event.pos[1])
-                        if selected_card:
-                            mode = DRAGGING
-
-                            if event.button == 3:
-                                selected_card.flip()
-            elif event.type == pygame.MOUSEBUTTONUP:
-                if mode == DRAGGING:
-                    deck.drop_card(selected_card)
-                    selected_card = None
-                    mode = DEFAULT
-                else:
-                    if event.button == 2:
-                        selected_card.flip()
-            elif event.type == pygame.MOUSEMOTION:
-                if event.buttons[0] or event.buttons[1] or event.buttons[2]:
-                    if mode == DRAGGING:
-                        selected_card.move(event.rel[0], event.rel[1])
+            else:
+                handler.handle_card_dragging(event)
 
         screen.fill((0x00, 0xb0, 0x00))
 
