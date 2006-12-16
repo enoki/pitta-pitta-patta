@@ -6,7 +6,7 @@
 
 import pygame
 import sys
-from Deck import Deck
+from Player import Player
 
 def main():
     """ Pitta-pitta-patta game. """
@@ -17,7 +17,7 @@ def main():
 
     pygame.display.set_caption('Pitta Pitta Patta')
 
-    deck = Deck()
+    player = Player()
 
     while True:
         pygame.time.wait(30)
@@ -29,9 +29,11 @@ def main():
                 if event.key == pygame.K_ESCAPE:
                     sys.exit()
 
+            player.handle(event)
+
         screen.fill((0x00, 0xb0, 0x00))
 
-        deck.draw(screen)
+        player.draw(screen)
 
         pygame.display.flip()
 
