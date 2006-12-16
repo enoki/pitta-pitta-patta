@@ -46,10 +46,19 @@ class CardGroup:
         for c in self.cards:
             yield c
 
+    def empty(self):
+        return len(self.cards) == 0
+
+    def num_cards(self):
+        return len(self.cards)
+
     def get_card_at(self,idx):
         fc = self.cards.pop(idx)
         self.cards.append(fc)
         return fc  
+
+    def __getitem__(self, index):
+        return self.cards[index]
         
     def pop_cards(self, cards):
         for c in cards:
