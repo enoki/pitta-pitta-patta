@@ -7,7 +7,6 @@
 import pygame
 import sys
 from Deck import Deck
-from CardDraggingEventHandler import CardDraggingEventHandler
 
 def main():
     """ Pitta-pitta-patta game. """
@@ -19,7 +18,6 @@ def main():
     pygame.display.set_caption('Pitta Pitta Patta')
 
     deck = Deck()
-    handler = CardDraggingEventHandler(deck)
 
     while True:
         pygame.time.wait(30)
@@ -30,8 +28,6 @@ def main():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     sys.exit()
-            else:
-                handler.handle_card_dragging(event)
 
         screen.fill((0x00, 0xb0, 0x00))
 
