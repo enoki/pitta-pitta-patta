@@ -8,11 +8,13 @@ import random
                              
 class CardGroup:
 
-    def __init__(self,cards=[]):
-        self.cards = cards
+    def __init__(self, cards=None):
+        if cards is None:
+            self.cards = []
+        else:
+            self.cards = cards
 
     def shuffle(self):
-	
         rectbuf = []
         for c in self.cards:
             rectbuf.append(pygame.Rect(c.rect))
@@ -31,6 +33,19 @@ class CardGroup:
             c.parent = None
             c.child = None
 
+    def top_card(self):
+        return self.cards[-1]
+
+    def take_top_card(self):
+        return self.cards.pop()
+
+    def add_card(self, card):
+        self.cards.append(card)
+
+    def all_cards(self):
+        for c in self.cards:
+            yield c
+
     def get_card_at(self,idx):
         fc = self.cards.pop(idx)
         self.cards.append(fc)
@@ -38,11 +53,9 @@ class CardGroup:
         
     def pop_cards(self, cards):
         for c in cards:
-            #pop card
             self.cards.remove(c)
             self.cards.append(c)
     
-        
     def get_cards(self,rect):
         r = None
         selCards = []
