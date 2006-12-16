@@ -1,24 +1,23 @@
+#
+# Pitta-pitta-patta
+# Released under the GPL version 2.0 or later.
+#
+
 from CardImages import CardImages
 from CardGroup import CardGroup
 from Card import Card
 
-class Deck:
-    def __init__(self):
-        ci = CardImages()
+def Deck():
+    """ Creates a deck of cards. """
 
-        cards = []
+    ci = CardImages()
 
-        for i in range(52):
-            cards.append(Card(ci.get_card(i), ci.get_back(), 30, 30))
+    cards = []
 
-        self.card_group = CardGroup(cards)
-        self.card_group.shuffle()
+    for i in range(52):
+        cards.append(Card(ci.get_card(i), ci.get_back(), 30, 30))
 
-    def get_card(self, x, y):
-        return self.card_group.get_card(x, y)
+    deck = CardGroup(cards)
+    deck.shuffle()
 
-    def drop_card(self, card):
-        return self.card_group.drop_card(card)
-
-    def draw(self, surface):
-        self.card_group.draw(surface)
+    return deck

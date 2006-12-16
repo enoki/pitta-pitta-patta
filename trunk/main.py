@@ -14,7 +14,6 @@ def main():
     pygame.init()
 
     screen = pygame.display.set_mode((640, 480))
-    clock = pygame.time.Clock()
 
     pygame.display.set_caption('Pitta Pitta Patta')
 
@@ -28,7 +27,6 @@ def main():
 
 
     while True:
-        #clock.tick(60)
         pygame.time.wait(30)
 
         for event in pygame.event.get():
