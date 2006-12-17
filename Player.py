@@ -1,144 +1,15 @@
 import pygame
 from Deck import Deck
-from CardGroup import CardGroup
+from StockPile import StockPile
+from HomePile import HomePile
+from DiscardPile import DiscardPile
+from CellCards import CellCards
 from CardLocation import CardLocation
 
-class Pile:
-    """ A pile of cards. """
-
-    def __init__(self):
-        self.cards = CardGroup()
-        self.location = CardLocation()
-
-    def set_size(self, width, height):
-        self.location.rect.width = width
-        self.location.rect.height = height
-
-    def move_to(self, x, y):
-        self.location.rect.x = x
-        self.location.rect.y = y
-
-    def calibrate(self):
-        """ Prepare cards for display. """
-        self.location.grab_cards(self.cards.all_cards())
-        self.resize()
-
-    def resize(self):
-        """ Resize to the top card. """
-        card_rect = self.cards.top_card().rect
-        self.set_size(card_rect.width, card_rect.height)
-
-    def draw(self, surface):
-        """ Draws the cards in this pile. """
-        self.cards.draw(surface)
-
-    def has(self, card):
-        """ True if the card is located on this pile. """
-        return self.location.has(card)
-
-
-class StockPile(Pile):
-    """ The cards the player holds in his hand during play. """
-
-    def __init__(self):
-        Pile.__init__(self)
-
-    def take_from(self, deck):
-        """ Take all cards from the deck. Flip them over as well. """
-        while not deck.empty():
-            card = deck.take_top_card()
-            card.backSide()
-            self.cards.add_card(card)
-
-
-class HomePile(Pile):
-    """ The cards the player must get rid of in order to stop the game. """
-    def __init__(self):
-        Pile.__init__(self)
-        self.initial_size = 13
-
-    def take_from(self, deck):
-        """ Take cards from the deck. Flip over the top card. """
-        for i in range(self.initial_size):
-            self.cards.add_card(deck.take_top_card())
-
-        self.cards.top_card().flip()
-
-
-class DiscardPile(Pile):
-    """ The cards the player shuffles from their Stock Pile. """
-    def __init__(self):
-        Pile.__init__(self)
-
-    def take_from(self, stock_pile):
-        """ Take all cards from the deck. Flip them over as well. """
-        self.cards.add_card(stock_pile.cards.take_top_card())
-
-    def calibrate(self):
-        """ Prepare cards for display. """
-        self.cards.top_card().flip()
-        Pile.calibrate(self)
-
-
-class CellCards:
-    """ Reserve cards taken from the Home Pile. """
-
-    def __init__(self):
-        self.cards = CardGroup()
-        self.locations = []
-        self.initial_size = 3
-
-    def set_size(self, width, height):
-        """ Sets the sizes of each of the cells to be the same. """
-        for location in self.locations:
-            location.rect.width = width
-            location.rect.height = height
-
-    def move_to(self, x, y, distance_between):
-        """ Moves each of the cells.
-            Provide the coordinates of the leftmost cell. """
-
-        for i in range(self.initial_size):
-            location = CardLocation()
-            location.rect.x = x
-            self.locations.append(location)
-
-            x += distance_between
-
-        for location in self.locations:
-            location.rect.y = y
-
-    def take_from(self, deck):
-        """ Take cards from the deck. """
-        for i in range(self.initial_size):
-            self.cards.add_card(deck.take_top_card())
-
-    def calibrate(self):
-        """ Prepare cards for display. """
-        # Move all cards to the HomePile location.
-        for i in range(self.initial_size):
-            self.locations[i].grab_card(self.cards[i])
-            self.cards[i].flip()
-        self.resize()
-
-    def resize(self):
-        """ Resize to the top card. """
-        card_rect = self.cards.top_card().rect
-        self.set_size(card_rect.width, card_rect.height)
-
-    def draw(self, surface):
-        """ Draws the cards. """
-        self.cards.draw(surface)
-
-    def has(self, card):
-        """ True if the card is in any of the cells. """
-        for location in self.locations:
-            if location.has(card):
-                return True
-
-        return False
 
 class Player:
+    """ A player in the game. """
+
     def __init__(self):
         self.deck = Deck()
 
