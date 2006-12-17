@@ -10,9 +10,10 @@ from CardLocation import CardLocation
 class CellCards:
     """ Reserve cards taken from the Home Pile. """
 
-    def __init__(self):
+    def __init__(self, home_pile):
         self.cards = CardGroup()
         self.locations = []
+        self.home_pile = home_pile
         self.initial_size = 3
 
     def set_size(self, width, height):
@@ -45,7 +46,7 @@ class CellCards:
         # Move all cards to the HomePile location.
         for i in range(self.initial_size):
             self.locations[i].grab_card(self.cards[i])
-            self.cards[i].flip()
+            self.cards[i].frontSide()
         self.resize()
 
     def resize(self):
@@ -64,3 +65,15 @@ class CellCards:
                 return True
 
         return False
+
+    def add_card(self, card):
+        self.cards.add_card(card)
+
+    def transfer(self, card, pile):
+        pile.add_card(card)
+        self.cards.cards.remove(card)
+
+        # replace with a card from the home pile
+        if not self.home_pile.empty():
+            self.home_pile.transfer(self.home_pile.top_card(), self)
+            self.calibrate()

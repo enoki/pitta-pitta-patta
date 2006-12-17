@@ -38,3 +38,19 @@ class Pile:
     def has(self, card):
         """ True if the card is located on this pile. """
         return self.location.has(card)
+
+    def contains(self, x, y):
+        return self.location.contains(x, y)
+
+    def top_card(self):
+        return self.cards.top_card()
+
+    def add_card(self, card):
+        self.cards.add_card(card)
+
+    def transfer(self, card, pile):
+        pile.add_card(card)
+        self.cards.cards.remove(card)
+
+    def empty(self):
+        return self.cards.empty()

@@ -4,21 +4,10 @@
 #
 
 from Player import Player
+from FoundationPiles import FoundationPiles
 
 class Computer:
     """ The computer AI player. """
-
-    def __init__(self):
-        pass
-
-    def draw(self, surface):
-        pass
-
-    def handle(self, event):
-        pass
-
-class FoundationPiles:
-    """ The piles on which players drop stacks of ordered cards. """
 
     def __init__(self):
         pass
@@ -36,7 +25,7 @@ class PlayingField:
     def __init__(self):
         self.player = Player()
         self.computer = Computer()
-        self.foundation_piles = FoundationPiles()
+        self.foundation_piles = FoundationPiles(self.player)
 
         self.drawables = [self.player, self.computer, self.foundation_piles]
         self.handlers = [self.player, self.computer, self.foundation_piles]
