@@ -17,6 +17,12 @@ class FoundationPile(Pile):
         Pile.calibrate(self)
         self.top_card().frontSide()
 
+    # TODO
+    # Make the foundation piles actual locations:
+    # X   X   X   X
+    # X   X   X   X
+    # 8 in total, 4 x 2
+
 class FoundationPiles:
     """ The piles on which players drop stacks of ordered cards. """
 
