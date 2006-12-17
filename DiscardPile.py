@@ -12,11 +12,11 @@ class DiscardPile(Pile):
         Pile.__init__(self)
 
     def take_from(self, stock_pile):
-        """ Take all cards from the deck. Flip them over as well. """
+        """ Take the top card from the stock pile."""
         self.cards.add_card(stock_pile.cards.take_top_card())
 
     def calibrate(self):
         """ Prepare cards for display. """
-        self.cards.top_card().flip()
         Pile.calibrate(self)
+        self.cards.top_card().frontSide()
 
