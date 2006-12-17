@@ -1,3 +1,8 @@
+#
+# Pitta-pitta-patta
+# Released under the GPL version 2.0 or later.
+#
+
 import pygame
 from Deck import Deck
 from StockPile import StockPile
@@ -18,9 +23,6 @@ class Player:
         self.stock_pile = StockPile()
         self.discard_pile = DiscardPile()
 
-        # This may need to be more global...
-        self.selected_card = None
-
         self.home_pile.take_from(self.deck)
         self.cell_cards.take_from(self.deck)
         self.stock_pile.take_from(self.deck)
@@ -33,9 +35,30 @@ class Player:
         for card in self.stock_pile.cards.all_cards():
             self.deck.add_card(card)
 
-        # Position cards
+        self.set_locations()
+
+        # Move cards to their proper locations
+        self.home_pile.calibrate()
+        self.cell_cards.calibrate()
+        self.stock_pile.calibrate()
+
+        self.drawables = [self.home_pile, self.cell_cards, self.stock_pile, self.discard_pile]
+
+        #
+        # This may need to be more global...
+        #
+        self.selected_card = None
+
+        self.xxxcount = 0
+
+    def draw(self, surface):
+        for drawable in self.drawables:
+            drawable.draw(surface)
+
+    def set_locations(self):
+        """ Position cards """
         card_rect = self.deck.top_card().rect
-        card_width, card_height = card_rect.width, card.rect.height
+        card_width, card_height = card_rect.width, card_rect.height
         left_margin, top_margin = 10, 250
         hand_top_margin = top_margin + card_rect.height + 30
 
@@ -45,50 +68,46 @@ class Player:
         self.hand_location = CardLocation(left_margin + card_width * 2 + card_width * 1.5 * 2, hand_top_margin, card_width, card_height)
         self.cell_cards.move_to(left_margin + card_width * 2, top_margin, card_width * 1.5)
 
-        # Move cards to their proper locations
-        self.home_pile.calibrate()
-        self.cell_cards.calibrate()
-        self.stock_pile.calibrate()
-
-        self.drawables = [self.home_pile, self.cell_cards, self.stock_pile, self.discard_pile]
-
-        self.xxxcount = 0
-
-    def draw(self, surface):
-        for drawable in self.drawables:
-            drawable.draw(surface)
 
     def handle(self, event):
+        """ Handle events that the player knows about. """
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                card = self.deck.get_card(event.pos[0], event.pos[1])
-                if card:
-                    if self.home_pile.has(card) or \
-                       self.discard_pile_location.has(card) or \
-                       self.cell_cards.has(card):
-                        self.selected_card = card
+                self.handle_left_mouse_down(event)
 
             elif event.button == 3:
-                # Shuffle from stock_pile to discard_pile
-                # Place in hand if count < 3,
-                # otherwise place in discard pile, count = 0
-                if self.xxxcount != 0 and self.stock_pile.cards.empty():
-                    self.xxxcount = 3
+                self.handle_right_mouse_down(event)
 
-                self.xxxcount += 1
-                if self.xxxcount == 4:
-                    self.discard_pile.calibrate()
-                    self.xxxcount = 0
-                else:
-                    if self.stock_pile.cards.empty():
-                        self.stock_pile.take_from(self.discard_pile.cards)
-                        self.stock_pile.calibrate()
+    def handle_left_mouse_down(self, event):
+        """ Handle a left click. """
+        card = self.deck.get_card(event.pos[0], event.pos[1])
+        if card:
+            if self.home_pile.has(card) or \
+               self.discard_pile_location.has(card) or \
+               self.cell_cards.has(card):
+                self.selected_card = card
 
-                    self.discard_pile.take_from(self.stock_pile)
-                    card = self.discard_pile.cards.top_card()
-                    card.rect.x = self.hand_location.rect.x + self.xxxcount * 40 
+    def handle_right_mouse_down(self, event):
+        """ Handle a right click. """
+        # Shuffle from stock_pile to discard_pile
+        # Place in hand if count < 3,
+        # otherwise place in discard pile, count = 0
+        if self.xxxcount != 0 and self.stock_pile.cards.empty():
+            self.xxxcount = 3
+
+        self.xxxcount += 1
+        if self.xxxcount == 4:
+            self.discard_pile.calibrate()
+            self.xxxcount = 0
+        else:
+            if self.stock_pile.cards.empty():
+                self.stock_pile.take_from(self.discard_pile.cards)
+                self.stock_pile.calibrate()
+
+            self.discard_pile.take_from(self.stock_pile)
+            card = self.discard_pile.cards.top_card()
+            card.rect.x = self.hand_location.rect.x + self.xxxcount * 40 
 
     def get_selected_card(self):
+        """ Returns the current selected card. """
         return self.selected_card
-
-# TODO Implement StockPile->DiscardPile abstraction
