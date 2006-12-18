@@ -17,19 +17,42 @@ class FoundationPile(Pile):
         Pile.calibrate(self)
         self.top_card().frontSide()
 
-    # TODO
-    # Make the foundation piles actual locations:
-    # X   X   X   X
-    # X   X   X   X
-    # 8 in total, 4 x 2
+    def draw(self, surface):
+        Pile.draw(self, surface)
+        if self.empty():
+            pygame.draw.rect(surface, (0x00,0x00,0xff), self.location.rect, 3)
 
 class FoundationPiles:
     """ The piles on which players drop stacks of ordered cards. """
 
     def __init__(self, player):
-        self.rect = pygame.Rect(0, 0, 640, 250-96)
-        self.piles = []
+        """ The piles are arranged in a 2x4 grid like so:
+            X  X  X  X
+            X  X  X  X
+        """
+        self.num_piles = 8
+        self.piles = [FoundationPile() for i in range(self.num_piles)]
         self.player = player
+
+        self.set_locations()
+
+        self.rect = pygame.Rect(0, 0, 640, 250)
+
+    def set_locations(self):
+        """ Sets the foundation pile locations. """
+        card_width = 72
+        card_height = 96
+        col = 0
+        row = 0
+
+        for pile in self.piles:
+            pile.set_size(card_width, card_height)
+            pile.move_to(col * card_width + card_width * 0.25,
+                         row * card_height + card_height * 0.25)
+            col += 1.5
+            if col == 6:
+                col = 0
+                row += 1.1
 
     def draw(self, surface):
         for pile in self.piles:
@@ -57,23 +80,16 @@ class FoundationPiles:
                         pile.calibrate()
                     return
 
-            if self.is_starter(selection.card): # is an ace? FIXME
-                self.create_pile(selection, x, y)
-
-    def create_pile(self, selection, x, y):
-        new_pile = FoundationPile()
-        selection.transfer_to(new_pile)
-        new_pile.move_to(x, y)
-        new_pile.calibrate()
-        self.piles.append(new_pile)
-
     def is_starter(self, card):
         """ True if the card can start a new foundation pile. """
-        # TODO
+        # TODO Test if card is an ace
         return True
 
     def is_next(self, card, pile):
         """ True if the card can be put on top of the foundation pile. """
+        if pile.empty():
+            return self.is_starter(card)
+
         top_card = pile.top_card()
-        # TODO
+        # TODO Test if card is one more than top card and the opposite color.
         return True

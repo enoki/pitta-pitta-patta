@@ -6,19 +6,6 @@
 import pygame
 
 
-class EmptySelection:
-    """ An empty selection. """
-
-    def __init__(self):
-        pass
-
-    def draw(self, surface):
-        pass
-
-    def empty(self):
-        return True
-
-
 class Selection:
     """ A selection is a card plus where the card calls home. """
 
@@ -41,5 +28,9 @@ class Selection:
         self.rect.y = self.card.rect.y - 2
         self.rect.height = self.card.rect.height + 4
 
-    def empty(self):
-        return False
+
+    """ TODO
+        Idea:
+        Make selection external to player and foundation piles.
+        Manage using playing field.
+    """
