@@ -3,12 +3,11 @@
 # Released under the GPL version 2.0 or later.
 #
 
-import pygame
-
 class PlayingCard:
     """ A simple view of a playing card. """
 
-    (Zero, Ace, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King) = range(15)
+    (Zero, Ace, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten,
+     Jack, Queen, King) = range(15)
     (Clubs, Diamonds, Hearts, Spades) = range(4)
     (Red, Black) = range(2)
 
@@ -41,36 +40,44 @@ class PlayingCard:
 class Card(PlayingCard):
     """ A playing card visible on the screen. """
 
+    (front, back) = range(2)
+
     def __init__(self, number, suit, frontImage, backImage, x=0, y=0):
         PlayingCard.__init__(self, number, suit)
         self.bimg = backImage
         self.fimg = frontImage
         self.img = backImage
-        self.side = 0
+        self.side = Card.back
         self.rect = self.img.get_rect()
         self.rect.x = x
         self.rect.y = y
         self.selected = 0
 
     def flip(self):
-        if self.side==1:
-            self.side = 0
+        if self.side == Card.front:
+            self.side = Card.back
             self.img = self.bimg
         else:
-            self.side = 1
+            self.side = Card.front 
             self.img = self.fimg
 
     def face_down(self):
-        self.side = 0
+        self.side = Card.back 
         self.img = self.bimg
 
     def face_up(self):
-        self.side = 1
+        self.side = Card.front
         self.img = self.fimg
 
     def move(self, dx, dy):
+        """ Moves the card relative to its current location. """
         self.rect.x += dx
         self.rect.y += dy
 
+    def move_to(self, x, y):
+        """ Moves the card to an absolute coordinate. """
+        self.rect.x = x
+        self.rect.y = y
+
     def draw(self, surface):
-        surface.blit(self.img,self.rect.topleft)
+        surface.blit(self.img, self.rect.topleft)
