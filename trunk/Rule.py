@@ -12,10 +12,8 @@ class Rule:
 
     def is_next(self, card, existing_card):
         """ True if the card is next in the series after existing_card. """
-        print "GH"
         return True
 
     def is_starter(self, card):
         """ True if the card can start a new foundation pile. """
-        print "G"
         return True

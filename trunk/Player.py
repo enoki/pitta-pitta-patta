@@ -9,8 +9,10 @@ from StockPile import StockPile
 from HomePile import HomePile
 from DiscardPile import DiscardPile
 from CellCards import CellCards
+from RightHand import RightHand
 from CardLocation import CardLocation
 from Selection import Selection
+import logging
 
 
 class Player:
@@ -22,6 +24,7 @@ class Player:
         self.home_pile = HomePile()
         self.cell_cards = CellCards(self.home_pile)
         self.stock_pile = StockPile()
+        self.right_hand = RightHand()
         self.discard_pile = DiscardPile()
 
         self.home_pile.take_from(self.deck)
@@ -43,7 +46,11 @@ class Player:
         self.cell_cards.calibrate()
         self.stock_pile.calibrate()
 
-        self.drawables = [self.home_pile, self.cell_cards, self.stock_pile, self.discard_pile]
+        self.drawables = [self.home_pile,
+                          self.cell_cards,
+                          self.stock_pile,
+                          self.discard_pile,
+                          self.right_hand]
 
         #
         # This may need to be more global...
@@ -69,8 +76,8 @@ class Player:
         self.home_pile.move_to(left_margin, top_margin)
         self.stock_pile.move_to(left_margin + card_width * 2, hand_top_margin)
         self.discard_pile.move_to(left_margin + card_width * 2  + card_width * 1.5, hand_top_margin)
-        self.hand_location = CardLocation(left_margin + card_width * 2 + card_width * 1.5 * 2, hand_top_margin, card_width, card_height)
         self.cell_cards.move_to(left_margin + card_width * 2, top_margin, card_width * 1.5)
+        self.right_hand.move_to(left_margin + card_width * 2 + card_width * 1.5 * 2, hand_top_margin, 40)
 
 
     def handle(self, event):
@@ -103,6 +110,7 @@ class Player:
 
         self.xxxcount += 1
         if self.xxxcount == 4:
+            self.discard_pile.take_from(self.right_hand.cards)
             self.discard_pile.calibrate()
             self.xxxcount = 0
         else:
@@ -110,9 +118,12 @@ class Player:
                 self.stock_pile.take_from(self.discard_pile.cards)
                 self.stock_pile.calibrate()
 
-            self.discard_pile.take_from(self.stock_pile)
-            card = self.discard_pile.cards.top_card()
-            card.rect.x = self.hand_location.rect.x + self.xxxcount * 40 
+            self.right_hand.take_from(self.stock_pile.cards)
+            self.right_hand.calibrate()
+            logging.warning(self.right_hand.cards.top_card().number())
+
+        if not self.discard_pile.empty():
+            logging.warning(self.discard_pile.top_card().number())
 
     def get_selection(self):
         """ Returns the current selected card. """
