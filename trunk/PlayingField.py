@@ -20,6 +20,7 @@ class PlayingField:
 
         self.drawables = [self.player, self.computer, self.foundation_piles]
         self.handlers = [self.player, self.computer, self.foundation_piles]
+        self.updateables = [self.player, self.computer, self.foundation_piles]
 
     def draw(self, surface):
         for drawable in self.drawables:
@@ -28,3 +29,7 @@ class PlayingField:
     def handle(self, event):
         for handler in self.handlers:
             handler.handle(event)
+
+    def update(self):
+        for updateable in self.updateables:
+            updateable.update()

@@ -31,6 +31,8 @@ def main():
 
             playing_field.handle(event)
 
+        playing_field.update()
+
         screen.fill((0x00, 0xb0, 0x00))
 
         playing_field.draw(screen)
