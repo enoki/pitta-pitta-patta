@@ -17,11 +17,11 @@ class DiscardPile(Pile):
 
         while not right_hand.empty():
             card = right_hand.take_top_card()
-            card.frontSide()
+            card.face_up()
             self.cards.add_card(card)
 
     def calibrate(self):
         """ Prepare cards for display. """
         Pile.calibrate(self)
-        self.cards.top_card().frontSide()
+        self.cards.top_card().face_up()
 

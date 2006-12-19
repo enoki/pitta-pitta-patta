@@ -60,21 +60,14 @@ class Card(PlayingCard):
             self.side = 1
             self.img = self.fimg
 
-    def backSide(self):
+    def face_down(self):
         self.side = 0
         self.img = self.bimg
 
-    def frontSide(self):
+    def face_up(self):
         self.side = 1
         self.img = self.fimg
 
-    def setSide(self, side):
-        if side:
-            self.img = self.fimg
-        else:
-            self.img = self.bimg
-        self.side = side
-       
     def move(self, dx, dy):
         self.rect.x += dx
         self.rect.y += dy

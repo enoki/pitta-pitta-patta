@@ -15,7 +15,7 @@ class StockPile(Pile):
         """ Take all cards from the deck. Flip them over as well. """
         while not deck.empty():
             card = deck.take_top_card()
-            card.backSide()
+            card.face_down()
             self.cards.add_card(card)
 
 

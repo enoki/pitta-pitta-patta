@@ -44,7 +44,7 @@ class RightHand:
         # Move all cards to the HomePile location.
         for i in range(self.cards.num_cards()):
             self.locations[i].grab_card(self.cards[i])
-            self.cards[i].backSide() # XXX
+            self.cards[i].face_down()
         self.resize()
 
     def resize(self):

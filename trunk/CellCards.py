@@ -46,7 +46,7 @@ class CellCards:
         # Move all cards to the HomePile location.
         for i in range(self.initial_size):
             self.locations[i].grab_card(self.cards[i])
-            self.cards[i].frontSide()
+            self.cards[i].face_up()
         self.resize()
 
     def resize(self):
