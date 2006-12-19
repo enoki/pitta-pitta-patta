@@ -81,6 +81,10 @@ class Player:
             elif event.button == 3:
                 self.handle_right_mouse_down(event)
 
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                self.handle_space_bar()
+
     def handle_left_mouse_down(self, event):
         """ Handle a left click. """
         x, y = event.pos[0], event.pos[1]
@@ -93,9 +97,17 @@ class Player:
 
     def handle_right_mouse_down(self, event):
         """ Handle a right click. """
-        # Shuffle from stock_pile to discard_pile
-        # Place in hand if count < 3,
-        # otherwise place in discard pile, count = 0
+        self.deal_card()
+
+    def handle_space_bar(self):
+        """ Handle a space bar keypress. """
+        self.deal_card()
+
+    def deal_card(self):
+        """ Shuffle from stock_pile to discard_pile
+            Place in hand if count < 3,
+            otherwise place in discard pile, count = 0 """
+
         if self.xxxcount != 0 and self.stock_pile.cards.empty():
             self.xxxcount = 3
 

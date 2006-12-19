@@ -3,6 +3,7 @@
 # Released under the GPL version 2.0 or later.
 #
 
+from EmptyCard import EmptyCard
 from CardGroup import CardGroup
 from CardLocation import CardLocation
 
@@ -11,7 +12,7 @@ class CellCards:
     """ Reserve cards taken from the Home Pile. """
 
     def __init__(self, home_pile):
-        self.cards = CardGroup()
+        self.cards = CardGroup([EmptyCard(), EmptyCard(), EmptyCard()])
         self.locations = []
         self.home_pile = home_pile
         self.size = 3
@@ -39,7 +40,8 @@ class CellCards:
     def take_from(self, deck):
         """ Take cards from the deck. """
         for i in range(self.size):
-            self.cards.add_card(deck.take_top_card())
+            if not deck.empty():
+                self.cards[i] = deck.take_top_card()
 
     def calibrate(self):
         """ Prepare cards for display. """
@@ -67,12 +69,24 @@ class CellCards:
         return False
 
     def add_card(self, card):
-        self.cards.add_card(card)
+        """ Puts the card in an empty slot, if one exists. """
+        def is_empty(card):
+            return str(card) == 'empty'
+
+        for existing_card in self.cards.all_cards():
+            if is_empty(existing_card):
+                self.replace_card(existing_card, card)
+                return
+
+    def replace_card(self, existing_card, new_card):
+        """ Replaces an existing card with a new card. """
+        index = self.cards.index(existing_card)
+        self.cards[index] = new_card
 
     def transfer(self, card, pile):
         """ Transfers the card from here to the pile. """
         pile.add_card(card)
-        self.cards.cards.remove(card)
+        self.replace_card(card, EmptyCard())
 
         # replace with a card from the home pile
         if not self.home_pile.empty():
