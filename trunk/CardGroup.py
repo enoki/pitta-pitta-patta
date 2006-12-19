@@ -33,8 +33,6 @@ class CardGroup:
             c.rect.y = y;
             c.backSide();
             c.selected = 0
-            c.parent = None
-            c.child = None
 
     def top_card(self):
         return self.cards[-1]
