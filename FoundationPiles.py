@@ -16,7 +16,7 @@ class FoundationPile(Pile):
 
     def calibrate(self):
         Pile.calibrate(self)
-        self.top_card().frontSide()
+        self.top_card().face_up()
 
     def draw(self, surface):
         Pile.draw(self, surface)

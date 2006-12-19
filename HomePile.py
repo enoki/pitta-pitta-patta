@@ -17,9 +17,9 @@ class HomePile(Pile):
         for i in range(self.initial_size):
             self.cards.add_card(deck.take_top_card())
 
-        self.cards.top_card().frontSide()
+        self.cards.top_card().face_up()
 
     def transfer(self, card, pile):
         Pile.transfer(self, card, pile)
         if not self.cards.empty():
-            self.top_card().frontSide()
+            self.top_card().face_up()
