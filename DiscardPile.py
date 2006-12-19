@@ -13,6 +13,8 @@ class DiscardPile(Pile):
 
     def take_from(self, right_hand):
         """ Take the cards from the hand."""
+        right_hand.reverse()
+
         while not right_hand.empty():
             card = right_hand.take_top_card()
             card.frontSide()
