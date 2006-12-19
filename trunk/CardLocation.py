@@ -5,7 +5,7 @@ class CardLocation:
         self.rect = pygame.Rect(x, y, width, height)
 
     def has(self, card):
-        #return card.rect.colliderect(self.rect)
+        """ True if this location contains the card. """
         return card.rect.contains(self.rect)
 
     def contains(self, x, y):

@@ -14,7 +14,7 @@ class CellCards:
         self.cards = CardGroup()
         self.locations = []
         self.home_pile = home_pile
-        self.initial_size = 3
+        self.size = 3
 
     def set_size(self, width, height):
         """ Sets the sizes of each of the cells to be the same. """
@@ -26,7 +26,7 @@ class CellCards:
         """ Moves each of the cells.
             Provide the coordinates of the leftmost cell. """
 
-        for i in range(self.initial_size):
+        for i in range(self.size):
             location = CardLocation()
             location.rect.x = x
             self.locations.append(location)
@@ -38,13 +38,13 @@ class CellCards:
 
     def take_from(self, deck):
         """ Take cards from the deck. """
-        for i in range(self.initial_size):
+        for i in range(self.size):
             self.cards.add_card(deck.take_top_card())
 
     def calibrate(self):
         """ Prepare cards for display. """
         # Move all cards to the HomePile location.
-        for i in range(self.initial_size):
+        for i in range(self.size):
             self.locations[i].grab_card(self.cards[i])
             self.cards[i].face_up()
         self.resize()
