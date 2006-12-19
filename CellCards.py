@@ -12,7 +12,7 @@ class CellCards:
     """ Reserve cards taken from the Home Pile. """
 
     def __init__(self, home_pile):
-        self.cards = CardGroup([EmptyCard(), EmptyCard(), EmptyCard()])
+        self.cards = [EmptyCard(), EmptyCard(), EmptyCard()]
         self.locations = []
         self.home_pile = home_pile
         self.size = 3
@@ -52,13 +52,14 @@ class CellCards:
         self.resize()
 
     def resize(self):
-        """ Resize to the top card. """
-        card_rect = self.cards.top_card().rect
+        """ Resize to the first card. """
+        card_rect = self.cards[0].rect
         self.set_size(card_rect.width, card_rect.height)
 
     def draw(self, surface):
         """ Draws the cards. """
-        self.cards.draw(surface)
+        for card in self.cards:
+            card.draw(surface)
 
     def has(self, card):
         """ True if the card is in any of the cells. """
@@ -70,11 +71,8 @@ class CellCards:
 
     def add_card(self, card):
         """ Puts the card in an empty slot, if one exists. """
-        def is_empty(card):
-            return str(card) == 'empty'
-
-        for existing_card in self.cards.all_cards():
-            if is_empty(existing_card):
+        for existing_card in self.cards:
+            if self.is_empty(existing_card):
                 self.replace_card(existing_card, card)
                 return
 
@@ -96,4 +94,27 @@ class CellCards:
     def get_card(self, x, y):
         """ Returns the card at the specified coordinates.
             If no card is available, returns None. """
-        return self.cards.get_card(x, y)
+        for card in self.cards:
+            if card.rect.collidepoint(x, y):
+                return card
+                       
+        return None
+
+    def is_empty(self, card):
+        return str(card) == EmptyCard.id
+
+    def empty(self):
+        for card in self.cards:
+            if not self.is_empty(card):
+                return False
+
+        return True
+
+    def get_available_cards(self):
+        """ Returns the cards that can be moved by a player. """
+        cards = []
+        for card in self.cards:
+            if not self.is_empty(card):
+                cards.append(card)
+
+        return cards

@@ -8,6 +8,8 @@ from Card import Card
 class EmptyCard(Card):
     """ A placeholder card. """
 
+    id = 'empty'
+
     def __init__(self):
         pass
 
@@ -30,4 +32,4 @@ class EmptyCard(Card):
         pass
 
     def __str__(self):
-        return 'empty'
+        return EmptyCard.id

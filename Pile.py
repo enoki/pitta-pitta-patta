@@ -68,3 +68,11 @@ class Pile:
         """ Draws the pile. """
         if not self.empty():
             self.top_card().draw(surface)
+
+    def get_available_cards(self):
+        """ Returns the cards that can be moved by a player. """
+        cards = []
+        if not self.empty():
+            cards.append(self.top_card())
+
+        return cards

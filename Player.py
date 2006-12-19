@@ -62,7 +62,7 @@ class Player:
         """ Position cards """
         card_rect = self.home_pile.top_card().rect
         card_width, card_height = card_rect.width, card_rect.height
-        left_margin, top_margin = 10, 250
+        left_margin, top_margin = 10, 500
         hand_top_margin = top_margin + card_rect.height + 30
 
         self.home_pile.move_to(left_margin, top_margin)
