@@ -45,8 +45,6 @@ class Card(PlayingCard):
         self.rect = self.img.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self.child = None
-        self.parent = None
         self.selected = 0
 
     def flip(self):
@@ -75,8 +73,6 @@ class Card(PlayingCard):
     def move(self, dx, dy):
         self.rect.x += dx
         self.rect.y += dy
-        if self.child:
-            self.child.move(dx,dy)
 
     def draw(self, surface):
         surface.blit(self.img,self.rect.topleft)
