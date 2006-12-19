@@ -9,25 +9,98 @@ import louie
 import sys
 from PlayingField import PlayingField
 
+class State:
+    pass
+
+class StartState(State):
+    finished = louie.Signal()
+
+    def __init__(self):
+        text = 'Welcome to Pitta Pitta Patta!'
+
+        font = pygame.font.Font(None, 36)
+        self.text_image = font.render(text, 1, (10, 10, 10))
+
+    def handle(self, event):
+        if event.type == pygame.KEYDOWN or \
+           event.type == pygame.MOUSEBUTTONDOWN:
+            louie.send(StartState.finished)
+
+    def update(self):
+        pass
+
+    def draw(self, surface):
+        text_pos = self.text_image.get_rect(centerx=surface.get_width()/2)
+        surface.blit(self.text_image, text_pos)
+
+class PlayingState(State):  
+    def __init__(self, playing_field):
+        self.playing_field = playing_field
+
+    def handle(self, event):
+        self.playing_field.handle(event)
+
+    def update(self):
+        self.playing_field.update()
+
+    def draw(self, surface):
+        self.playing_field.draw(surface)
+
+class GameOverState(State):
+    def __init__(self, playing_field):
+        self.playing_field = playing_field
+
+        text = 'Game over'
+        font = pygame.font.Font(None, 36)
+        self.text_image = font.render(text, 1, (10, 10, 10))
+
+    def handle(self, event):
+        pass
+
+    def update(self):
+        pass
+
+    def draw(self, surface):
+        self.playing_field.draw(surface)
+
+        text_pos = self.text_image.get_rect(centerx=surface.get_width()/2)
+        surface.blit(self.text_image, text_pos)
+    
+
 class Game:
     def __init__(self):
-        self.game_over = False
-
-    def end_game(self):
-        self.game_over = True
-
-    def main(self):
-        """ Pitta-pitta-patta game. """
-
         pygame.init()
 
-        screen = pygame.display.set_mode((640, 768))
+        self.screen = pygame.display.set_mode((640, 768))
 
         pygame.display.set_caption('Pitta Pitta Patta')
 
-        playing_field = PlayingField()
+        self.create_states()
 
+    def create_states(self):
+        playing_field = PlayingField()
         louie.connect(self.end_game, PlayingField.game_over)
+
+        start_state = StartState()
+        playing_state = PlayingState(playing_field)
+        game_over_state = GameOverState(playing_field)
+
+        louie.connect(self.start_playing, StartState.finished)
+
+        self.states = { 'Start' : start_state,
+                        'Playing' : playing_state,
+                        'GameOver' : game_over_state }
+
+        self.state = self.states['Start']
+
+    def end_game(self):
+        self.state = self.states['GameOver']
+
+    def start_playing(self):
+        self.state = self.states['Playing']
+
+    def main(self):
+        """ Pitta-pitta-patta game. """
 
         while True:
             pygame.time.wait(30)
@@ -39,15 +112,13 @@ class Game:
                     if event.key == pygame.K_ESCAPE:
                         sys.exit()
 
-                if not self.game_over:
-                    playing_field.handle(event)
+                self.state.handle(event)
 
-            if not self.game_over:
-                playing_field.update()
+            self.state.update()
 
-            screen.fill((0x00, 0xb0, 0x00))
+            self.screen.fill((0x00, 0xb0, 0x00))
 
-            playing_field.draw(screen)
+            self.state.draw(self.screen)
 
             pygame.display.flip()
 
