@@ -4,7 +4,6 @@
 #
 
 import pygame
-import logging
 from Player import Player
 
 class Computer(Player):
@@ -28,12 +27,13 @@ class Computer(Player):
         top_margin = hand_top_margin + card_rect.height + 30
 
         self.home_pile.move_to(left_margin, top_margin)
-        self.stock_pile.move_to(left_margin + card_width * 2, hand_top_margin)
-        self.discard_pile.move_to(left_margin + card_width * 2  + card_width * 1.5, hand_top_margin)
         self.cell_cards.move_to(left_margin + card_width * 2, top_margin, card_width * 1.5)
+        self.stock_pile.move_to(left_margin + card_width * 2, hand_top_margin)
+        self.discard_pile.move_to(left_margin + card_width * 2 + card_width * 1.5, hand_top_margin)
         self.right_hand.move_to(left_margin + card_width * 2 + card_width * 1.5 * 2, hand_top_margin, 40)
 
     def update(self):
+        """ Handle a clock tick. """
         if pygame.time.get_ticks() - self.last_time > 700:
             self.last_time = pygame.time.get_ticks()
 

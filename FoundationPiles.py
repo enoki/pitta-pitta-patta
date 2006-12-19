@@ -44,6 +44,12 @@ class FoundationPiles:
         """ Sets the foundation pile locations. """
         card_width = 72
         card_height = 96
+
+        num_cols = 4
+        col_width = 1.5
+        total_col_width = num_cols * col_width
+        row_height = 1.1
+
         col = 0
         row = 0
 
@@ -51,10 +57,10 @@ class FoundationPiles:
             pile.set_size(card_width, card_height)
             pile.move_to(col * card_width + card_width * 0.25,
                          row * card_height + card_height * 0.25 + 250)
-            col += 1.5
-            if col == 6:
+            col += col_width
+            if col == total_col_width:
                 col = 0
-                row += 1.1
+                row += row_height
 
     def draw(self, surface):
         for pile in self.piles:
@@ -79,9 +85,8 @@ class FoundationPiles:
 
             for pile in self.piles:
                 if pile.contains(x, y):
-                    logging.warning('4."' + str(selection.card) + '"')
+                    logging.warning('move "' + str(selection.card) + '"?')
                     if self.rules.is_valid(selection.card, pile):
-                        logging.warning('5.')
                         selection.transfer_to(pile)
                         pile.calibrate()
                     self.player.clear_selection()

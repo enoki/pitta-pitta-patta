@@ -126,10 +126,10 @@ class Player:
 
             self.right_hand.take_from(self.stock_pile.cards)
             self.right_hand.calibrate()
-            logging.warning('rh=' + str(self.right_hand.cards.top_card().number()))
+            logging.debug('rh=' + str(self.right_hand.cards.top_card().number()))
 
         if not self.discard_pile.empty():
-            logging.warning('di' + str(self.discard_pile.top_card().number()))
+            logging.debug('di' + str(self.discard_pile.top_card().number()))
 
     def get_selection(self):
         """ Returns the current selection. """
