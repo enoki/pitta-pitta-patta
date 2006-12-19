@@ -60,6 +60,9 @@ class FoundationPiles:
         for pile in self.piles:
             pile.draw(surface)
 
+    def update(self):
+        pass
+
     def handle(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:

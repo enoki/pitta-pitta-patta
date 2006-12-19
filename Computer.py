@@ -4,7 +4,7 @@
 #
 
 import pygame
-import sys
+import logging
 from Deck import Deck
 from CardGroup import CardGroup
 
@@ -22,20 +22,23 @@ class Computer:
         pass
 
     def handle(self, event):
+        pass
+
+    def update(self):
         if pygame.time.get_ticks() - self.last_time > 1000:
-            print >> sys.stderr, "** Computer tick"
+            logging.warning("** Computer tick")
             self.last_time = pygame.time.get_ticks()
 
             if self.cards.empty():
                 if self.discard.empty():
-                    print >> sys.stderr, "** Computer is done."
+                    logging.warning("** Computer is done.")
                     return
                 self.discard.shuffle()
                 while not self.discard.empty():
                     self.cards.add_card(self.discard.take_top_card())
 
             card = self.cards.take_top_card()
-            print >> sys.stderr, "** Computer card=" + str(card)
+            logging.warning("** Computer card=" + str(card))
             for pile in self.foundation_piles.piles:
                 if self.rules.is_valid(card, pile):
                     pile.add_card(card)

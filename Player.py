@@ -72,6 +72,9 @@ class Player:
         self.right_hand.move_to(left_margin + card_width * 2 + card_width * 1.5 * 2, hand_top_margin, 40)
 
 
+    def update(self):
+        pass
+
     def handle(self, event):
         """ Handle events that the player knows about. """
         if event.type == pygame.MOUSEBUTTONDOWN:
