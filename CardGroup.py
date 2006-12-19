@@ -50,6 +50,13 @@ class CardGroup:
     def __getitem__(self, index):
         """ Returns the card at the specified index. """
         return self.cards[index]
+
+    def __setitem__(self, index, card):
+        """ Puts a card at the specified index. """
+        self.cards[index] = card
+
+    def index(self, card):
+        return self.cards.index(card)
         
     def get_card(self,x,y):
         """ Returns the card at the specified coordinates.
