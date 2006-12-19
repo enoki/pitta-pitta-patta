@@ -4,6 +4,7 @@
 #
 
 import pygame
+from Card import PlayingCard
 
 class CardImages:
     """ Loads the card images and allows easy access to them. """
@@ -11,16 +12,13 @@ class CardImages:
     def __init__(self):
         self.card_images = {}
 
-        numbers = ['0', 'a', '2', '3', '4', '5', '6', '7', '8', '9', '10',
-                   'j', 'q', 'k']
-        suits = ['c', 'd', 'h', 's']
-
         image_dir = "images"
 
         for i in range(52):
             num = i / 4 + 1
             suit = i % 4
-            image_name = "%s/%s%s.png" % (image_dir, numbers[num], suits[suit])
+            card = PlayingCard(num, suit)
+            image_name = "%s/%s.png" % (image_dir, str(card))
             self.card_images[(num, suit)] = \
                 pygame.image.load(image_name).convert()
 

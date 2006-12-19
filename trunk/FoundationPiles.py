@@ -6,6 +6,7 @@
 import pygame
 from Pile import Pile
 from Selection import Selection
+import logging
 
 class FoundationPile(Pile):
     """ A pile on which players drop ordered cards. """
@@ -72,11 +73,15 @@ class FoundationPiles:
 
         if self.player.has_selection():
             selection = self.player.get_selection()
-            self.player.clear_selection()
 
             for pile in self.piles:
                 if pile.contains(x, y):
+                    logging.warning('4."' + str(selection.card) + '"')
                     if self.rules.is_valid(selection.card, pile):
+                        logging.warning('5.')
                         selection.transfer_to(pile)
                         pile.calibrate()
+                    self.player.clear_selection()
                     return
+
+            self.player.clear_selection()

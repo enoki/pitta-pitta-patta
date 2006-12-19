@@ -12,6 +12,10 @@ class PlayingCard:
     (Clubs, Diamonds, Hearts, Spades) = range(4)
     (Red, Black) = range(2)
 
+    numbers = ['0', 'a', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+               'j', 'q', 'k']
+    suits = ['c', 'd', 'h', 's']
+
     def __init__(self, number, suit):
         self._number = number
         self._suit = suit
@@ -30,6 +34,9 @@ class PlayingCard:
     def color(self):
         return self._color
 
+    def __str__(self):
+        return PlayingCard.numbers[self.number()] + \
+               PlayingCard.suits[self.suit()]
                              
 class Card(PlayingCard):
     """ A playing card visible on the screen. """

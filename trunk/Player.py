@@ -46,25 +46,21 @@ class Player:
         self.cell_cards.calibrate()
         self.stock_pile.calibrate()
 
+        #
+        self.selection = Selection()
+
         self.drawables = [self.home_pile,
                           self.cell_cards,
                           self.stock_pile,
                           self.discard_pile,
-                          self.right_hand]
-
-        #
-        # This may need to be more global...
-        #
-        self.selection = None
+                          self.right_hand,
+                          self.selection]
 
         self.xxxcount = 0
 
     def draw(self, surface):
         for drawable in self.drawables:
             drawable.draw(surface)
-
-        if self.selection:
-            self.selection.draw(surface)
 
     def set_locations(self):
         """ Position cards """
@@ -94,11 +90,11 @@ class Player:
         card = self.deck.get_card(event.pos[0], event.pos[1])
         if card:
             if self.home_pile.has(card):
-                self.selection = Selection(card, self.home_pile)
+                self.selection.set(card, self.home_pile)
             elif self.discard_pile.has(card):
-                self.selection = Selection(card, self.discard_pile)
+                self.selection.set(card, self.discard_pile)
             elif self.cell_cards.has(card):
-                self.selection = Selection(card, self.cell_cards)
+                self.selection.set(card, self.cell_cards)
 
     def handle_right_mouse_down(self, event):
         """ Handle a right click. """
@@ -120,14 +116,18 @@ class Player:
 
             self.right_hand.take_from(self.stock_pile.cards)
             self.right_hand.calibrate()
+            logging.warning('rh=' + str(self.right_hand.cards.top_card().number()))
+
+        if not self.discard_pile.empty():
+            logging.warning('di' + str(self.discard_pile.top_card().number()))
 
     def get_selection(self):
-        """ Returns the current selected card. """
+        """ Returns the current selection. """
         return self.selection
 
     def has_selection(self):
         """ Returns true if there is a card selected. """
-        return self.selection is not None
+        return not self.selection.empty()
 
     def clear_selection(self):
-        self.selection = None
+        self.selection.clear()
