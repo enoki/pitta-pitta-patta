@@ -14,10 +14,8 @@ class UpRule(Rule):
 
     def is_starter(self, card):
         """ True if the card can start a new foundation pile. """
-        print "S=" + str(card.number() == Card.Ace) + ",n=" + str(card.number())
         return card.number() == Card.Ace
 
     def is_next(self, card, existing_card):
         """ True if the card is next in the series after existing_card. """
-        print "N"
         return card.number() == existing_card.number()+1
