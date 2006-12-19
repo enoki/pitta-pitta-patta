@@ -38,7 +38,7 @@ class FoundationPiles:
 
         self.set_locations()
 
-        self.rect = pygame.Rect(0, 0, 640, 250)
+        self.rect = pygame.Rect(0, 250, 640, 250)
 
     def set_locations(self):
         """ Sets the foundation pile locations. """
@@ -50,7 +50,7 @@ class FoundationPiles:
         for pile in self.piles:
             pile.set_size(card_width, card_height)
             pile.move_to(col * card_width + card_width * 0.25,
-                         row * card_height + card_height * 0.25)
+                         row * card_height + card_height * 0.25 + 250)
             col += 1.5
             if col == 6:
                 col = 0

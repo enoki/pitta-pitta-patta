@@ -5,47 +5,48 @@
 
 import pygame
 import logging
-from Deck import Deck
-from CardGroup import CardGroup
+from Player import Player
 
-class Computer:
+class Computer(Player):
     """ The computer AI player. """
 
     def __init__(self, rules, foundation_piles):
-        self.cards = Deck()
-        self.discard = CardGroup()
+        Player.__init__(self)
         self.rules = rules
         self.foundation_piles = foundation_piles
         self.last_time = pygame.time.get_ticks()
 
-    def draw(self, surface):
-        pass
-
     def handle(self, event):
         pass
 
+    def set_locations(self):
+        """ Position cards """
+        card_rect = self.home_pile.top_card().rect
+        card_width, card_height = card_rect.width, card_rect.height
+        left_margin = 10
+        hand_top_margin = 0
+        top_margin = hand_top_margin + card_rect.height + 30
+
+        self.home_pile.move_to(left_margin, top_margin)
+        self.stock_pile.move_to(left_margin + card_width * 2, hand_top_margin)
+        self.discard_pile.move_to(left_margin + card_width * 2  + card_width * 1.5, hand_top_margin)
+        self.cell_cards.move_to(left_margin + card_width * 2, top_margin, card_width * 1.5)
+        self.right_hand.move_to(left_margin + card_width * 2 + card_width * 1.5 * 2, hand_top_margin, 40)
+
     def update(self):
-        if pygame.time.get_ticks() - self.last_time > 1000:
-            logging.warning("** Computer tick")
+        if pygame.time.get_ticks() - self.last_time > 700:
             self.last_time = pygame.time.get_ticks()
 
-            if self.cards.empty():
-                if self.discard.empty():
-                    logging.warning("** Computer is done.")
-                    return
-                self.discard.shuffle()
-                while not self.discard.empty():
-                    self.cards.add_card(self.discard.take_top_card())
+            self.deal_card()
 
-            card = self.cards.take_top_card()
-            logging.warning("** Computer card=" + str(card))
-            for pile in self.foundation_piles.piles:
-                if self.rules.is_valid(card, pile):
-                    pile.add_card(card)
-                    pile.calibrate()
-                    return
-
-            self.discard.add_card(card)
-
-# TODO make this more like a real player, with the same restrictions!
-# TODO idea: MockHomePile, MockDiscardPile, MockCellCards, etc...
+            if self.xxxcount == 0:
+                # Transfer the first available card
+                for clickable in self.clickables:
+                    if clickable:
+                        cards = clickable.get_available_cards()
+                        for card in cards:
+                            for pile in self.foundation_piles.piles:
+                                if self.rules.is_valid(card, pile):
+                                    clickable.transfer(card, pile)
+                                    pile.calibrate()
+                                    return
