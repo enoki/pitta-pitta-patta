@@ -1,0 +1,4 @@
+Depends on:
+    python 2.4 or later
+    pygame 1.7.1 or later
+    louie 1.1 or later (easy_install louie)
