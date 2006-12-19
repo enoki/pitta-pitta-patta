@@ -95,8 +95,9 @@ class CellCards:
         """ Returns the card at the specified coordinates.
             If no card is available, returns None. """
         for card in self.cards:
-            if card.rect.collidepoint(x, y):
-                return card
+            if not self.is_empty(card):
+                if card.rect.collidepoint(x, y):
+                    return card
                        
         return None
 

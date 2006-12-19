@@ -4,6 +4,7 @@
 #
 
 import pygame
+import louie
 from Deck import Deck
 from StockPile import StockPile
 from HomePile import HomePile
@@ -17,6 +18,8 @@ import logging
 
 class Player:
     """ A player in the game. """
+
+    finished = louie.Signal()
 
     def __init__(self):
         self.deck = Deck()
@@ -53,6 +56,8 @@ class Player:
                            self.discard_pile]
 
         self.xxxcount = 0
+
+        louie.connect(self.home_emptied, HomePile.emptied)
 
     def draw(self, surface):
         for drawable in self.drawables:
@@ -130,6 +135,9 @@ class Player:
 
         if not self.discard_pile.empty():
             logging.debug('di' + str(self.discard_pile.top_card().number()))
+
+    def home_emptied(self):
+        louie.send(Player.finished)
 
     def get_selection(self):
         """ Returns the current selection. """
