@@ -8,7 +8,7 @@ import pygame
 class PlayingCard:
     """ A simple view of a playing card. """
 
-    (Ace, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King) = range(14)
+    (Zero, Ace, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King) = range(15)
     (Clubs, Diamonds, Hearts, Spades) = range(4)
     (Red, Black) = range(2)
 
@@ -34,9 +34,7 @@ class PlayingCard:
 class Card(PlayingCard):
     """ A playing card visible on the screen. """
 
-    def __init__(self, index, frontImage, backImage, x=0, y=0):
-        number = index / 4
-        suit = index % 4
+    def __init__(self, number, suit, frontImage, backImage, x=0, y=0):
         PlayingCard.__init__(self, number, suit)
         self.bimg = backImage
         self.fimg = frontImage
