@@ -25,7 +25,7 @@ class FoundationPile(Pile):
 class FoundationPiles:
     """ The piles on which players drop stacks of ordered cards. """
 
-    def __init__(self, player):
+    def __init__(self, player, rules):
         """ The piles are arranged in a 2x4 grid like so:
             X  X  X  X
             X  X  X  X
@@ -33,6 +33,7 @@ class FoundationPiles:
         self.num_piles = 8
         self.piles = [FoundationPile() for i in range(self.num_piles)]
         self.player = player
+        self.rules = rules
 
         self.set_locations()
 
@@ -75,21 +76,7 @@ class FoundationPiles:
 
             for pile in self.piles:
                 if pile.contains(x, y):
-                    if self.is_next(selection.card, pile):
+                    if self.rules.is_valid(selection.card, pile):
                         selection.transfer_to(pile)
                         pile.calibrate()
                     return
-
-    def is_starter(self, card):
-        """ True if the card can start a new foundation pile. """
-        # TODO Test if card is an ace
-        return True
-
-    def is_next(self, card, pile):
-        """ True if the card can be put on top of the foundation pile. """
-        if pile.empty():
-            return self.is_starter(card)
-
-        top_card = pile.top_card()
-        # TODO Test if card is one more than top card and the opposite color.
-        return True
