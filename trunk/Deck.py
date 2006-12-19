@@ -14,8 +14,8 @@ def Deck():
 
     cards = []
 
-    for i in range(52):
-        cards.append(Card(i, ci.get_card(i), ci.get_back(), 30, 30))
+    for number, suit, image in ci.images():
+        cards.append(Card(number, suit, image, ci.get_back(), 30, 30))
 
     deck = CardGroup(cards)
     deck.shuffle()
