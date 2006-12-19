@@ -4,10 +4,40 @@
 #
 
 import pygame
-                             
-class Card:
 
-    def __init__(self, frontImage, backImage, x=0, y=0):
+class PlayingCard:
+    """ A simple view of a playing card. """
+
+    (Ace, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King) = range(14)
+    (Clubs, Diamonds, Hearts, Spades) = range(4)
+    (Red, Black) = range(2)
+
+    def __init__(self, number, suit):
+        self._number = number
+        self._suit = suit
+
+        if self.suit() == Card.Clubs or self.suit() == Card.Spades:
+            self._color = Card.Black
+        else:
+            self._color = Card.Red
+
+    def number(self):
+        return self._number
+
+    def suit(self):
+        return self._suit
+
+    def color(self):
+        return self._color
+
+                             
+class Card(PlayingCard):
+    """ A playing card visible on the screen. """
+
+    def __init__(self, index, frontImage, backImage, x=0, y=0):
+        number = index / 4
+        suit = index % 4
+        PlayingCard.__init__(self, number, suit)
         self.bimg = backImage
         self.fimg = frontImage
         self.img = backImage

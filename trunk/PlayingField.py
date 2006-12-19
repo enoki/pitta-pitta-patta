@@ -5,6 +5,7 @@
 
 from Player import Player
 from FoundationPiles import FoundationPiles
+from DefaultRules import *
 
 class Computer:
     """ The computer AI player. """
@@ -25,7 +26,8 @@ class PlayingField:
     def __init__(self):
         self.player = Player()
         self.computer = Computer()
-        self.foundation_piles = FoundationPiles(self.player)
+        self.rules = RedBlackUpRules()
+        self.foundation_piles = FoundationPiles(self.player, self.rules)
 
         self.drawables = [self.player, self.computer, self.foundation_piles]
         self.handlers = [self.player, self.computer, self.foundation_piles]
