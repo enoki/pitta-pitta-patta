@@ -31,14 +31,6 @@ class Player:
         self.cell_cards.take_from(self.deck)
         self.stock_pile.take_from(self.deck)
 
-        # Add cards back to the deck
-        for card in self.home_pile.cards.all_cards():
-            self.deck.add_card(card)
-        for card in self.cell_cards.cards.all_cards():
-            self.deck.add_card(card)
-        for card in self.stock_pile.cards.all_cards():
-            self.deck.add_card(card)
-
         self.set_locations()
 
         # Move cards to their proper locations
@@ -56,6 +48,10 @@ class Player:
                           self.right_hand,
                           self.selection]
 
+        self.clickables = [self.home_pile,
+                           self.cell_cards,
+                           self.discard_pile]
+
         self.xxxcount = 0
 
     def draw(self, surface):
@@ -64,7 +60,7 @@ class Player:
 
     def set_locations(self):
         """ Position cards """
-        card_rect = self.deck.top_card().rect
+        card_rect = self.home_pile.top_card().rect
         card_width, card_height = card_rect.width, card_rect.height
         left_margin, top_margin = 10, 250
         hand_top_margin = top_margin + card_rect.height + 30
@@ -87,14 +83,13 @@ class Player:
 
     def handle_left_mouse_down(self, event):
         """ Handle a left click. """
-        card = self.deck.get_card(event.pos[0], event.pos[1])
-        if card:
-            if self.home_pile.has(card):
-                self.selection.set(card, self.home_pile)
-            elif self.discard_pile.has(card):
-                self.selection.set(card, self.discard_pile)
-            elif self.cell_cards.has(card):
-                self.selection.set(card, self.cell_cards)
+        x, y = event.pos[0], event.pos[1]
+
+        for clickable in self.clickables:
+            card = clickable.get_card(x, y)
+            if card is not None:
+                self.selection.set(card, clickable)
+                return
 
     def handle_right_mouse_down(self, event):
         """ Handle a right click. """

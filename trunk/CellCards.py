@@ -70,6 +70,7 @@ class CellCards:
         self.cards.add_card(card)
 
     def transfer(self, card, pile):
+        """ Transfers the card from here to the pile. """
         pile.add_card(card)
         self.cards.cards.remove(card)
 
@@ -77,3 +78,8 @@ class CellCards:
         if not self.home_pile.empty():
             self.home_pile.transfer(self.home_pile.top_card(), self)
             self.calibrate()
+
+    def get_card(self, x, y):
+        """ Returns the card at the specified coordinates.
+            If no card is available, returns None. """
+        return self.cards.get_card(x, y)
