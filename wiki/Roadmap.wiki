@@ -18,6 +18,9 @@ Features for 0.3:
 
 Features for a future release:
   * More than two players
+  * Better AI
+  * Drag and drop of cards
   * Save/load game state
   * ...
   * Network play
+  * C++ Qt port
