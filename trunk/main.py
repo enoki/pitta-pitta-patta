@@ -18,7 +18,7 @@ class StartState(State):
     def __init__(self):
         text = 'Welcome to Pitta Pitta Patta!'
 
-        font = pygame.font.Font(None, 36)
+        font = pygame.font.SysFont("Arial", 36)
         self.text_image = font.render(text, 1, (10, 10, 10))
 
     def handle(self, event):
@@ -51,7 +51,7 @@ class GameOverState(State):
         self.playing_field = playing_field
 
         text = 'Game over'
-        font = pygame.font.Font(None, 36)
+        font = pygame.font.SysFont("Arial", 36)
         self.text_image = font.render(text, 1, (10, 10, 10))
 
     def handle(self, event):
