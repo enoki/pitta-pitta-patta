@@ -1,0 +1,12 @@
+#summary How to play the game
+
+= Introduction =
+
+Pitta pitta patta is a speed card game.
+_Eventually instructions on how to play the game will be here_
+
+= Details =
+
+== Controls ==
+  * Left click on a card to select it, then left click on a destination to move it
+  * Right click or press space bar to deal cards into your hand
