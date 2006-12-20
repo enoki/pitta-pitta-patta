@@ -89,6 +89,7 @@ class FoundationPiles:
                     if self.rules.is_valid(selection.card, pile):
                         selection.transfer_to(pile)
                         pile.calibrate()
+                        self.player.inc_score()
                     self.player.clear_selection()
                     return
 
