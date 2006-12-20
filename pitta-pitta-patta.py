@@ -54,8 +54,8 @@ class GameOverState(State):
         pass
 
     def update(self):
-        computer_score = self.playing_field.computer.get_score()
-        player_score = self.playing_field.player.get_score()
+        computer_score = self.playing_field.computer.score
+        player_score = self.playing_field.player.score
 
         text = 'Game over. Me: ' + str(computer_score) + \
                ' You: ' + str(player_score)
