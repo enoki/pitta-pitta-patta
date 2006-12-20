@@ -1,0 +1,349 @@
+Index: Computer.py
+===================================================================
+--- Computer.py	(revision 30)
++++ Computer.py	(working copy)
+@@ -33,6 +33,8 @@
+         self.right_hand.move_to(left_margin + card_width * 2 + card_width * 1.5 * 2, hand_top_margin, 40)
+ 
+     def update(self):
++        Player.update(self)
++
+         """ Handle a clock tick. """
+         if pygame.time.get_ticks() - self.last_time > 700:
+             self.last_time = pygame.time.get_ticks()
+@@ -48,5 +50,8 @@
+                             for pile in self.foundation_piles.piles:
+                                 if self.rules.is_valid(card, pile):
+                                     clickable.transfer(card, pile)
+-                                    pile.calibrate()
++                                    self.inc_score()
++                                    self.animate_card(card,
++                                                      card.rect,
++                                                      pile.location.rect)
+                                     return
+Index: FoundationPiles.py
+===================================================================
+--- FoundationPiles.py	(revision 30)
++++ FoundationPiles.py	(working copy)
+@@ -88,7 +88,7 @@
+                     logging.warning('move "' + str(selection.card) + '"?')
+                     if self.rules.is_valid(selection.card, pile):
+                         selection.transfer_to(pile)
+-                        pile.calibrate()
++                        self.player.inc_score()
+                     self.player.clear_selection()
+                     return
+ 
+Index: RightHand.py
+===================================================================
+--- RightHand.py	(revision 27)
++++ RightHand.py	(working copy)
+@@ -3,6 +3,7 @@
+ # Released under the GPL version 2.0 or later.
+ #
+ 
++import louie
+ from CardGroup import CardGroup
+ from CardLocation import CardLocation
+ 
+@@ -10,6 +11,8 @@
+ class RightHand:
+     """ Reserve cards from the Stock Pile held in the right hand. """
+ 
++    card_moving = louie.Signal()
++
+     def __init__(self):
+         self.cards = CardGroup()
+         self.locations = []
+@@ -37,8 +40,14 @@
+ 
+     def take_from(self, stock_pile):
+         """ Take the top card from the stock pile. """
+-        self.cards.add_card(stock_pile.take_top_card())
++        card = stock_pile.take_top_card()
++        self.cards.add_card(card)
+ 
++        louie.send(RightHand.card_moving,
++                   card=card,
++                   start=card.rect,
++                   end=self.locations[self.cards.num_cards()-1].rect)
++
+     def calibrate(self):
+         """ Prepare cards for display. """
+         # Move all cards to the HomePile location.
+Index: DiscardPile.py
+===================================================================
+--- DiscardPile.py	(revision 27)
++++ DiscardPile.py	(working copy)
+@@ -3,11 +3,15 @@
+ # Released under the GPL version 2.0 or later.
+ #
+ 
++import louie
+ from Pile import Pile
+ 
+ 
+ class DiscardPile(Pile):
+     """ The cards the player shuffles from their hand, from the Stock Pile. """
++
++    card_moving = louie.Signal()
++
+     def __init__(self):
+         Pile.__init__(self)
+ 
+@@ -20,6 +24,11 @@
+             card.face_up()
+             self.cards.add_card(card)
+ 
++            louie.send(DiscardPile.card_moving,
++                       card=card,
++                       start=card.rect,
++                       end=self.location.rect)
++
+     def calibrate(self):
+         """ Prepare cards for display. """
+         Pile.calibrate(self)
+Index: main.py
+===================================================================
+--- main.py	(revision 32)
++++ main.py	(working copy)
+@@ -50,16 +50,24 @@
+     def __init__(self, playing_field):
+         self.playing_field = playing_field
+ 
+-        text = 'Game over'
+-        font = pygame.font.Font(None, 36)
+-        self.text_image = font.render(text, 1, (10, 10, 10))
+-
+     def handle(self, event):
+         pass
+ 
+     def update(self):
+-        pass
++        computer_score = self.playing_field.computer.score
++        player_score = self.playing_field.player.score
+ 
++        text = 'Game over. Me: ' + str(computer_score) + \
++               ' You: ' + str(player_score)
++
++        if computer_score >= player_score:
++            text += ' I Win!'
++        else:
++            text += ' You Win!'
++
++        font = pygame.font.Font(None, 36)
++        self.text_image = font.render(text, 1, (10, 10, 10))
++
+     def draw(self, surface):
+         self.playing_field.draw(surface)
+ 
+Index: Selection.py
+===================================================================
+--- Selection.py	(revision 27)
++++ Selection.py	(working copy)
+@@ -4,11 +4,14 @@
+ #
+ 
+ import pygame
++import louie
+ 
+ 
+ class Selection:
+     """ A selection is a card plus where the card calls home. """
+ 
++    card_moving = louie.Signal()
++
+     def __init__(self):
+         self.is_empty = True
+ 
+@@ -17,6 +20,11 @@
+         if not self.empty():
+             self.home.transfer(self.card, pile)
+ 
++            louie.send(Selection.card_moving,
++                       card=self.card,
++                       start=self.card.rect,
++                       end=pile.location.rect)
++
+     def draw(self, surface):
+         """ Draws a box around the selected card. """
+         if not self.empty():
+Index: Pile.py
+===================================================================
+--- Pile.py	(revision 29)
++++ Pile.py	(working copy)
+@@ -3,6 +3,7 @@
+ # Released under the GPL version 2.0 or later.
+ #
+ 
++import louie
+ from CardGroup import CardGroup
+ from CardLocation import CardLocation
+ 
+Index: Player.py
+===================================================================
+--- Player.py	(revision 31)
++++ Player.py	(working copy)
+@@ -6,6 +6,7 @@
+ import pygame
+ import louie
+ from Deck import Deck
++from Pile import Pile
+ from StockPile import StockPile
+ from HomePile import HomePile
+ from DiscardPile import DiscardPile
+@@ -16,7 +17,7 @@
+ import logging
+ 
+ 
+-class Player:
++class Player(object):
+     """ A player in the game. """
+ 
+     finished = louie.Signal()
+@@ -57,7 +58,15 @@
+ 
+         self.xxxcount = 0
+ 
++        self.score = 0
++
++        self.animations = []
++
+         louie.connect(self.home_emptied, HomePile.emptied)
++        louie.connect(self.animate_card, RightHand.card_moving)
++        louie.connect(self.animate_card, DiscardPile.card_moving)
++        louie.connect(self.animate_card, CellCards.card_moving)
++        louie.connect(self.animate_card, Selection.card_moving)
+ 
+     def draw(self, surface):
+         for drawable in self.drawables:
+@@ -78,8 +87,15 @@
+ 
+ 
+     def update(self):
+-        pass
++        to_remove = []
+ 
++        for animation in self.animations:
++            if not animation.update():
++                to_remove.append(animation)
++
++        for remove in to_remove:
++            self.animations.remove(remove)
++
+     def handle(self, event):
+         """ Handle events that the player knows about. """
+         if event.type == pygame.MOUSEBUTTONDOWN:
+@@ -130,7 +146,6 @@
+                 self.stock_pile.calibrate()
+ 
+             self.right_hand.take_from(self.stock_pile.cards)
+-            self.right_hand.calibrate()
+             logging.debug('rh=' + str(self.right_hand.cards.top_card().number()))
+ 
+         if not self.discard_pile.empty():
+@@ -139,6 +154,48 @@
+     def home_emptied(self):
+         louie.send(Player.finished)
+ 
++    def animate_card(self, card, start, end):
++        class Animation:
++            def __init__(self, card, startpos, endpos):
++                self.card = card
++                (self.x, self.y) = startpos
++                (self.endx, self.endy) = endpos
++
++                numsteps = 10.0
++
++                (startx, starty) = startpos
++                (endx, endy) = endpos
++
++                deltax = endx - startx
++                deltay = endy - starty
++
++                self.incx = deltax / numsteps
++                self.incy = deltay / numsteps
++
++            def update(self):
++                def close_to(value, expected_value, epsilon):
++                    return value > expected_value - epsilon and \
++                           value < expected_value + epsilon
++
++                epsilon = 2 
++
++                if close_to(self.x, self.endx, epsilon) and \
++                   close_to(self.y, self.endy, epsilon):
++                    self.card.move_to(self.endx, self.endy)
++                    return False
++
++                self.x += self.incx
++                self.y += self.incy
++                self.card.move_to(self.x, self.y)
++                return True
++
++        animation = Animation(card, start.topleft, end.topleft)
++        self.animations.append(animation)
++
++    def inc_score(self):
++        self.score += 1
++        logging.warning('score one for ' + __name__ + ', tot=' + str(self.score))
++
+     def get_selection(self):
+         """ Returns the current selection. """
+         return self.selection
+Index: CellCards.py
+===================================================================
+--- CellCards.py	(revision 31)
++++ CellCards.py	(working copy)
+@@ -3,6 +3,7 @@
+ # Released under the GPL version 2.0 or later.
+ #
+ 
++import louie
+ from EmptyCard import EmptyCard
+ from CardGroup import CardGroup
+ from CardLocation import CardLocation
+@@ -11,6 +12,8 @@
+ class CellCards:
+     """ Reserve cards taken from the Home Pile. """
+ 
++    card_moving = louie.Signal()
++
+     def __init__(self, home_pile):
+         self.cards = [EmptyCard(), EmptyCard(), EmptyCard()]
+         self.locations = []
+@@ -84,13 +87,19 @@
+     def transfer(self, card, pile):
+         """ Transfers the card from here to the pile. """
+         pile.add_card(card)
++        index = self.cards.index(card)
+         self.replace_card(card, EmptyCard())
+ 
+         # replace with a card from the home pile
+         if not self.home_pile.empty():
+-            self.home_pile.transfer(self.home_pile.top_card(), self)
+-            self.calibrate()
++            home_pile_card = self.home_pile.top_card()
++            self.home_pile.transfer(home_pile_card, self)
+ 
++            louie.send(CellCards.card_moving,
++                       card=home_pile_card,
++                       start=home_pile_card.rect,
++                       end=self.locations[index].rect)
++
+     def get_card(self, x, y):
+         """ Returns the card at the specified coordinates.
+             If no card is available, returns None. """
+Index: HomePile.py
+===================================================================
+--- HomePile.py	(revision 31)
++++ HomePile.py	(working copy)
+@@ -14,7 +14,7 @@
+ 
+     def __init__(self):
+         Pile.__init__(self)
+-        self.initial_size = 13
++        self.initial_size = 3 #13
+ 
+     def take_from(self, deck):
+         """ Take cards from the deck. Flip over the top card. """
