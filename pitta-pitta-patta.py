@@ -50,15 +50,23 @@ class GameOverState(State):
     def __init__(self, playing_field):
         self.playing_field = playing_field
 
-        text = 'Game over'
-        font = pygame.font.SysFont("Arial", 36)
-        self.text_image = font.render(text, 1, (10, 10, 10))
-
     def handle(self, event):
         pass
 
     def update(self):
-        pass
+        computer_score = self.playing_field.computer.score
+        player_score = self.playing_field.player.score
+
+        text = 'Game over. Me: ' + str(computer_score) + \
+               ' You: ' + str(player_score)
+
+        if computer_score >= player_score:
+            text += ' I Win!'
+        else:
+            text += ' You Win!'
+
+        font = pygame.font.Font(None, 36)
+        self.text_image = font.render(text, 1, (10, 10, 10))
 
     def draw(self, surface):
         self.playing_field.draw(surface)

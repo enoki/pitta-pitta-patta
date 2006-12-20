@@ -103,40 +103,6 @@ Index: DiscardPile.py
      def calibrate(self):
          """ Prepare cards for display. """
          Pile.calibrate(self)
-Index: main.py
-===================================================================
---- main.py	(revision 32)
-+++ main.py	(working copy)
-@@ -50,16 +50,24 @@
-     def __init__(self, playing_field):
-         self.playing_field = playing_field
- 
--        text = 'Game over'
--        font = pygame.font.Font(None, 36)
--        self.text_image = font.render(text, 1, (10, 10, 10))
--
-     def handle(self, event):
-         pass
- 
-     def update(self):
--        pass
-+        computer_score = self.playing_field.computer.score
-+        player_score = self.playing_field.player.score
- 
-+        text = 'Game over. Me: ' + str(computer_score) + \
-+               ' You: ' + str(player_score)
-+
-+        if computer_score >= player_score:
-+            text += ' I Win!'
-+        else:
-+            text += ' You Win!'
-+
-+        font = pygame.font.Font(None, 36)
-+        self.text_image = font.render(text, 1, (10, 10, 10))
-+
-     def draw(self, surface):
-         self.playing_field.draw(surface)
- 
 Index: Selection.py
 ===================================================================
 --- Selection.py	(revision 27)
@@ -168,18 +134,6 @@ Index: Selection.py
      def draw(self, surface):
          """ Draws a box around the selected card. """
          if not self.empty():
-Index: Pile.py
-===================================================================
---- Pile.py	(revision 29)
-+++ Pile.py	(working copy)
-@@ -3,6 +3,7 @@
- # Released under the GPL version 2.0 or later.
- #
- 
-+import louie
- from CardGroup import CardGroup
- from CardLocation import CardLocation
- 
 Index: Player.py
 ===================================================================
 --- Player.py	(revision 31)
@@ -334,16 +288,3 @@ Index: CellCards.py
      def get_card(self, x, y):
          """ Returns the card at the specified coordinates.
              If no card is available, returns None. """
-Index: HomePile.py
-===================================================================
---- HomePile.py	(revision 31)
-+++ HomePile.py	(working copy)
-@@ -14,7 +14,7 @@
- 
-     def __init__(self):
-         Pile.__init__(self)
--        self.initial_size = 13
-+        self.initial_size = 3 #13
- 
-     def take_from(self, deck):
-         """ Take cards from the deck. Flip over the top card. """

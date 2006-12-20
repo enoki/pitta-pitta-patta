@@ -57,6 +57,8 @@ class Player:
 
         self.xxxcount = 0
 
+        self.score = 0
+
         louie.connect(self.home_emptied, HomePile.emptied)
 
     def draw(self, surface):
@@ -138,6 +140,10 @@ class Player:
 
     def home_emptied(self):
         louie.send(Player.finished)
+
+    def inc_score(self):
+        self.score += 1
+        logging.warning('score one for ' + __name__ + ', tot=' + str(self.score))
 
     def get_selection(self):
         """ Returns the current selection. """

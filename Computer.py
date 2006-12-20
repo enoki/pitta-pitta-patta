@@ -34,6 +34,8 @@ class Computer(Player):
 
     def update(self):
         """ Handle a clock tick. """
+        Player.update(self)
+
         if pygame.time.get_ticks() - self.last_time > 700:
             self.last_time = pygame.time.get_ticks()
 
