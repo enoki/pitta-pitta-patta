@@ -145,6 +145,10 @@ class Player:
         self.score += 1
         logging.debug('score one for ' + __name__ + ', tot=' + str(self.score))
 
+    def get_score(self):
+        num_bad_cards = self.home_pile.cards.num_cards()
+        return self.score - num_bad_cards * 2
+
     def get_selection(self):
         """ Returns the current selection. """
         return self.selection
