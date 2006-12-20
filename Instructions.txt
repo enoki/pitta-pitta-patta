@@ -1,0 +1,4 @@
+Pitta Pitta Patta Instructions
+------------------------------
+Left click on a card to select it, then left click on a destination to move it there.
+Right-click or press spacebar to draw cards from the stock.
