@@ -85,7 +85,7 @@ class FoundationPiles:
 
             for pile in self.piles:
                 if pile.contains(x, y):
-                    logging.warning('move "' + str(selection.card) + '"?')
+                    logging.debug('move "' + str(selection.card) + '"?')
                     if self.rules.is_valid(selection.card, pile):
                         selection.transfer_to(pile)
                         pile.calibrate()

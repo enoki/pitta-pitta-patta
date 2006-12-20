@@ -143,7 +143,7 @@ class Player:
 
     def inc_score(self):
         self.score += 1
-        logging.warning('score one for ' + __name__ + ', tot=' + str(self.score))
+        logging.debug('score one for ' + __name__ + ', tot=' + str(self.score))
 
     def get_selection(self):
         """ Returns the current selection. """
