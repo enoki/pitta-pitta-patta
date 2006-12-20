@@ -14,10 +14,10 @@ Features for 0.3:
   * Better score keeping
   * High scores list
 
-== Future release ==
+== ? ==
 
 Features for a future release:
-  * More than two players
+  * More than one computer opponent
   * Better AI
   * Drag and drop of cards
   * Save/load game state
