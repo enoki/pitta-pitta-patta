@@ -1,0 +1,10 @@
+#summary Requirements
+
+= Requirements =
+
+Necessary dependencies:
+  * [http://python.org Python 2.4] or greater
+  * [http://pygame.org Pygame 1.7.1] or greater
+  * [http://cheeseshop.python.org/pypi/Louie Louie 1.1] or greater
+
+These are included in the Windows binary release.
