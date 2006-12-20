@@ -1,0 +1,23 @@
+#summary Where it's going
+
+= Roadmap =
+
+== 0.2 ==
+
+Features for 0.2:
+  * Animation of cards
+
+== 0.3 ===
+
+Features for 0.3:
+  * Multiple games, e.g. sets of 3 with variations
+  * Better score keeping
+  * High scores list
+
+== Future release ==
+
+Features for a future release:
+  * More than two players
+  * Save/load game state
+  * ...
+  * Network play
