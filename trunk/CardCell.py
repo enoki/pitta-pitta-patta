@@ -3,7 +3,6 @@
 # Released under the GPL version 2.0 or later.
 #
 
-import logging
 from EmptyCard import EmptyCard
 from CardLocation import CardLocation
 
