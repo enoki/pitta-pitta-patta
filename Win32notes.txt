@@ -26,21 +26,40 @@ rm multiarray.pyd
 rm umath.pyd
 
 # From library:
+# Needed even though I thought they weren't:
+# -----------------------------------------
+# inspect.pyc
+# traceback.pyc
+# warnings.pyc
+#
+# May be needed in the future:
+# ---------------------
+# Probably never needed:
+# ---------------------
 # dotblas
 # encodings
 # OpenGL
+# pygame/macosx.pyc
+# pygame/mixer.pyc
+# pygame/mixer_music.pyc
+# pygame/sndarray.pyc
 # _dotblas.pyc
 # bdb.pyc
 # bz2.pyc
+# codecs.pyc
 # difflib.pyc
 # doctest.pyc
-# inspect.pyc
 # locale.pyc
+# macpath.pyc
 # Numeric.pyc
 # numeric_version.pyc
+# os2emxpath.pyc
 # pdb.pyc
 # pickle.pyc
 # umath.pyc
 # unicodedata.pyc
 # unittest.pyc
 # zlib.pyc
+
+#
+# Only differing files: library.zip and pitta-pitta-patta.exe
