@@ -9,6 +9,7 @@ from Deck import Deck
 from StockPile import StockPile
 from HomePile import HomePile
 from DiscardPile import DiscardPile
+from Card import Card
 from Pile import Pile
 from CardCell import CardCell
 from CellCards import CellCards
@@ -57,17 +58,24 @@ class Player:
                            self.cell_cards,
                            self.discard_pile]
 
+        self.updateables = []
+
         self.xxxcount = 0
 
         self.score = 0
 
-        louie.connect(self.card_grabbed, Pile.grabbed_card)
-        louie.connect(self.card_grabbed, CardCell.grabbed_card)
+        self.cards_in_transit = []
+
+        louie.connect(self.card_grabbed, Card.grabbed)
+        louie.connect(self.card_thrown, Card.thrown)
         louie.connect(self.home_emptied, HomePile.emptied)
 
     def draw(self, surface):
         for drawable in self.drawables:
             drawable.draw(surface)
+
+        for card in self.cards_in_transit:
+            card.draw(surface)
 
     def set_locations(self):
         """ Position cards """
@@ -84,7 +92,11 @@ class Player:
 
 
     def update(self):
-        pass
+        for updateable in self.updateables:
+            updateable.update()
+
+        for card in self.cards_in_transit:
+            card.update()
 
     def handle(self, event):
         """ Handle events that the player knows about. """
@@ -130,6 +142,11 @@ class Player:
             self.discard_pile.take_from(self.right_hand)
             self.discard_pile.calibrate()
             self.xxxcount = 0
+
+            if self.has_selection() and \
+               self.selection.home == self.discard_pile:
+                # Clear the selection if it's the discard pile
+                self.clear_selection()
         else:
             if self.stock_pile.cards.empty():
                 self.stock_pile.take_from(self.discard_pile.cards)
@@ -137,10 +154,11 @@ class Player:
 
             self.right_hand.take_from(self.stock_pile.cards)
             self.right_hand.calibrate()
-            logging.warning('rh=' + str(self.right_hand.top_card().number()))
+            logging.debug('rh=' + str(self.right_hand.top_card().number()))
 
         if not self.discard_pile.empty():
-            logging.warning('di' + str(self.discard_pile.top_card().number()))
+            logging.debug('di' + str(self.discard_pile.top_card().number()))
+
 
     def home_emptied(self):
         louie.send(Player.finished)
@@ -153,9 +171,13 @@ class Player:
         num_bad_cards = self.home_pile.cards.num_cards()
         return self.score - num_bad_cards * 2
 
+    def card_thrown(self, card):
+        self.cards_in_transit.append(card)
+        logging.warning('card thrown=' + str(card))
+
     def card_grabbed(self, card):
+        self.cards_in_transit.remove(card)
         logging.warning('card grabbed=' + str(card))
-        pass
 
     def get_selection(self):
         """ Returns the current selection. """

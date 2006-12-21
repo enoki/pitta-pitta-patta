@@ -4,13 +4,12 @@
 #
 
 import louie
+import logging
 from CardGroup import CardGroup
 from CardLocation import CardLocation
 
 class Pile:
     """ A pile of cards. """
-
-    grabbed_card = louie.Signal()
 
     def __init__(self):
         self.cards = CardGroup()
@@ -49,10 +48,13 @@ class Pile:
     def add_card(self, card):
         self.cards.add_card(card)
 
+    def remove_card(self, card):
+        self.cards.cards.remove(card)
+
     def transfer(self, card, pile):
         """ Transfers the card from here to the pile. """
-        pile.add_card(card)
-        self.cards.cards.remove(card)
+        card.throw_to(pile)
+        self.remove_card(card)
 
     def empty(self):
         return self.cards.empty()
@@ -85,6 +87,5 @@ class Pile:
 
     def grab(self, card):
         (x, y) = self.position()
-        card.move_to(x, y)
         self.add_card(card)
-        louie.send(Pile.grabbed_card, card=card)
+        self.calibrate()

@@ -20,4 +20,4 @@ class CardLocation:
         card.rect.y = self.rect.y
 
     def position(self):
-        return (card.rect.x, card.rect.y)
+        return (self.rect.x, self.rect.y)

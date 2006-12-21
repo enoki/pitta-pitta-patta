@@ -4,6 +4,8 @@
 #
 
 import louie
+import logging
+from Card import Card
 from Pile import Pile
 
 
@@ -23,8 +25,17 @@ class HomePile(Pile):
 
         self.cards.top_card().face_up()
 
+    def squelch(self, card, cell):
+        self.remove_card(card)
+        cell.set_card(card)
+        self.card_taken(card)
+
     def transfer(self, card, pile):
         Pile.transfer(self, card, pile)
+        self.card_taken(card)
+
+    def card_taken(self, card):
+        " Called when a card is taken from the top of the home pile. "
         if not self.cards.empty():
             self.top_card().face_up()
         else:
