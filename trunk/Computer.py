@@ -23,7 +23,7 @@ class Computer(Player):
         some_card = self.home_pile.top_card()
         card_width, card_height = some_card.rect.width, some_card.rect.height
         left_margin, hand_top_margin = 10, 0
-        top_margin = hand_top_margin + card_height + 30
+        top_margin = hand_top_margin + card_height + 10
 
         x = left_margin
         y = top_margin
