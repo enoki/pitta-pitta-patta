@@ -110,10 +110,10 @@ class Card(PlayingCard):
         # Note:
         # we have to use (self.x, self.y) for floating point coordinates
 
-        logging.warning('(' + str(x) + ',' + str(y) + ')->' + \
-                        '(' + str(destination_x) + ',' + str(destination_y) + ')' + \
-                        '(incx=' + str(self.inc_x) + \
-                        ', incy=' + str(self.inc_y) + ')')
+        logging.debug('(' + str(x) + ',' + str(y) + ')->' + \
+                      '(' + str(destination_x) + ',' + str(destination_y) + ')' + \
+                      '(incx=' + str(self.inc_x) + \
+                      ', incy=' + str(self.inc_y) + ')')
 
         louie.send(Card.thrown, card=self)
         self.destination = destination
@@ -128,8 +128,8 @@ class Card(PlayingCard):
 
         epsilon = 2
 
-        logging.warning('** (' + str(x) + ',' + str(y) + ')->' + \
-                        '(' + str(endx) + ',' + str(endy) + ')')
+        logging.debug('** (' + str(x) + ',' + str(y) + ')->' + \
+                      '(' + str(endx) + ',' + str(endy) + ')')
 
         return is_close_to(x, endx, epsilon) and \
                is_close_to(y, endy, epsilon)

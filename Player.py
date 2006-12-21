@@ -173,11 +173,11 @@ class Player:
 
     def card_thrown(self, card):
         self.cards_in_transit.append(card)
-        logging.warning('card thrown=' + str(card))
+        logging.debug('card thrown=' + str(card))
 
     def card_grabbed(self, card):
         self.cards_in_transit.remove(card)
-        logging.warning('card grabbed=' + str(card))
+        logging.debug('card grabbed=' + str(card))
 
     def get_selection(self):
         """ Returns the current selection. """
