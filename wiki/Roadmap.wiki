@@ -8,6 +8,7 @@ Features for 0.2:
   * ~~Animation of cards~~
   * ~~More than one computer opponent~~
   * ~~Better AI~~
+  * ~~Better game over screen~
 
 == 0.3 ===
 
