@@ -81,7 +81,7 @@ class Game:
     def __init__(self):
         pygame.init()
 
-        self.screen = pygame.display.set_mode((640, 710))
+        self.screen = pygame.display.set_mode((530, 710))
 
         pygame.display.set_caption('Pitta Pitta Patta')
 
