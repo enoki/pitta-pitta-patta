@@ -95,7 +95,8 @@ class Card(PlayingCard):
     def throw_to(self, destination):
         """ Throws the card to the destination.
             The destination must implement
-                def grab(card): return None
+                def calibrate(): return None
+                def add_card(card): return None
                 def position(): return (x, y)
         """
         destination_x, destination_y = destination.position()
@@ -116,6 +117,7 @@ class Card(PlayingCard):
                       ', incy=' + str(self.inc_y) + ')')
 
         louie.send(Card.thrown, card=self)
+        destination.add_card(self)
         self.destination = destination
 
     def close_to(self, position):
@@ -138,7 +140,7 @@ class Card(PlayingCard):
         """ Called every frame to update the card. """
         if self.destination:
             if self.close_to(self.destination.position()):
-                self.destination.grab(self)
+                self.destination.calibrate()
                 self.destination = None
                 louie.send(Card.grabbed, card=self)
             else:
