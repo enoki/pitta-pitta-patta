@@ -52,7 +52,7 @@ class GameOverState(State):
     def __init__(self, playing_field):
         self.playing_field = playing_field
         self.text_images = []
-        self.font = pygame.font.SysFont("Arial", 36)
+        self.font = pygame.font.SysFont("Arial", 24)
         self.width = 0
         self.height = 0
         self.y_spacing = 0
@@ -71,6 +71,7 @@ class GameOverState(State):
                 pass
 
     def update(self):
+        pygame.time.wait(100)
         if len(self.text_images) > 0:
             return
 
