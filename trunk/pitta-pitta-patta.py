@@ -81,10 +81,12 @@ class Game:
     def __init__(self):
         pygame.init()
 
-        # 2 players
-        self.screen = pygame.display.set_mode((430, 660))
-        # 4 players
-        #self.screen = pygame.display.set_mode((850, 660))
+        self.num_players = 4
+
+        if self.num_players == 2:
+            self.screen = pygame.display.set_mode((430, 660))
+        elif self.num_players == 4:
+            self.screen = pygame.display.set_mode((850, 660))
 
         pygame.display.set_caption('Pitta Pitta Patta')
 

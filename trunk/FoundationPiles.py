@@ -31,7 +31,11 @@ class FoundationPiles:
             X  X  X  X
             X  X  X  X
         """
-        self.num_piles = 8
+        # 2 players
+        #self.num_players = 2
+        # 4 players
+        self.num_players = 4
+        self.num_piles = self.num_players * 4
         self.piles = [FoundationPile() for i in range(self.num_piles)]
         self.player = player
         self.rules = rules
@@ -40,14 +44,15 @@ class FoundationPiles:
 
         # anyplace besides the player's cards
         # should take into account top_margin of player
-        self.rect = pygame.Rect(0, 0, 530, 460)
+        self.rect = pygame.Rect(0, 0, 850, 450)
 
     def set_locations(self):
         """ Sets the foundation pile locations. """
         card_width = 72
         card_height = 96
 
-        num_cols = 4
+        assert(self.num_piles % 2 == 0)
+        num_cols = self.num_piles / 2
         col_width = 1.37
         total_col_width = num_cols * col_width
         row_height = 1.1

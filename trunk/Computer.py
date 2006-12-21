@@ -4,6 +4,8 @@
 #
 
 import pygame
+import random
+import copy
 from Player import Player
 
 class Computer(Player):
@@ -16,7 +18,16 @@ class Computer(Player):
         Player.__init__(self)
         self.rules = rules
         self.foundation_piles = foundation_piles
-        self.last_time = pygame.time.get_ticks()
+        self.last_move_time = pygame.time.get_ticks()
+        self.last_deal_time = pygame.time.get_ticks()
+        self.time_to_deal = random.randint(600, 900)
+        # easy
+        #self.time_to_think = 1000
+        # medium
+        #self.time_to_think = 800
+        # hard
+        #self.time_to_think = 600
+        self.time_to_think = random.randint(1000, 2000)
 
     def handle(self, event):
         pass
@@ -111,18 +122,43 @@ class Computer(Player):
         """ Handle a clock tick. """
         Player.update(self)
 
-        if pygame.time.get_ticks() - self.last_time > 700:
-            self.last_time = pygame.time.get_ticks()
-
+        if pygame.time.get_ticks() - self.last_deal_time > self.time_to_deal:
+            self.last_deal_time = pygame.time.get_ticks()
             self.deal_card()
 
             if self.xxxcount == 0:
-                # Transfer the first available card
-                for clickable in self.clickables:
-                    if clickable:
-                        cards = clickable.get_available_cards()
-                        for card in cards:
-                            for pile in self.foundation_piles.piles:
-                                if self.rules.is_valid(card, pile):
-                                    clickable.transfer(card, pile)
-                                    return
+                self.make_best_move_using(self.discard_pile)
+
+        if pygame.time.get_ticks() - self.last_move_time > self.time_to_think:
+            self.last_move_time = pygame.time.get_ticks()
+            self.time_to_think = random.randint(1000, 2000)
+
+            self.make_random_move()
+
+    def make_best_move(self):
+        """ Move the first available card. """
+        for clickable in self.clickables:
+            if self.make_best_move_using(clickable):
+                return
+
+    def make_random_move(self):
+        """ Consider making a move in each clickable category """
+        for clickable in self.clickables:
+            if random.random() > 0.5:
+                self.make_best_move_using(clickable)
+
+    def make_best_move_using(self, clickable):
+        """ Move the first available card from the cards in clickable. """
+        if clickable:
+            cards = clickable.get_available_cards()
+            for card in cards:
+                # consider the piles in random order
+                piles = copy.copy(self.foundation_piles.piles)
+                random.shuffle(piles)
+
+                for pile in piles:
+                    if self.rules.is_valid(card, pile):
+                        clickable.transfer(card, pile)
+                        return True
+
+        return False
