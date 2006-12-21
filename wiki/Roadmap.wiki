@@ -6,10 +6,13 @@
 
 Features for 0.2:
   * ~~Animation of cards~~
+  * ~~More than one computer opponent~~
+  * ~~Better AI~~
 
 == 0.3 ===
 
 Features for 0.3:
+  * A startup screen for customizing the game
   * Multiple games, e.g. sets of 3 with variations
   * Better score keeping
   * High scores list
@@ -17,8 +20,6 @@ Features for 0.3:
 == ? ==
 
 Features for a future release:
-  * More than one computer opponent
-  * Better AI
   * More attractive empty foundation piles
   * Have to manually move home pile cards to cells
   * Drag and drop of cards
