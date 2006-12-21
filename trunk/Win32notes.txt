@@ -1,17 +1,22 @@
-Notes for packaging the Win32 build:
------------------------------------
+# Notes for packaging the Win32 build:
+# -----------------------------------
 
-Necessary:
-images/*.png
-Instructions.txt
+# Build
+python setup.py py2exe
 
-Unnecessary:
-_GL__init__.pyd
-_GLU__init__.pyd
-bz2.pyd
-zlib.pyd
-unicodedata.pyd
-sndarray.pyd
-mixer.pyd
-mixer_music.pyd
-SDL_mixer.dll
+# Necessary:
+mkdir dist/images
+mv images/*.png dist/images
+cp Instructions.txt dist
+
+# Unnecessary:
+cd dist
+rm _GL__init__.pyd
+rm _GLU__init__.pyd
+rm bz2.pyd
+rm zlib.pyd
+rm unicodedata.pyd
+rm sndarray.pyd
+rm mixer.pyd
+rm mixer_music.pyd
+rm SDL_mixer.dll
