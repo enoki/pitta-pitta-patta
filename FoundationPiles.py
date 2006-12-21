@@ -56,7 +56,7 @@ class FoundationPiles:
         for pile in self.piles:
             pile.set_size(card_width, card_height)
             pile.move_to(col * card_width + card_width * 0.25,
-                         row * card_height + card_height * 0.25 + 250)
+                         row * card_height + card_height * 0.25 + 225)
             col += col_width
             if col == total_col_width:
                 col = 0
