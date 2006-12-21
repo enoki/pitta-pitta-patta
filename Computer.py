@@ -132,7 +132,9 @@ class Computer(Player):
 
             if self.xxxcount == 0:
                 if random.random() < 0.9:
-                    self.make_best_move_using(self.discard_pile)
+                    if self.make_best_move_using(self.discard_pile):
+                        self.last_move_time = pygame.time.get_ticks()
+                        return
 
         if pygame.time.get_ticks() - self.last_move_time > self.time_to_think:
             self.last_move_time = pygame.time.get_ticks()
@@ -151,6 +153,8 @@ class Computer(Player):
 
     def get_fast_time_to_deal(self):
         return random.randint(500, 800)
+        # This seems to work okay...
+        #return random.randint(300, 600)
 
     def get_slow_time_to_deal(self):
         return random.randint(1000, 1300)
@@ -164,8 +168,13 @@ class Computer(Player):
     def make_random_move(self):
         """ Consider making a move in each clickable category """
         for clickable in self.clickables:
-            if random.random() < 0.65:
-                self.make_best_move_using(clickable)
+            #if random.random() < 0.65:
+            # This seems to work well also...
+            if random.random() < 0.85:
+            # This is hard...
+            #if random.random() < 0.95:
+                if self.make_best_move_using(clickable):
+                    return
 
     def make_best_move_using(self, clickable):
         """ Move the first available card from the cards in clickable. """
