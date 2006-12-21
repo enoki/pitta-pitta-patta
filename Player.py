@@ -24,7 +24,7 @@ class Player:
 
     finished = louie.Signal()
 
-    def __init__(self):
+    def __init__(self, name):
         self.deck = Deck()
 
         self.home_pile = HomePile()
@@ -65,6 +65,8 @@ class Player:
         self.score = 0
 
         self.cards_in_transit = []
+
+        self.name = name
 
         louie.connect(self.card_grabbed, Card.grabbed)
         louie.connect(self.card_thrown, Card.thrown)
@@ -207,3 +209,6 @@ class Player:
 
     def clear_selection(self):
         self.selection.clear()
+
+    def get_name(self):
+        return self.name
