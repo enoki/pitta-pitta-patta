@@ -174,9 +174,6 @@ class Player:
             self.right_hand.take_from(self.stock_pile.cards)
             self.right_hand.calibrate()
 
-        if not self.discard_pile.empty():
-
-
     def home_emptied(self):
         louie.send(Player.finished)
 
