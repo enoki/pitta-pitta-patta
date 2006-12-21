@@ -3,8 +3,6 @@
 # Released under the GPL version 2.0 or later.
 #
 
-import louie
-import logging
 from CardGroup import CardGroup
 from CardLocation import CardLocation
 
@@ -71,8 +69,8 @@ class Pile:
 
     def draw(self, surface):
         """ Draws the pile. """
-        if not self.empty():
-            self.top_card().draw(surface)
+        for card in self.cards.all_cards():
+            card.draw(surface)
 
     def get_available_cards(self):
         """ Returns the cards that can be moved by a player. """
@@ -84,8 +82,3 @@ class Pile:
 
     def position(self):
         return self.location.position()
-
-    def grab(self, card):
-        (x, y) = self.position()
-        self.add_card(card)
-        self.calibrate()
