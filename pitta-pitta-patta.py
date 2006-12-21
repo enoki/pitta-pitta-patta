@@ -47,6 +47,8 @@ class PlayingState(State):
         self.playing_field.draw(surface)
 
 class GameOverState(State):
+    new_game = louie.Signal()
+
     def __init__(self, playing_field):
         self.playing_field = playing_field
         self.text_images = []
@@ -54,29 +56,55 @@ class GameOverState(State):
         self.width = 0
         self.height = 0
         self.y_spacing = 0
+        self.informative = False
 
     def handle(self, event):
-        pass
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                self.toggle_informative()
+            elif event.key == pygame.K_RETURN:
+                self.new_game()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                self.new_game()
+            elif event.button == 3:
+                self.toggle_informative()
 
     def update(self):
         if len(self.text_images) > 0:
             return
+
+        self.create_text()
+
+    def create_text(self):
+        self.text_images = []
+        self.width, self.height = 0, 0
 
         self.text_images.append(self.make_text('Game over.'))
         self.text_images.append(self.make_text('  '))
         high_score = -26    # -(num_home_cards * 2)
         winning_player = None
 
+        self.score_table_text = []
+
         for player in self.playing_field.players:
             score = player.get_score()
-            image = self.make_text(player.get_name() + ': ' + str(score))
-            self.text_images.append(image)
+            text = player.get_name() + ': '
+            text += str(score)
+            if self.informative:
+                text += '      ('
+                text += str(score)
+                text += ' = '
+                text += str(player.num_good_cards())
+                text += ' - '
+                text += str(player.num_bad_cards())
+                text += 'x2)'
+            image = self.make_text(text)
+            self.score_table_text.append(image)
 
             if score > high_score:
                 high_score = score
                 winning_player = player
-
-        self.text_images.append(self.make_text('  '))
 
         win_text = ""
         if winning_player == self.playing_field.player:
@@ -84,6 +112,16 @@ class GameOverState(State):
         else:
             win_text = winning_player.get_name() + ' Wins!'
         self.text_images.append(self.make_text(win_text))
+        self.text_images.append(self.make_text('  '))
+
+        self.text_images.extend(self.score_table_text)
+
+        self.text_images.append(self.make_text('  '))
+        self.text_images.append(self.make_text('Press enter to start a new game'))
+        if self.informative:
+            self.text_images.append(self.make_text('Press space for less information'))
+        else:
+            self.text_images.append(self.make_text('Press space for more information'))
 
         for image in self.text_images:
             rect = image.get_rect()
@@ -116,6 +154,13 @@ class GameOverState(State):
             surface.blit(image, text_pos)
 
             y += self.y_spacing
+
+    def new_game(self):
+        louie.send(GameOverState.new_game)
+
+    def toggle_informative(self):
+        self.informative = not self.informative
+        self.create_text()
     
 
 class Game:
@@ -142,6 +187,7 @@ class Game:
         game_over_state = GameOverState(playing_field)
 
         louie.connect(self.start_playing, StartState.finished)
+        louie.connect(self.restart, GameOverState.new_game)
 
         self.states = { 'Start' : start_state,
                         'Playing' : playing_state,
@@ -154,6 +200,9 @@ class Game:
 
     def start_playing(self):
         self.state = self.states['Playing']
+
+    def restart(self):
+        self.create_states()
 
     def main(self):
         """ Pitta-pitta-patta game. """

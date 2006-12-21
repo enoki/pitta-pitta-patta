@@ -181,8 +181,16 @@ class Player:
         self.score += 1
 
     def get_score(self):
-        num_bad_cards = self.home_pile.cards.num_cards()
-        return self.score - num_bad_cards * 2
+        """ Returns the total score """
+        return self.num_good_cards() - self.num_bad_cards() * 2
+
+    def num_good_cards(self):
+        """ Returns the number of cards put out """
+        return self.score
+
+    def num_bad_cards(self):
+        """ Returns the number of cards still in the home pile """
+        return self.home_pile.cards.num_cards()
 
     def card_thrown(self, card):
         self.cards_in_transit.append(card)
