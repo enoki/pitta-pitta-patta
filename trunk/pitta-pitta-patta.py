@@ -49,32 +49,73 @@ class PlayingState(State):
 class GameOverState(State):
     def __init__(self, playing_field):
         self.playing_field = playing_field
-        self.text_image = None
+        self.text_images = []
+        self.font = pygame.font.Font(None, 36)
+        self.width = 0
+        self.height = 0
+        self.y_spacing = 0
 
     def handle(self, event):
         pass
 
     def update(self):
-        computer_score = self.playing_field.computer.get_score()
-        player_score = self.playing_field.player.get_score()
+        if len(self.text_images) > 0:
+            return
 
-        text = 'Game over. Me: ' + str(computer_score) + \
-               ' You: ' + str(player_score)
+        self.text_images.append(self.make_text('Game over.'))
+        self.text_images.append(self.make_text('  '))
+        high_score = -26    # -(num_home_cards * 2)
+        winning_player = None
 
-        if computer_score >= player_score:
-            text += ' I Win!'
+        for player in self.playing_field.players:
+            score = player.get_score()
+            image = self.make_text(player.get_name() + ': ' + str(score))
+            self.text_images.append(image)
+
+            if score > high_score:
+                high_score = score
+                winning_player = player
+
+        self.text_images.append(self.make_text('  '))
+
+        win_text = ""
+        if winning_player == self.playing_field.player:
+            win_text = 'You Win!'
         else:
-            text += ' You Win!'
+            win_text = winning_player.get_name() + ' Wins!'
+        self.text_images.append(self.make_text(win_text))
 
-        font = pygame.font.Font(None, 36)
-        self.text_image = font.render(text, 1, (10, 10, 10))
+        for image in self.text_images:
+            rect = image.get_rect()
+            self.width = max(rect.width, self.width)
+            self.y_spacing = rect.height * 1.5
+            self.height += self.y_spacing
+
+    def make_text(self, text):
+        # Black
+        #return self.font.render(text, 1, (10, 10, 10))
+        # White
+        return self.font.render(text, 1, (0xff, 0xff, 0xff))
 
     def draw(self, surface):
         self.playing_field.draw(surface)
 
-        if self.text_image:
-            text_pos = self.text_image.get_rect(centerx=surface.get_width()/2)
-            surface.blit(self.text_image, text_pos)
+        y = 0
+
+        # Draw background behind the text
+        center_x = surface.get_width() / 2
+        background_rect = pygame.Rect(0,0,0,0)
+        background_rect.size = (self.width + 20, self.height)
+        background_rect.centerx=center_x
+        pygame.draw.rect(surface, (0x00, 0x00, 0xb0), background_rect)
+
+        # Draw the text line by line
+        for image in self.text_images:
+            text_pos = image.get_rect(centerx=center_x)
+            text_pos.y = y
+            surface.blit(image, text_pos)
+
+            y += self.y_spacing
     
 
 class Game:
@@ -85,7 +126,7 @@ class Game:
 
         if self.num_players == 2:
             self.screen = pygame.display.set_mode((430, 660))
-        elif self.num_players == 4:
+        elif self.num_players > 2:
             self.screen = pygame.display.set_mode((850, 660))
 
         pygame.display.set_caption('Pitta Pitta Patta')
@@ -93,7 +134,7 @@ class Game:
         self.create_states()
 
     def create_states(self):
-        playing_field = PlayingField()
+        playing_field = PlayingField(self.num_players)
         louie.connect(self.end_game, PlayingField.game_over)
 
         start_state = StartState()

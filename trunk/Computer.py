@@ -11,11 +11,12 @@ from Player import Player
 class Computer(Player):
     """ The computer AI player. """
 
-    (North, West, East) = range(3)
+    (NorthWest, NorthEast, SouthEast) = range(3)
 
     def __init__(self, rules, foundation_piles, position):
         self.position = position
-        Player.__init__(self)
+        name = self.get_position_name(position)
+        Player.__init__(self, name)
         self.rules = rules
         self.foundation_piles = foundation_piles
         self.last_move_time = pygame.time.get_ticks()
@@ -28,15 +29,15 @@ class Computer(Player):
 
     def set_locations(self):
         """ Position cards """
-        if self.position == Computer.North:
-            self.set_north()
-        elif self.position == Computer.West:
-            self.set_west()
-        if self.position == Computer.East:
-            self.set_east()
+        if self.position == Computer.NorthWest:
+            self.set_north_west()
+        elif self.position == Computer.NorthEast:
+            self.set_north_east()
+        if self.position == Computer.SouthEast:
+            self.set_south_east()
 
-    def set_north(self):
-        """ Puts the cards in the north position. """
+    def set_north_west(self):
+        """ Puts the cards in the north-west position. """
         some_card = self.home_pile.top_card()
         card_width, card_height = some_card.rect.width, some_card.rect.height
         left_margin, hand_top_margin = 10, 0
@@ -61,8 +62,8 @@ class Computer(Player):
         x += card_width * 1.5
         self.right_hand.move_to(x, y, 40)
 
-    def set_west(self):
-        """ Puts the cards in the west position. """
+    def set_north_east(self):
+        """ Puts the cards in the north-east position. """
         some_card = self.home_pile.top_card()
         card_width, card_height = some_card.rect.width, some_card.rect.height
         left_margin, hand_top_margin = 450, 0
@@ -87,8 +88,8 @@ class Computer(Player):
         x += card_width * 1.5
         self.right_hand.move_to(x, y, 40)
 
-    def set_east(self):
-        """ Puts the cards in the east position. """
+    def set_south_east(self):
+        """ Puts the cards in the south-east position. """
         some_card = self.home_pile.top_card()
         card_width, card_height = some_card.rect.width, some_card.rect.height
         left_margin, top_margin = 450, 450
@@ -111,6 +112,14 @@ class Computer(Player):
         self.discard_pile.move_to(x, y)
         x += card_width * 1.5
         self.right_hand.move_to(x, y, 40)
+
+    def get_position_name(self, position):
+        if self.position == Computer.NorthWest:
+            return 'Grant (North-West)'
+        elif self.position == Computer.NorthEast:
+            return 'Bob (North-East)'
+        if self.position == Computer.SouthEast:
+            return 'Susan (South-East)'
 
     def update(self):
         """ Handle a clock tick. """
