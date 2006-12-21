@@ -5,7 +5,7 @@
 == 0.2 ==
 
 Features for 0.2:
-  * Animation of cards
+  * ~~Animation of cards~~
 
 == 0.3 ===
 
@@ -19,6 +19,8 @@ Features for 0.3:
 Features for a future release:
   * More than one computer opponent
   * Better AI
+  * More attractive empty foundation piles
+  * Have to manually move home pile cards to cells
   * Drag and drop of cards
   * Save/load game state
   * ...
