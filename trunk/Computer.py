@@ -20,17 +20,27 @@ class Computer(Player):
 
     def set_locations(self):
         """ Position cards """
-        card_rect = self.home_pile.top_card().rect
-        card_width, card_height = card_rect.width, card_rect.height
-        left_margin = 10
-        hand_top_margin = 0
-        top_margin = hand_top_margin + card_rect.height + 30
+        some_card = self.home_pile.top_card()
+        card_width, card_height = some_card.rect.width, some_card.rect.height
+        left_margin, hand_top_margin = 10, 0
+        top_margin = hand_top_margin + card_height + 30
 
-        self.home_pile.move_to(left_margin, top_margin)
-        self.cell_cards.move_to(left_margin + card_width * 2, top_margin, card_width * 1.5)
-        self.stock_pile.move_to(left_margin + card_width * 2, hand_top_margin)
-        self.discard_pile.move_to(left_margin + card_width * 2 + card_width * 1.5, hand_top_margin)
-        self.right_hand.move_to(left_margin + card_width * 2 + card_width * 1.5 * 2, hand_top_margin, 40)
+        x = left_margin
+        y = top_margin
+
+        # "Top" row
+        self.home_pile.move_to(x, y)
+        x += card_width * 2
+        self.cell_cards.move_to(x, y, card_width * 1.5)
+
+        y = hand_top_margin
+
+        # "Bottom" row
+        self.stock_pile.move_to(x, y)
+        x += card_width * 1.5
+        self.discard_pile.move_to(x, y)
+        x += card_width * 1.5
+        self.right_hand.move_to(x, y, 40)
 
     def update(self):
         """ Handle a clock tick. """
