@@ -101,7 +101,7 @@ class Game:
                         'Playing' : playing_state,
                         'GameOver' : game_over_state }
 
-        self.state = self.states['Start']
+        self.state = self.states['Playing']
 
     def end_game(self):
         self.state = self.states['GameOver']
