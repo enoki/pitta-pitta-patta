@@ -128,7 +128,13 @@ class Player:
         for clickable in self.clickables:
             card = clickable.get_card(x, y)
             if card is not None:
-                self.selection.set(card, clickable)
+                if not self.selection.empty() and \
+                       self.selection.card == card:
+                    # Clear the selection if the card is already selected
+                    self.selection.clear()
+                else:
+                    # Otherwise select the card
+                    self.selection.set(card, clickable)
                 return
 
     def handle_right_mouse_down(self, event):
