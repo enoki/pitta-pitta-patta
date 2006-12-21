@@ -3,15 +3,13 @@
 # Released under the GPL version 2.0 or later.
 #
 
-import louie
+import logging
 from EmptyCard import EmptyCard
 from CardLocation import CardLocation
 
 
 class CardCell:
     """ A single cell that holds a card. """
-
-    grabbed_card = louie.Signal()
 
     def __init__(self):
         self.card = EmptyCard()
@@ -81,13 +79,10 @@ class CardCell:
         self.card = EmptyCard()
 
     def position(self):
-        " Returns the cell's topleft position "
-        return self.location.rect.topleft
+        " Returns the cell's position "
+        return self.location.position()
 
     def grab(self, card):
         " Grabs the card "
-        (x, y) = self.position()
-        card.move_to(x, y)
         self.set_card(card)
-        louie.send(CardCell.grabbed_card, card=card)
-
+        self.calibrate()

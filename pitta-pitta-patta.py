@@ -49,6 +49,7 @@ class PlayingState(State):
 class GameOverState(State):
     def __init__(self, playing_field):
         self.playing_field = playing_field
+        self.text_image = None
 
     def handle(self, event):
         pass
@@ -71,8 +72,9 @@ class GameOverState(State):
     def draw(self, surface):
         self.playing_field.draw(surface)
 
-        text_pos = self.text_image.get_rect(centerx=surface.get_width()/2)
-        surface.blit(self.text_image, text_pos)
+        if self.text_image:
+            text_pos = self.text_image.get_rect(centerx=surface.get_width()/2)
+            surface.blit(self.text_image, text_pos)
     
 
 class Game:

@@ -64,14 +64,23 @@ class CellCards:
                 cell.set_empty()
                 return
 
+    def cell_of(self, card):
+        """ Returns that cell that contains the card. """
+        for cell in self.cells:
+            if cell.contains(card):
+                return cell
+
+        return None
+
     def transfer(self, card, pile):
         """ Transfers the card from here to the pile. """
-        pile.add_card(card)
+        cell = self.cell_of(card)
+        card.throw_to(pile)
         self.remove_card(card)
 
         # replace with a card from the home pile
         if not self.home_pile.empty():
-            self.home_pile.transfer(self.home_pile.top_card(), self)
+            self.home_pile.squelch(self.home_pile.top_card(), cell)
             self.calibrate()
 
     def get_card(self, x, y):

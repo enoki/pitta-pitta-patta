@@ -37,10 +37,17 @@ class PlayingCard:
         return PlayingCard.numbers[self.number()] + \
                PlayingCard.suits[self.suit()]
                              
+import louie
+import math
+import logging
+
 class Card(PlayingCard):
     """ A playing card visible on the screen. """
 
     (front, back) = range(2)
+
+    thrown = louie.Signal()
+    grabbed = louie.Signal()
 
     def __init__(self, number, suit, frontImage, backImage, x=0, y=0):
         PlayingCard.__init__(self, number, suit)
@@ -54,6 +61,7 @@ class Card(PlayingCard):
         self.selected = 0
         self.destination = None
         (self.inc_x, self.inc_y) = (0, 0)
+        (self.x, self.y) = (0, 0)
 
     def flip(self):
         if self.side == Card.front:
@@ -87,17 +95,44 @@ class Card(PlayingCard):
     def throw_to(self, destination):
         """ Throws the card to the destination.
             The destination must implement
-                def take(card): return None
+                def grab(card): return None
                 def position(): return (x, y)
         """
-        self.destination = destination
         destination_x, destination_y = destination.position()
         x, y = self.position()
         delta_x = destination_x - x
         delta_y = destination_y - y
-        num_steps = 10
+        num_steps = 10.0
         self.inc_x = delta_x / num_steps
         self.inc_y = delta_y / num_steps
+        self.x, self.y = x, y
+
+        # Note:
+        # we have to use (self.x, self.y) for floating point coordinates
+
+        logging.warning('(' + str(x) + ',' + str(y) + ')->' + \
+                        '(' + str(destination_x) + ',' + str(destination_y) + ')' + \
+                        '(incx=' + str(self.inc_x) + \
+                        ', incy=' + str(self.inc_y) + ')')
+
+        louie.send(Card.thrown, card=self)
+        self.destination = destination
+
+    def close_to(self, position):
+        def is_close_to(value, expected_value, epsilon):
+            return value > expected_value - epsilon and \
+                   value < expected_value + epsilon
+
+        (x, y) = self.x, self.y
+        (endx, endy) = position
+
+        epsilon = 2
+
+        logging.warning('** (' + str(x) + ',' + str(y) + ')->' + \
+                        '(' + str(endx) + ',' + str(endy) + ')')
+
+        return is_close_to(x, endx, epsilon) and \
+               is_close_to(y, endy, epsilon)
 
     def update(self):
         """ Called every frame to update the card. """
@@ -105,8 +140,11 @@ class Card(PlayingCard):
             if self.close_to(self.destination.position()):
                 self.destination.grab(self)
                 self.destination = None
+                louie.send(Card.grabbed, card=self)
             else:
-                self.move(self.inc_x, self.inc_y)
+                self.x += self.inc_x
+                self.y += self.inc_y
+                self.move_to(self.x, self.y)
 
     def draw(self, surface):
         surface.blit(self.img, self.rect.topleft)

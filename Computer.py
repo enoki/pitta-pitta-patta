@@ -50,5 +50,4 @@ class Computer(Player):
                             for pile in self.foundation_piles.piles:
                                 if self.rules.is_valid(card, pile):
                                     clickable.transfer(card, pile)
-                                    pile.calibrate()
                                     return
