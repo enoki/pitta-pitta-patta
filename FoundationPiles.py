@@ -6,7 +6,6 @@
 import pygame
 from Pile import Pile
 from Selection import Selection
-import logging
 
 class FoundationPile(Pile):
     """ A pile on which players drop ordered cards. """
@@ -92,7 +91,6 @@ class FoundationPiles:
 
             for pile in self.piles:
                 if pile.contains(x, y):
-                    logging.debug('move "' + str(selection.card) + '"?')
                     if self.rules.is_valid(selection.card, pile):
                         selection.transfer_to(pile)
                         self.player.inc_score()

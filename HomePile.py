@@ -4,7 +4,6 @@
 #
 
 import louie
-import logging
 from Card import Card
 from Pile import Pile
 

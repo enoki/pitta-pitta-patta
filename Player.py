@@ -16,7 +16,6 @@ from CellCards import CellCards
 from RightHand import RightHand
 from CardLocation import CardLocation
 from Selection import Selection
-import logging
 
 
 class Player:
@@ -174,10 +173,8 @@ class Player:
 
             self.right_hand.take_from(self.stock_pile.cards)
             self.right_hand.calibrate()
-            logging.debug('rh=' + str(self.right_hand.top_card().number()))
 
         if not self.discard_pile.empty():
-            logging.debug('di' + str(self.discard_pile.top_card().number()))
 
 
     def home_emptied(self):
@@ -185,7 +182,6 @@ class Player:
 
     def inc_score(self):
         self.score += 1
-        logging.debug('score one for ' + __name__ + ', tot=' + str(self.score))
 
     def get_score(self):
         num_bad_cards = self.home_pile.cards.num_cards()
@@ -193,11 +189,9 @@ class Player:
 
     def card_thrown(self, card):
         self.cards_in_transit.append(card)
-        logging.debug('card thrown=' + str(card))
 
     def card_grabbed(self, card):
         self.cards_in_transit.remove(card)
-        logging.debug('card grabbed=' + str(card))
 
     def get_selection(self):
         """ Returns the current selection. """

@@ -39,7 +39,6 @@ class PlayingCard:
                              
 import louie
 import math
-import logging
 
 class Card(PlayingCard):
     """ A playing card visible on the screen. """
@@ -111,11 +110,6 @@ class Card(PlayingCard):
         # Note:
         # we have to use (self.x, self.y) for floating point coordinates
 
-        logging.debug('(' + str(x) + ',' + str(y) + ')->' + \
-                      '(' + str(destination_x) + ',' + str(destination_y) + ')' + \
-                      '(incx=' + str(self.inc_x) + \
-                      ', incy=' + str(self.inc_y) + ')')
-
         louie.send(Card.thrown, card=self)
         destination.add_card(self)
         self.destination = destination
@@ -129,9 +123,6 @@ class Card(PlayingCard):
         (endx, endy) = position
 
         epsilon = 2
-
-        logging.debug('** (' + str(x) + ',' + str(y) + ')->' + \
-                      '(' + str(endx) + ',' + str(endy) + ')')
 
         return is_close_to(x, endx, epsilon) and \
                is_close_to(y, endy, epsilon)
