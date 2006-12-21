@@ -3,6 +3,7 @@
 # Released under the GPL version 2.0 or later.
 #
 
+import pygame
 from Card import Card
 
 class EmptyCard(Card):
@@ -11,7 +12,7 @@ class EmptyCard(Card):
     id = 'empty'
 
     def __init__(self):
-        pass
+        self.rect = pygame.Rect(0,0,0,0)
 
     def flip(self):
         pass

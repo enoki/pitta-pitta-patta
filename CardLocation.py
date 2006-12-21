@@ -18,3 +18,6 @@ class CardLocation:
     def grab_card(self, card):
         card.rect.x = self.rect.x
         card.rect.y = self.rect.y
+
+    def position(self):
+        return (card.rect.x, card.rect.y)

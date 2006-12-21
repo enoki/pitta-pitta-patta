@@ -13,10 +13,10 @@ class DiscardPile(Pile):
 
     def take_from(self, right_hand):
         """ Take the cards from the hand."""
-        right_hand.reverse()
+        cards = right_hand.rip_cards()
+        cards.reverse()
 
-        while not right_hand.empty():
-            card = right_hand.take_top_card()
+        for card in cards:
             card.face_up()
             self.cards.add_card(card)
 

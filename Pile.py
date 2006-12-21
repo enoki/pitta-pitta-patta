@@ -3,11 +3,14 @@
 # Released under the GPL version 2.0 or later.
 #
 
+import louie
 from CardGroup import CardGroup
 from CardLocation import CardLocation
 
 class Pile:
     """ A pile of cards. """
+
+    grabbed_card = louie.Signal()
 
     def __init__(self):
         self.cards = CardGroup()
@@ -76,3 +79,12 @@ class Pile:
             cards.append(self.top_card())
 
         return cards
+
+    def position(self):
+        return self.location.position()
+
+    def grab(self, card):
+        (x, y) = self.position()
+        card.move_to(x, y)
+        self.add_card(card)
+        louie.send(Pile.grabbed_card, card=card)

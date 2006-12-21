@@ -9,6 +9,8 @@ from Deck import Deck
 from StockPile import StockPile
 from HomePile import HomePile
 from DiscardPile import DiscardPile
+from Pile import Pile
+from CardCell import CardCell
 from CellCards import CellCards
 from RightHand import RightHand
 from CardLocation import CardLocation
@@ -59,6 +61,8 @@ class Player:
 
         self.score = 0
 
+        louie.connect(self.card_grabbed, Pile.grabbed_card)
+        louie.connect(self.card_grabbed, CardCell.grabbed_card)
         louie.connect(self.home_emptied, HomePile.emptied)
 
     def draw(self, surface):
@@ -123,7 +127,7 @@ class Player:
 
         self.xxxcount += 1
         if self.xxxcount == 4:
-            self.discard_pile.take_from(self.right_hand.cards)
+            self.discard_pile.take_from(self.right_hand)
             self.discard_pile.calibrate()
             self.xxxcount = 0
         else:
@@ -133,10 +137,10 @@ class Player:
 
             self.right_hand.take_from(self.stock_pile.cards)
             self.right_hand.calibrate()
-            logging.debug('rh=' + str(self.right_hand.cards.top_card().number()))
+            logging.warning('rh=' + str(self.right_hand.top_card().number()))
 
         if not self.discard_pile.empty():
-            logging.debug('di' + str(self.discard_pile.top_card().number()))
+            logging.warning('di' + str(self.discard_pile.top_card().number()))
 
     def home_emptied(self):
         louie.send(Player.finished)
@@ -148,6 +152,10 @@ class Player:
     def get_score(self):
         num_bad_cards = self.home_pile.cards.num_cards()
         return self.score - num_bad_cards * 2
+
+    def card_grabbed(self, card):
+        logging.warning('card grabbed=' + str(card))
+        pass
 
     def get_selection(self):
         """ Returns the current selection. """
