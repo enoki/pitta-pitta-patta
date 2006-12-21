@@ -66,9 +66,9 @@ class GameOverState(State):
                 self.new_game()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                self.new_game()
+                pass
             elif event.button == 3:
-                self.toggle_informative()
+                pass
 
     def update(self):
         if len(self.text_images) > 0:
