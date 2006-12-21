@@ -20,14 +20,8 @@ class Computer(Player):
         self.foundation_piles = foundation_piles
         self.last_move_time = pygame.time.get_ticks()
         self.last_deal_time = pygame.time.get_ticks()
-        self.time_to_deal = random.randint(600, 900)
-        # easy
-        #self.time_to_think = 1000
-        # medium
-        #self.time_to_think = 800
-        # hard
-        #self.time_to_think = 600
-        self.time_to_think = random.randint(1000, 2000)
+        self.time_to_deal = self.get_fast_time_to_deal()
+        self.time_to_think = self.get_time_to_think()
 
     def handle(self, event):
         pass
@@ -124,16 +118,33 @@ class Computer(Player):
 
         if pygame.time.get_ticks() - self.last_deal_time > self.time_to_deal:
             self.last_deal_time = pygame.time.get_ticks()
+            self.time_to_deal = self.get_fast_time_to_deal()
             self.deal_card()
 
             if self.xxxcount == 0:
-                self.make_best_move_using(self.discard_pile)
+                if random.random() < 0.9:
+                    self.make_best_move_using(self.discard_pile)
 
         if pygame.time.get_ticks() - self.last_move_time > self.time_to_think:
             self.last_move_time = pygame.time.get_ticks()
-            self.time_to_think = random.randint(1000, 2000)
+            self.time_to_think = self.get_time_to_think()
 
             self.make_random_move()
+
+    def get_time_to_think(self):
+        # easy
+        #self.time_to_think = 2000
+        # medium
+        #self.time_to_think = 1000
+        # hard
+        #self.time_to_think = 800
+        return random.randint(2000, 3000)
+
+    def get_fast_time_to_deal(self):
+        return random.randint(500, 800)
+
+    def get_slow_time_to_deal(self):
+        return random.randint(1000, 1300)
 
     def make_best_move(self):
         """ Move the first available card. """
@@ -144,7 +155,7 @@ class Computer(Player):
     def make_random_move(self):
         """ Consider making a move in each clickable category """
         for clickable in self.clickables:
-            if random.random() > 0.5:
+            if random.random() < 0.65:
                 self.make_best_move_using(clickable)
 
     def make_best_move_using(self, clickable):
@@ -159,6 +170,7 @@ class Computer(Player):
                 for pile in piles:
                     if self.rules.is_valid(card, pile):
                         clickable.transfer(card, pile)
+                        self.time_to_deal = self.get_slow_time_to_deal()
                         return True
 
         return False
