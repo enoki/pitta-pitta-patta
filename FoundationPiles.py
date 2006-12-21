@@ -48,7 +48,7 @@ class FoundationPiles:
         card_height = 96
 
         num_cols = 4
-        col_width = 1.5
+        col_width = 1.37
         total_col_width = num_cols * col_width
         row_height = 1.1
 

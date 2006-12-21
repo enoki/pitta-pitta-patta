@@ -88,9 +88,11 @@ class Player:
 
         # Top row
         self.home_pile.move_to(x, y)
-        x += card_width * 2
-        self.cell_cards.move_to(x, y, card_width * 1.5)
+        x += card_width * 1.7
+        distance_between = card_width * 1.3
+        self.cell_cards.move_to(x, y, distance_between)
 
+        x = left_margin + card_width * 0.2
         y = hand_top_margin
 
         # Bottom row

@@ -9,7 +9,10 @@ from Player import Player
 class Computer(Player):
     """ The computer AI player. """
 
-    def __init__(self, rules, foundation_piles):
+    (North, West, East) = range(3)
+
+    def __init__(self, rules, foundation_piles, position):
+        self.position = position
         Player.__init__(self)
         self.rules = rules
         self.foundation_piles = foundation_piles
@@ -20,6 +23,15 @@ class Computer(Player):
 
     def set_locations(self):
         """ Position cards """
+        if self.position == Computer.North:
+            self.set_north()
+        elif self.position == Computer.West:
+            self.set_west()
+        if self.position == Computer.East:
+            self.set_east()
+
+    def set_north(self):
+        """ Puts the cards in the north position. """
         some_card = self.home_pile.top_card()
         card_width, card_height = some_card.rect.width, some_card.rect.height
         left_margin, hand_top_margin = 10, 0
@@ -30,12 +42,65 @@ class Computer(Player):
 
         # "Top" row
         self.home_pile.move_to(x, y)
-        x += card_width * 2
-        self.cell_cards.move_to(x, y, card_width * 1.5)
+        x += card_width * 1.7 
+        distance_between = card_width * 1.3
+        self.cell_cards.move_to(x, y, distance_between)
 
+        x = left_margin + card_width * 0.2
         y = hand_top_margin
 
         # "Bottom" row
+        self.stock_pile.move_to(x, y)
+        x += card_width * 1.5
+        self.discard_pile.move_to(x, y)
+        x += card_width * 1.5
+        self.right_hand.move_to(x, y, 40)
+
+    def set_west(self):
+        """ Puts the cards in the west position. """
+        some_card = self.home_pile.top_card()
+        card_width, card_height = some_card.rect.width, some_card.rect.height
+        left_margin, hand_top_margin = 450, 0
+        top_margin = hand_top_margin + card_height + 10
+
+        x = left_margin
+        y = top_margin
+
+        # "Top" row
+        self.home_pile.move_to(x, y)
+        x += card_width * 1.5
+        distance_between = card_width * 1.3
+        self.cell_cards.move_to(x, y, distance_between)
+
+        x = left_margin + card_width * 0.2
+        y = hand_top_margin
+
+        # "Bottom" row
+        self.stock_pile.move_to(x, y)
+        x += card_width * 1.5
+        self.discard_pile.move_to(x, y)
+        x += card_width * 1.5
+        self.right_hand.move_to(x, y, 40)
+
+    def set_east(self):
+        """ Puts the cards in the east position. """
+        some_card = self.home_pile.top_card()
+        card_width, card_height = some_card.rect.width, some_card.rect.height
+        left_margin, top_margin = 450, 450
+        hand_top_margin = top_margin + card_height + 10
+
+        x, y = left_margin, top_margin
+
+        # Top row
+        self.home_pile.move_to(x, y)
+        x += card_width * 1.7 
+        distance_between = card_width * 1.3
+        self.cell_cards.move_to(x, y, distance_between)
+
+        x = left_margin + card_width * 0.2
+        y = hand_top_margin
+
+        # Bottom row
         self.stock_pile.move_to(x, y)
         x += card_width * 1.5
         self.discard_pile.move_to(x, y)

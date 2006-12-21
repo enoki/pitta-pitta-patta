@@ -19,13 +19,21 @@ class PlayingField:
         self.player = Player()
         self.rules = RedBlackUpRules()
         self.foundation_piles = FoundationPiles(self.player, self.rules)
-        self.computer = Computer(self.rules, self.foundation_piles)
+        self.computer = Computer(self.rules, self.foundation_piles, Computer.North)
+        #self.computer2 = Computer(self.rules, self.foundation_piles, Computer.West)
+        #self.computer3 = Computer(self.rules, self.foundation_piles, Computer.East)
 
         louie.connect(self.on_game_over, Player.finished)
 
         self.drawables = [self.player, self.computer, self.foundation_piles]
+        #self.drawables = [self.player, self.computer, 
+        #                  self.computer2, self.computer3,
+        #                  self.foundation_piles]
         self.handlers = [self.player, self.computer, self.foundation_piles]
         self.updateables = [self.player, self.computer, self.foundation_piles]
+        #self.updateables = [self.player, self.computer, 
+        #                    self.computer2, self.computer3,
+        #                    self.foundation_piles]
 
     def draw(self, surface):
         for drawable in self.drawables:
