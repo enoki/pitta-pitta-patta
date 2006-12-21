@@ -3,55 +3,68 @@
 # Released under the GPL version 2.0 or later.
 #
 
-from CardGroup import CardGroup
-from CardLocation import CardLocation
+from CardCell import CardCell
 
 
 class RightHand:
     """ Reserve cards from the Stock Pile held in the right hand. """
 
     def __init__(self):
-        self.cards = CardGroup()
-        self.locations = []
         self.size = 3
+        self.cells = [CardCell() for i in range(self.size)]
 
     def set_size(self, width, height):
         """ Sets the sizes of each of the cells to be the same. """
-        for location in self.locations:
-            location.rect.width = width
-            location.rect.height = height
+        for cell in self.cells:
+            cell.set_size(width, height)
 
     def move_to(self, x, y, distance_between):
         """ Moves each of the cells.
             Provide the coordinates of the leftmost cell. """
 
-        for i in range(self.size):
-            location = CardLocation()
-            location.rect.x = x
-            self.locations.append(location)
-
+        for cell in self.cells:
+            cell.move_to(x, y)
             x += distance_between
-
-        for location in self.locations:
-            location.rect.y = y
 
     def take_from(self, stock_pile):
         """ Take the top card from the stock pile. """
-        self.cards.add_card(stock_pile.take_top_card())
+        for cell in self.cells:
+            if cell.is_empty():
+                cell.set_card(stock_pile.take_top_card())
+                return
 
     def calibrate(self):
         """ Prepare cards for display. """
-        # Move all cards to the HomePile location.
-        for i in range(self.cards.num_cards()):
-            self.locations[i].grab_card(self.cards[i])
-            self.cards[i].face_down()
-        self.resize()
-
-    def resize(self):
-        """ Resize to the top card. """
-        card_rect = self.cards.top_card().rect
-        self.set_size(card_rect.width, card_rect.height)
+        for cell in self.cells:
+            cell.calibrate()
+            cell.face_down()
 
     def draw(self, surface):
         """ Draws the cards. """
-        self.cards.draw(surface)
+        for cell in self.cells:
+            cell.draw(surface)
+
+    def cards(self):
+        cards = []
+        for cell in self.cells:
+            if not cell.is_empty():
+                cards.append(cell.get_card())
+
+        return cards
+
+    def top_card(self):
+        for cell in reversed(self.cells):
+            if not cell.is_empty():
+                return cell.get_card()
+        return None
+
+    def rip_cards(self):
+        """ Returns all the cards from the cells and removes them
+            from the cells. """
+        cards = []
+        for cell in self.cells:
+            if not cell.is_empty():
+                card = cell.get_card()
+                cell.set_empty()
+                cards.append(card)
+        return cards

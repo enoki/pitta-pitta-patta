@@ -1,0 +1,13 @@
+How to get python
+-----------------
+http://python.org
+
+How to get pygame
+------------------
+http://pygame.org
+
+How to get easy_install and louie
+----------------------------------
+Download ez_setup.py from http://peak.telecommunity.com/dist/ez_setup.py
+python ez_setup.py
+$(PYTHONDIR)/scripts/easy_install Louie

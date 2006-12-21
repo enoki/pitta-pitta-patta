@@ -52,6 +52,8 @@ class Card(PlayingCard):
         self.rect.x = x
         self.rect.y = y
         self.selected = 0
+        self.destination = None
+        (self.inc_x, self.inc_y) = (0, 0)
 
     def flip(self):
         if self.side == Card.front:
@@ -78,6 +80,33 @@ class Card(PlayingCard):
         """ Moves the card to an absolute coordinate. """
         self.rect.x = x
         self.rect.y = y
+
+    def position(self):
+        return (self.rect.x, self.rect.y)
+
+    def throw_to(self, destination):
+        """ Throws the card to the destination.
+            The destination must implement
+                def take(card): return None
+                def position(): return (x, y)
+        """
+        self.destination = destination
+        destination_x, destination_y = destination.position()
+        x, y = self.position()
+        delta_x = destination_x - x
+        delta_y = destination_y - y
+        num_steps = 10
+        self.inc_x = delta_x / num_steps
+        self.inc_y = delta_y / num_steps
+
+    def update(self):
+        """ Called every frame to update the card. """
+        if self.destination:
+            if self.close_to(self.destination.position()):
+                self.destination.grab(self)
+                self.destination = None
+            else:
+                self.move(self.inc_x, self.inc_y)
 
     def draw(self, surface):
         surface.blit(self.img, self.rect.topleft)
