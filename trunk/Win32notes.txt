@@ -20,3 +20,27 @@ rm sndarray.pyd
 rm mixer.pyd
 rm mixer_music.pyd
 rm SDL_mixer.dll
+
+rm _dotblas.pyd
+rm multiarray.pyd
+rm umath.pyd
+
+# From library:
+# dotblas
+# encodings
+# OpenGL
+# _dotblas.pyc
+# bdb.pyc
+# bz2.pyc
+# difflib.pyc
+# doctest.pyc
+# inspect.pyc
+# locale.pyc
+# Numeric.pyc
+# numeric_version.pyc
+# pdb.pyc
+# pickle.pyc
+# umath.pyc
+# unicodedata.pyc
+# unittest.pyc
+# zlib.pyc
