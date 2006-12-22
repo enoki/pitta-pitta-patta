@@ -15,7 +15,7 @@ class HomePile(Pile):
 
     def __init__(self):
         Pile.__init__(self)
-        self.initial_size = 1 #13
+        self.initial_size = 13
 
     def take_from(self, deck):
         """ Take cards from the deck. Flip over the top card. """
