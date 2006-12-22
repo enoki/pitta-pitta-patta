@@ -6,7 +6,7 @@ python setup.py py2exe
 
 # Necessary:
 mkdir dist/images
-mv images/*.png dist/images
+cp images/*.png dist/images
 cp Instructions.txt dist
 
 # Unnecessary:
