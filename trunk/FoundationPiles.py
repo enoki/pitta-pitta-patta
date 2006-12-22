@@ -56,10 +56,10 @@ class FoundationPiles:
                 col = 0
                 row += row_height
 
-        self.rect = pygame.Rect(0, 0,
-                                x_from_col(total_col_width),
-                                y_from_row(row))
-        print str(self.rect)
+        x, y = x_from_col(0), y_from_row(0)
+        self.rect = pygame.Rect(x, y,
+                                x_from_col(total_col_width)-x,
+                                y_from_row(row)-y)
 
     def draw(self, surface):
         for pile in self.piles:
