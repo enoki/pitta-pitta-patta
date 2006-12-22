@@ -13,7 +13,6 @@ class Button(Label):
     clicked = louie.Signal()
 
     def __init__(self, font, text_color, background_color, selected_color, y=0, text=None):
-        font.set_underline(True)
         Label.__init__(self, font, text_color, background_color, y, text)
         self.normal_color = background_color
         self.selected_color = selected_color
@@ -44,7 +43,13 @@ class Button(Label):
             x, y = event.pos[0], event.pos[1]
 
             if self.background_rect.collidepoint(x, y):
-                self.background_color = self.selected_color
+                self.select()
             else:
-                self.background_color = self.normal_color
+                self.unselect()
+
+    def select(self):
+        self.background_color = self.selected_color
+
+    def unselect(self):
+        self.background_color = self.normal_color
 
