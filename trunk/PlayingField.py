@@ -80,3 +80,6 @@ class PlayingField:
                 winner = player
 
         return winner
+
+    def get_round_name(self):
+        return self.game_config.round_name
