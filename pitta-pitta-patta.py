@@ -170,10 +170,12 @@ class Game:
 
         self.num_players = 4
 
+        display_flags = pygame.HWSURFACE | pygame.DOUBLEBUF
+
         if self.num_players == 2:
-            self.screen = pygame.display.set_mode((430, 660))
+            self.screen = pygame.display.set_mode((430, 660), display_flags)
         elif self.num_players > 2:
-            self.screen = pygame.display.set_mode((850, 660))
+            self.screen = pygame.display.set_mode((850, 660), display_flags)
 
         pygame.display.set_caption('Pitta Pitta Patta')
 
