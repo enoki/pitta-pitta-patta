@@ -16,6 +16,7 @@ class Label:
         self.font = font
         self.background_rect = None
         self.y = y
+        self.horiz_margins = 20
 
         if text is not None:
             self.set_text(text)
@@ -40,7 +41,7 @@ class Label:
 
     def create_background(self):
         self.background_rect = pygame.Rect(0,0,0,0)
-        self.background_rect.size = self.width + 20, self.height
+        self.background_rect.size = self.width, self.height
 
     def calculate_size(self):
         self.y_spacing = 0
@@ -51,8 +52,19 @@ class Label:
             self.y_spacing = max(self.y_spacing, rect.height * 1.5)
             self.height += self.y_spacing
 
+        self.width += self.horiz_margins
+
     def get_size(self):
         return (self.width, self.height)
+
+    def get_height(self):
+        return self.height
+
+    def get_y(self):
+        return self.y
+
+    def set_y(self, y):
+        self.y = y
 
     def draw(self, surface):
         self.center_x = surface.get_width() / 2
@@ -69,8 +81,11 @@ class Label:
     def draw_background(self, surface):
         if self.background_rect:
             self.background_rect.centerx = self.center_x
+            self.background_rect.y = self.y
             pygame.draw.rect(surface, self.background_color, self.background_rect)
 
     def empty(self):
         return len(self.images) == 0
 
+    def handle(self, event):
+        pass

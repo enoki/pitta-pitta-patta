@@ -5,8 +5,10 @@
 
 import pygame
 import louie
+from Button import Button
 from Color import Color
 from Label import Label
+from RectContainer import RectContainer
 from State import State
 
 class GameOverState(State):
@@ -18,8 +20,12 @@ class GameOverState(State):
         self.playing_field = playing_field
         self.informative = False
 
-        font = pygame.font.SysFont("Arial", 24)
-        self.label = Label(font, Color.white, Color.medium_blue)
+        self.font = pygame.font.SysFont("Arial", 24)
+        self.label = Label(self.font, Color.white, Color.medium_blue)
+        self.main_widget = RectContainer(Color.medium_blue)
+
+        self.drawables = []
+        self.handlers = []
 
     def delay(self):
         pygame.time.wait(100)
@@ -31,6 +37,9 @@ class GameOverState(State):
             elif event.key == pygame.K_RETURN:
                 self.new_game()
 
+        for handler in self.handlers:
+            handler.handle(event)
+
     def update(self):
         if self.label.empty():
             self.create_ui()
@@ -40,7 +49,8 @@ class GameOverState(State):
         text += '\n'
 
         winner = self.playing_field.get_winner()
-        assert(winner)
+        if not winner:
+            return
 
         if winner in self.playing_field.players:
             text += 'You Win!\n'
@@ -63,23 +73,40 @@ class GameOverState(State):
 
             text += '\n'
 
-        text += '\n'
-        text += 'Press enter to start a new game\n'
-        text += 'Press space for '
+        self.label.set_text(text)
+
+        new_game_button = Button(self.font,
+                                 Color.white, Color.medium_blue,
+                                 Color.black, 0,
+                                 'Click to start a new game (Enter)')
+        louie.connect(self.new_game, Button.clicked, new_game_button)
+
+        text = 'Click for '
         if self.informative:
             text += 'less '
         else:
             text += 'more '
-        text += 'information\n'
+        text += 'information (Spacebar)'
 
-        self.label.set_text(text)
+        informative_button = Button(self.font,
+                                    Color.white, Color.medium_blue,
+                                    Color.black,
+                                    0,
+                                    text)
+        louie.connect(self.toggle_informative, Button.clicked, informative_button)
+
+        main_widget_children = [self.label, new_game_button, informative_button]
+        self.main_widget.create_ui(main_widget_children)
+
+        self.drawables = [self.playing_field, self.main_widget]
+        self.handlers = [self.main_widget]
 
     def clear_surface(self, surface):
         surface.fill(Color.bright_green)
 
     def draw(self, surface):
-        self.playing_field.draw(surface)
-        self.label.draw(surface)
+        for drawable in self.drawables:
+            drawable.draw(surface)
 
     def toggle_informative(self):
         self.informative = not self.informative
