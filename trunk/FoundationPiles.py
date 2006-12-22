@@ -25,16 +25,12 @@ class FoundationPile(Pile):
 class FoundationPiles:
     """ The piles on which players drop stacks of ordered cards. """
 
-    def __init__(self, player, rules):
+    def __init__(self, player, rules, num_players):
         """ The piles are arranged in a 2x4 grid like so:
             X  X  X  X
             X  X  X  X
         """
-        # 2 players
-        #self.num_players = 2
-        # 4 players
-        self.num_players = 4
-        self.num_piles = self.num_players * 4
+        self.num_piles = num_players * 4
         self.piles = [FoundationPile() for i in range(self.num_piles)]
         self.player = player
         self.rules = rules
