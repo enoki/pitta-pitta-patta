@@ -48,6 +48,7 @@ class Application:
 
     def connect(self):
         louie.connect(self.goto_play, StartState.finished)
+        louie.connect(self.restart, GameOverState.new_game)
 
     def transition(self, state_name):
         self.state.exited()
@@ -61,10 +62,11 @@ class Application:
         self.transition('play')
         self.playing_field.configure(game_config)
         self.set_resolution(game_config.num_players)
+        self.next_game_config = game_config # FIXME
 
     def restart(self):
         """ Start a new game. deprecated? """
-        self.init_states()
+        self.playing_field.configure(self.next_game_config)
         self.transition('play')
 
     def main(self):

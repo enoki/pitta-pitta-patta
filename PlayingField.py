@@ -65,3 +65,16 @@ class PlayingField:
 
     def on_game_over(self):
         louie.send(PlayingField.game_over)
+
+    def get_winner(self):
+        high_score = 0 - self.player.home_pile.initial_size * 2
+        winner = None
+
+        for player in self.players:
+            score = player.get_score()
+
+            if score > high_score:
+                high_score = score
+                winner = player
+
+        return winner
