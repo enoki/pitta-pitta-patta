@@ -74,3 +74,6 @@ class RectContainer:
             widget = self.widgets[0]
             widget.set_y(y)
             self.set_layout()
+
+    def empty(self):
+        return len(self.widgets) == 0
