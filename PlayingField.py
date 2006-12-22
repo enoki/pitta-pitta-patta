@@ -7,7 +7,6 @@ import louie
 from Player import Player
 from Computer import Computer
 from FoundationPiles import FoundationPiles
-from DefaultRules import *
 
 class PlayingField:
     """ The playing field comprises the foundation piles
@@ -15,27 +14,42 @@ class PlayingField:
 
     game_over = louie.Signal()
 
-    def __init__(self, num_players):
+    def __init__(self):
+        self.players = []
+        self.humans = []
+        self.player = None
+        self.rules = None
+        self.foundation_piles = None
+
+        self.drawables = []
+        self.handlers = []
+        self.updateables = []
+
+    def configure(self, game_config):
+        """ Configures the playing field using the supplied GameConfig """
         self.player = Player('You')
-        self.rules = RedBlackUpRules()
-        self.foundation_piles = FoundationPiles(self.player, self.rules)
-        self.computer = Computer(self.rules, self.foundation_piles, Computer.NorthWest)
-        self.players = [self.player, self.computer]
-        self.num_players = 4
-        if self.num_players > 2:
-            self.computer2 = Computer(self.rules, self.foundation_piles, Computer.SouthEast)
-            self.players.append(self.computer2)
-        if self.num_players > 3:
-            self.computer3 = Computer(self.rules, self.foundation_piles, Computer.NorthEast)
-            self.players.append(self.computer3)
+        self.rules = game_config.rules
+        self.foundation_piles = FoundationPiles(self.player,
+                                                self.rules,
+                                                game_config.num_players)
+        self.players = [self.player]
+        self.humans = [self.player]
+
+        for i in range(game_config.num_players-len(self.humans)):
+            self.players.append(self.make_computer(i))
+
+        assert(len(self.players) >= 2 and len(self.players) <= 4)
 
         louie.connect(self.on_game_over, Player.finished)
 
         self.drawables = [self.foundation_piles]
         self.drawables.extend(self.players)
-        self.handlers = [self.player, self.computer, self.foundation_piles]
+        self.handlers = [self.player, self.foundation_piles]
         self.updateables = [self.foundation_piles]
         self.updateables.extend(self.players)
+
+    def make_computer(self, position):
+        return Computer(self.rules, self.foundation_piles, position)
 
     def draw(self, surface):
         for drawable in self.drawables:
