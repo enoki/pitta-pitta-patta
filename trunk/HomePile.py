@@ -13,9 +13,9 @@ class HomePile(Pile):
 
     emptied = louie.Signal()
 
-    def __init__(self):
+    def __init__(self, initial_size=13):
         Pile.__init__(self)
-        self.initial_size = 13
+        self.initial_size = initial_size
 
     def take_from(self, deck):
         """ Take cards from the deck. Flip over the top card. """

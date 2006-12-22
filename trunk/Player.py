@@ -23,10 +23,10 @@ class Player:
 
     finished = louie.Signal()
 
-    def __init__(self, name):
+    def __init__(self, name, game_config):
         self.deck = Deck()
 
-        self.home_pile = HomePile()
+        self.home_pile = HomePile(game_config.home_pile_size)
         self.cell_cards = CellCards(self.home_pile)
         self.stock_pile = StockPile()
         self.right_hand = RightHand()

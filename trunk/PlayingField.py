@@ -27,7 +27,8 @@ class PlayingField:
 
     def configure(self, game_config):
         """ Configures the playing field using the supplied GameConfig """
-        self.player = Player('You')
+        self.game_config = game_config
+        self.player = Player('You', game_config)
         self.rules = game_config.rules
         self.foundation_piles = FoundationPiles(self.player,
                                                 self.rules,
@@ -49,7 +50,8 @@ class PlayingField:
         self.updateables.extend(self.players)
 
     def make_computer(self, position):
-        return Computer(self.rules, self.foundation_piles, position)
+        return Computer(self.rules, self.foundation_piles, self.game_config,
+                        position)
 
     def draw(self, surface):
         for drawable in self.drawables:
