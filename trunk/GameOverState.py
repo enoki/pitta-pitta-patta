@@ -77,7 +77,7 @@ class GameOverState(State):
 
         new_game_button = Button(self.font,
                                  Color.white, Color.medium_blue,
-                                 Color.black, 0,
+                                 Color.dark_blue, 0,
                                  'Click to start a new game (Enter)')
         louie.connect(self.new_game, Button.clicked, new_game_button)
 
@@ -90,7 +90,7 @@ class GameOverState(State):
 
         informative_button = Button(self.font,
                                     Color.white, Color.medium_blue,
-                                    Color.black,
+                                    Color.dark_blue,
                                     0,
                                     text)
         louie.connect(self.toggle_informative, Button.clicked, informative_button)

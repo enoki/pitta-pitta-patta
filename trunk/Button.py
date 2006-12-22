@@ -12,9 +12,11 @@ class Button(Label):
 
     clicked = louie.Signal()
 
-    def __init__(self, font, text_color, background_color, border_color, y=0, text=None):
+    def __init__(self, font, text_color, background_color, selected_color, y=0, text=None):
+        font.set_underline(True)
         Label.__init__(self, font, text_color, background_color, y, text)
-        self.border_color = border_color
+        self.normal_color = background_color
+        self.selected_color = selected_color
         self.border_rect = pygame.Rect(0, 0, 0, 0)
         self.border_width = 3
 
@@ -29,11 +31,6 @@ class Button(Label):
 
     def draw(self, surface):
         Label.draw(self, surface)
-        self.draw_border(surface)
-
-    def draw_border(self, surface):
-        pygame.draw.rect(surface, self.border_color, self.border_rect,
-                         self.border_width)
 
     def handle(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -42,4 +39,12 @@ class Button(Label):
 
                 if self.background_rect.collidepoint(x, y):
                     louie.send(Button.clicked, self)
+                    
+        elif event.type == pygame.MOUSEMOTION:
+            x, y = event.pos[0], event.pos[1]
+
+            if self.background_rect.collidepoint(x, y):
+                self.background_color = self.selected_color
+            else:
+                self.background_color = self.normal_color
 
