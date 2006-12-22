@@ -11,9 +11,15 @@ class FoundationPiles:
     """ The piles on which players drop stacks of ordered cards. """
 
     def __init__(self, player, rules, num_players):
-        """ The piles are arranged in a 2x4 grid like so:
+        """ The piles are arranged in a 2x4 grid for two players:
             X  X  X  X
             X  X  X  X
+            and in a 2x8 grid for four players:
+            X  X  X  X  X  X  X  X
+            X  X  X  X  X  X  X  X
+            and generally in a 2x(N*2) grid for N players
+
+            Note: player is the human
         """
         self.num_piles = num_players * 4
         self.piles = [FoundationPile() for i in range(self.num_piles)]
@@ -21,10 +27,6 @@ class FoundationPiles:
         self.rules = rules
 
         self.set_locations()
-
-        # anyplace besides the player's cards
-        # should take into account top_margin of player
-        self.rect = pygame.Rect(0, 0, 850, 450)
 
     def set_locations(self):
         """ Sets the foundation pile locations. """
@@ -40,14 +42,24 @@ class FoundationPiles:
         col = 0
         row = 0
 
+        def x_from_col(col):
+            return col * card_width + card_width * 0.25
+
+        def y_from_row(row):
+            return row * card_height + card_height * 0.25 + 200
+
         for pile in self.piles:
             pile.set_size(card_width, card_height)
-            pile.move_to(col * card_width + card_width * 0.25,
-                         row * card_height + card_height * 0.25 + 200)
+            pile.move_to(x_from_col(col), y_from_row(row))
             col += col_width
             if col == total_col_width:
                 col = 0
                 row += row_height
+
+        self.rect = pygame.Rect(0, 0,
+                                x_from_col(total_col_width),
+                                y_from_row(row))
+        print str(self.rect)
 
     def draw(self, surface):
         for pile in self.piles:
