@@ -11,15 +11,16 @@ class FoundationPile(Pile):
 
     def __init__(self):
         Pile.__init__(self)
+        self.ghost_image = pygame.image.load('images/ghost.png')
+        self.ghost_image_rect = self.ghost_image.get_rect()
 
     def calibrate(self):
         Pile.calibrate(self)
         self.top_card().face_up()
 
     def draw(self, surface):
-        Pile.draw(self, surface)
-        # Draw ugly blue rectangle
-        # TODO replace with a pretty image
-        if self.empty():
-            pygame.draw.rect(surface, (0x00,0x00,0xff), self.location.rect, 3)
+        if self.cards.num_cards() < 2:
+            self.ghost_image_rect.topleft = self.location.position()
+            surface.blit(self.ghost_image, self.ghost_image_rect)
 
+        Pile.draw(self, surface)
