@@ -14,14 +14,15 @@ Features for 0.2:
 
 Features for 0.3:
   * A startup screen for customizing the game
-  * Multiple games, e.g. sets of 3 with variations
-  * Better score keeping
-  * High scores list
+  * More attractive empty foundation piles
+  * Clickable buttons in the game over screen
 
 == ? ==
 
 Features for a future release:
-  * More attractive empty foundation piles
+  * Multiple games, e.g. sets of 3 with variations
+  * Better score keeping
+  * High scores list
   * Have to manually move home pile cards to cells
   * Drag and drop of cards
   * Save/load game state
