@@ -13,10 +13,10 @@ class Computer(Player):
 
     (NorthWest, NorthEast, SouthEast) = range(3)
 
-    def __init__(self, rules, foundation_piles, position):
+    def __init__(self, rules, foundation_piles, game_config, position):
         self.position = position
         name = self.get_position_name(position)
-        Player.__init__(self, name)
+        Player.__init__(self, name, game_config)
         self.rules = rules
         self.foundation_piles = foundation_piles
         self.last_move_time = pygame.time.get_ticks()

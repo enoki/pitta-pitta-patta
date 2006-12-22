@@ -52,7 +52,7 @@ class GameOverState(State):
         if not winner:
             return
 
-        if winner in self.playing_field.players:
+        if winner == self.playing_field.player:
             text += 'You Win!\n'
         else:
             text += winner.get_name() + ' Wins!\n'
@@ -75,10 +75,7 @@ class GameOverState(State):
 
         self.label.set_text(text)
 
-        new_game_button = Button(self.font,
-                                 Color.white, Color.medium_blue,
-                                 Color.dark_blue, 0,
-                                 'Click to start a new game (Enter)')
+        new_game_button = self.make_button('Click to start a new game (Enter)')
         louie.connect(self.new_game, Button.clicked, new_game_button)
 
         text = 'Click for '
@@ -88,11 +85,7 @@ class GameOverState(State):
             text += 'more '
         text += 'information (Spacebar)'
 
-        informative_button = Button(self.font,
-                                    Color.white, Color.medium_blue,
-                                    Color.dark_blue,
-                                    0,
-                                    text)
+        informative_button = self.make_button(text)
         louie.connect(self.toggle_informative, Button.clicked, informative_button)
 
         main_widget_children = [self.label, new_game_button, informative_button]
@@ -100,6 +93,11 @@ class GameOverState(State):
 
         self.drawables = [self.playing_field, self.main_widget]
         self.handlers = [self.main_widget]
+
+    def make_button(self, text):
+        return Button(self.font,
+                      Color.white, Color.medium_blue, Color.dark_blue,
+                      0, text)
 
     def clear_surface(self, surface):
         surface.fill(Color.bright_green)
