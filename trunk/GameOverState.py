@@ -45,6 +45,22 @@ class GameOverState(State):
             self.create_ui()
 
     def create_ui(self):
+        self.label.set_text(self.create_label_text())
+
+        new_game_button = self.make_button('Click to start a new game (Enter)')
+        louie.connect(self.new_game, Button.clicked, new_game_button)
+
+        informative_button = self.make_button(self.create_informative_button_text())
+        louie.connect(self.toggle_informative, Button.clicked, informative_button)
+
+        main_widget_children = [self.label, new_game_button, informative_button]
+        self.main_widget.create_ui(main_widget_children)
+
+        self.drawables = [self.playing_field, self.main_widget]
+        self.handlers = [self.main_widget]
+
+    def create_label_text(self):
+        """ Returns the text in the label. """
         text = 'Game over\n'
         text += '\n'
 
@@ -73,26 +89,17 @@ class GameOverState(State):
 
             text += '\n'
 
-        self.label.set_text(text)
+        return text
 
-        new_game_button = self.make_button('Click to start a new game (Enter)')
-        louie.connect(self.new_game, Button.clicked, new_game_button)
-
+    def create_informative_button_text(self):
+        """ Creates the text for the informative? button """
         text = 'Click for '
         if self.informative:
             text += 'less '
         else:
             text += 'more '
         text += 'information (Spacebar)'
-
-        informative_button = self.make_button(text)
-        louie.connect(self.toggle_informative, Button.clicked, informative_button)
-
-        main_widget_children = [self.label, new_game_button, informative_button]
-        self.main_widget.create_ui(main_widget_children)
-
-        self.drawables = [self.playing_field, self.main_widget]
-        self.handlers = [self.main_widget]
+        return text
 
     def make_button(self, text):
         return Button(self.font,
