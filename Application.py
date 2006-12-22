@@ -7,6 +7,7 @@ import pygame
 import louie
 import sys
 from StartState import StartState
+from PrepareState import PrepareState
 from PlayState import PlayState
 from GameOverState import GameOverState
 from PlayingField import PlayingField
@@ -42,12 +43,14 @@ class Application:
 
     def init_states(self):
         self.states = { 'start' : StartState(self.playing_field),
+                        'prepare' : PrepareState(self.playing_field),
                         'play' : PlayState(self.playing_field),
                         'game_over' : GameOverState(self.playing_field) }
         self.state = self.states['start']
 
     def connect(self):
-        louie.connect(self.goto_play, StartState.finished)
+        louie.connect(self.goto_prepare, StartState.finished)
+        louie.connect(self.goto_play, PrepareState.finished)
         louie.connect(self.restart, GameOverState.new_game)
 
     def transition(self, state_name):
@@ -58,11 +61,14 @@ class Application:
     def goto_game_over(self):
         self.transition('game_over')
 
-    def goto_play(self, game_config):
-        self.transition('play')
+    def goto_prepare(self, game_config):
         self.playing_field.configure(game_config)
         self.set_resolution(game_config.num_players)
         self.next_game_config = game_config # FIXME
+        self.transition('prepare')
+
+    def goto_play(self):
+        self.transition('play')
 
     def restart(self):
         """ Start a new game. deprecated? """
