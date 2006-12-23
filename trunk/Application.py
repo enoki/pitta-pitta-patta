@@ -7,6 +7,7 @@ import pygame
 import louie
 import sys
 from StartState import StartState
+from OptionsState import OptionsState
 from PrepareState import PrepareState
 from PlayState import PlayState
 from GameOverState import GameOverState
@@ -43,6 +44,7 @@ class Application:
 
     def init_states(self):
         self.states = { 'start' : StartState(self.playing_field),
+                        'options' : OptionsState(),
                         'prepare' : PrepareState(self.playing_field),
                         'play' : PlayState(self.playing_field),
                         'game_over' : GameOverState(self.playing_field) }
@@ -50,6 +52,8 @@ class Application:
 
     def connect(self):
         louie.connect(self.goto_prepare, StartState.finished)
+        louie.connect(self.goto_options, StartState.options)
+        louie.connect(self.goto_start, OptionsState.finished)
         louie.connect(self.goto_play, PrepareState.finished)
         louie.connect(self.restart, GameOverState.new_game)
 
@@ -60,6 +64,13 @@ class Application:
 
     def goto_game_over(self):
         self.transition('game_over')
+
+    def goto_start(self, game_config):
+        self.transition('start')
+        self.state.game_config = game_config
+
+    def goto_options(self):
+        self.transition('options')
 
     def goto_prepare(self, game_config):
         self.playing_field.configure(game_config)
