@@ -13,9 +13,10 @@ Features for 0.2:
 == 0.3 ===
 
 Features for 0.3:
-  * A startup screen for customizing the game
-  * More attractive empty foundation piles
-  * Clickable buttons in the game over screen
+  * ~~A startup screen for customizing the game~~
+  * ~~More attractive empty foundation piles~~
+  * ~~Clickable buttons in the game over screen~~
+  * ~~Further improvements to the AI~~
 
 == ? ==
 
