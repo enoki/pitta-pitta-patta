@@ -169,6 +169,7 @@ class Computer(Player):
         """ Consider making a move in each clickable category """
         for clickable in self.clickables:
             #if random.random() < 0.65:
+            #if random.random() < 0.75:
             # This seems to work well also...
             if random.random() < 0.85:
             # This is hard...
@@ -181,15 +182,45 @@ class Computer(Player):
         if clickable:
             cards = clickable.get_available_cards()
             for card in cards:
-                # consider the piles in random order
-                piles = copy.copy(self.foundation_piles.piles)
-                random.shuffle(piles)
+                piles = []
+                empty_piles, nonempty_piles = \
+                        self.get_empty_and_nonempty_in(self.foundation_piles.piles)
+
+                # consider a random sample of at most four nonempty piles
+                if len(nonempty_piles) >= 4:
+                    piles = random.sample(nonempty_piles, 4)
+                else:
+                    piles = nonempty_piles
+
+                # always consider an empty pile if one exists
+                if len(empty_piles) > 0:
+                    piles.append(empty_piles[0])
 
                 for pile in piles:
                     if self.rules.is_valid(card, pile):
                         clickable.transfer(card, pile)
-			self.inc_score()
+                        self.inc_score()
                         self.time_to_deal = self.get_slow_time_to_deal()
                         return True
 
         return False
+
+    def get_empty_and_nonempty_in(self, piles):
+        """ Returns the empty and nonempty piles in the provided list. 
+            Returns a tuple (empty, nonempty) """
+        empty = []
+        non_empty = []
+
+        for pile in piles:
+            if pile.empty():
+                empty.append(pile)
+            else:
+                non_empty.append(pile)
+
+        return (empty, non_empty)
+
+    def get_shuffled_foundation_piles(self):
+        """ Returns a copy of the foundation piles in random order. """
+        piles = copy.copy(self.foundation_piles.piles)
+        random.shuffle(piles)
+        return piles
