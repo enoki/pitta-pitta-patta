@@ -188,6 +188,7 @@ class Computer(Player):
                 for pile in piles:
                     if self.rules.is_valid(card, pile):
                         clickable.transfer(card, pile)
+			self.inc_score()
                         self.time_to_deal = self.get_slow_time_to_deal()
                         return True
 
