@@ -2,23 +2,10 @@
 
 = Roadmap =
 
-== 0.2 ==
-
-Features for 0.2:
-  * ~~Animation of cards~~
-  * ~~More than one computer opponent~~
-  * ~~Better AI~~
-  * ~~Better game over screen~
-
-== 0.3 ===
-
-Features for 0.3:
-  * ~~A startup screen for customizing the game~~
-  * ~~More attractive empty foundation piles~~
-  * ~~Clickable buttons in the game over screen~~
-  * ~~Further improvements to the AI~~
-
-== ? ==
+== 0.4 ==
+  * Multiple difficulty levels
+  * Choice of game type: red-black, same-color, or same-suit
+  * Pause game
 
 Features for a future release:
   * Multiple games, e.g. sets of 3 with variations
