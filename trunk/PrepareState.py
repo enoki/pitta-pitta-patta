@@ -57,5 +57,5 @@ class PrepareState(State):
 
     def draw(self, surface):
         self.playing_field.draw(surface)
-        self.label.set_y((surface.get_height() - self.label.get_height())/ 2)
+        self.label.center_vertically_on(surface)
         self.label.draw(surface)
