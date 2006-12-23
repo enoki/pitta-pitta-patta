@@ -73,9 +73,11 @@ class Button(Label):
     def unselect(self):
         self.background_color = self.normal_color
 
-    def set_checked(self, checked=True, check_color=Color.black):
+    def set_checked(self, checked=True):
         self.checked = checked
-        self.check_color = check_color
 
     def is_checked(self):
         return self.checked
+
+    def set_check_color(self, check_color):
+        self.check_color = check_color
