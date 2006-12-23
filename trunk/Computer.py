@@ -183,7 +183,7 @@ class Computer(Player):
 
                 # always consider an empty pile if one exists
                 if len(empty_piles) > 0:
-                    piles.append(empty_piles[0])
+                    piles.append(random.choice(empty_piles))
 
                 for pile in piles:
                     if self.rules.is_valid(card, pile):
