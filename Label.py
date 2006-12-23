@@ -66,6 +66,9 @@ class Label:
     def set_y(self, y):
         self.y = y
 
+    def center_vertically_on(self, surface):
+        self.set_y((surface.get_height() - self.get_height()) / 2)
+
     def draw(self, surface):
         self.center_x = surface.get_width() / 2
 

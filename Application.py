@@ -10,6 +10,7 @@ from StartState import StartState
 from OptionsState import OptionsState
 from PrepareState import PrepareState
 from PlayState import PlayState
+from PausedState import PausedState
 from GameOverState import GameOverState
 from PlayingField import PlayingField
 
@@ -47,6 +48,7 @@ class Application:
                         'options' : OptionsState(),
                         'prepare' : PrepareState(self.playing_field),
                         'play' : PlayState(self.playing_field),
+                        'paused' : PausedState(self.playing_field),
                         'game_over' : GameOverState(self.playing_field) }
         self.state = self.states['start']
 
@@ -55,6 +57,7 @@ class Application:
         louie.connect(self.goto_options, StartState.options)
         louie.connect(self.goto_start, OptionsState.finished)
         louie.connect(self.goto_play, PrepareState.finished)
+        louie.connect(self.goto_play, PausedState.finished)
         louie.connect(self.restart, GameOverState.new_game)
 
     def transition(self, state_name):
@@ -81,6 +84,15 @@ class Application:
     def goto_play(self):
         self.transition('play')
 
+    def toggle_paused(self):
+        if self.state == self.states['play']:
+            self.transition('paused')
+        elif self.state == self.states['paused']:
+            self.transition('play')
+
+    def goto_paused(self):
+        self.transition('paused')
+
     def restart(self):
         """ Start a new game. deprecated? """
         self.playing_field.configure(self.next_game_config)
@@ -97,7 +109,10 @@ class Application:
                     sys.exit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        sys.exit()
+                        self.toggle_paused()
+                    elif event.key == pygame.K_F4:
+                        if pygame.key.get_mods() and pygame.KMOD_ALT:
+                            sys.exit()
 
                 self.state.handle(event)
 
