@@ -102,7 +102,7 @@ class Card(PlayingCard):
         x, y = self.position()
         delta_x = destination_x - x
         delta_y = destination_y - y
-        num_steps = 5.0
+        num_steps = 10.0
         self.inc_x = delta_x / num_steps
         self.inc_y = delta_y / num_steps
         self.x, self.y = x, y
