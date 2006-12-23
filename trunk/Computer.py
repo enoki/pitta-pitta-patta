@@ -6,6 +6,7 @@
 import pygame
 import random
 import copy
+from GameConfig import GameConfig
 from Player import Player
 
 class Computer(Player):
@@ -18,11 +19,12 @@ class Computer(Player):
         name = self.get_position_name(position)
         Player.__init__(self, name, game_config)
         self.rules = rules
+        self.skill = game_config.computer_skill
         self.foundation_piles = foundation_piles
         self.last_move_time = pygame.time.get_ticks()
         self.last_deal_time = pygame.time.get_ticks()
-        self.time_to_deal = self.get_fast_time_to_deal()
-        self.time_to_think = self.get_time_to_think()
+        self.time_to_deal = self.get_time_to_deal_one_card()
+        self.time_between_moves = self.get_time_between_moves()
 
     def handle(self, event):
         pass
@@ -127,37 +129,29 @@ class Computer(Player):
 
         if pygame.time.get_ticks() - self.last_deal_time > self.time_to_deal:
             self.last_deal_time = pygame.time.get_ticks()
-            self.time_to_deal = self.get_fast_time_to_deal()
+            self.time_to_deal = self.get_time_to_deal_one_card()
             self.deal_card()
 
             if self.xxxcount == 0:
-                if random.random() < 0.9:
+                if self.skill.should_consider_discard_pile():
                     if self.make_best_move_using(self.discard_pile):
                         self.last_move_time = pygame.time.get_ticks()
                         return
 
-        if pygame.time.get_ticks() - self.last_move_time > self.time_to_think:
+        if pygame.time.get_ticks() - self.last_move_time > self.time_between_moves:
             self.last_move_time = pygame.time.get_ticks()
-            self.time_to_think = self.get_time_to_think()
+            self.time_between_moves = self.get_time_between_moves()
 
             self.make_random_move()
 
-    def get_time_to_think(self):
-        # easy
-        #self.time_to_think = 2000
-        # medium
-        #self.time_to_think = 1000
-        # hard
-        #self.time_to_think = 800
-        return random.randint(2000, 3000)
+    def get_time_between_moves(self):
+        return self.skill.get_time_between_moves()
 
-    def get_fast_time_to_deal(self):
-        return random.randint(500, 800)
-        # This seems to work okay...
-        #return random.randint(300, 600)
+    def get_time_to_deal_one_card(self):
+        return self.skill.get_time_to_deal_one_card()
 
-    def get_slow_time_to_deal(self):
-        return random.randint(1000, 1300)
+    def get_time_between_deals(self):
+        return self.skill.get_time_between_deals()
 
     def make_best_move(self):
         """ Move the first available card. """
@@ -168,12 +162,7 @@ class Computer(Player):
     def make_random_move(self):
         """ Consider making a move in each clickable category """
         for clickable in self.clickables:
-            #if random.random() < 0.65:
-            #if random.random() < 0.75:
-            # This seems to work well also...
-            if random.random() < 0.85:
-            # This is hard...
-            #if random.random() < 0.95:
+            if self.skill.should_consider_playable():
                 if self.make_best_move_using(clickable):
                     return
 
@@ -186,9 +175,9 @@ class Computer(Player):
                 empty_piles, nonempty_piles = \
                         self.get_empty_and_nonempty_in(self.foundation_piles.piles)
 
-                # consider a random sample of at most four nonempty piles
-                if len(nonempty_piles) >= 4:
-                    piles = random.sample(nonempty_piles, 4)
+                # consider a random sample of at most X nonempty piles
+                if len(nonempty_piles) >= self.max_piles():
+                    piles = random.sample(nonempty_piles, self.max_piles())
                 else:
                     piles = nonempty_piles
 
@@ -200,10 +189,14 @@ class Computer(Player):
                     if self.rules.is_valid(card, pile):
                         clickable.transfer(card, pile)
                         self.inc_score()
-                        self.time_to_deal = self.get_slow_time_to_deal()
+                        self.time_to_deal = self.get_time_between_deals()
                         return True
 
         return False
+
+    def max_piles(self):
+        """ Abbreviation """
+        return self.skill.max_piles_to_consider()
 
     def get_empty_and_nonempty_in(self, piles):
         """ Returns the empty and nonempty piles in the provided list. 
