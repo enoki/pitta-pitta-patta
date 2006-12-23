@@ -1,4 +1,4 @@
-#summary What can you expect
+#summary What you can expect
 
 = Features =
 
@@ -20,5 +20,4 @@
   * More than one computer opponent
   * Better AI
   * Better game over screen
-
 
