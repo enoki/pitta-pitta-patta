@@ -15,6 +15,8 @@ Features for a future release:
   * Have to manually move home pile cards to cells
   * Drag and drop of cards
   * Save/load game state
+  * Set difficulty separately for each computer player
+  * Different computer player personalities
   * ...
   * Network play
   * C++ Qt port
