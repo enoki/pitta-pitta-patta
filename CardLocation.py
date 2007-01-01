@@ -12,8 +12,15 @@ class CardLocation:
         return self.rect.collidepoint(x, y)
 
     def grab_cards(self, cards):
+        x = 0
         for card in cards:
-            self.grab_card(card)
+            self.grab_card_(card, x)
+            if x > -12:
+                x -= 4
+
+    def grab_card_(self, card, x):
+        card.rect.x = self.rect.x + x
+        card.rect.y = self.rect.y
 
     def grab_card(self, card):
         card.rect.x = self.rect.x

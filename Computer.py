@@ -42,7 +42,7 @@ class Computer(Player):
         """ Puts the cards in the north-west position. """
         some_card = self.home_pile.top_card()
         card_width, card_height = some_card.rect.width, some_card.rect.height
-        left_margin, hand_top_margin = 10, 0
+        left_margin, hand_top_margin = 15, 0
         top_margin = hand_top_margin + card_height + 10
 
         x = left_margin
