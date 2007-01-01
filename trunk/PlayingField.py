@@ -28,8 +28,9 @@ class PlayingField:
     def configure(self, game_config):
         """ Configures the playing field using the supplied GameConfig """
         self.game_config = game_config
+        self.game = self.game_config.match.next_game()
         self.player = Player('You', game_config)
-        self.rules = game_config.rules
+        self.rules = self.game.rules
         self.foundation_piles = FoundationPiles(self.player,
                                                 self.rules,
                                                 game_config.num_players)
@@ -82,4 +83,4 @@ class PlayingField:
         return winner
 
     def get_round_name(self):
-        return self.game_config.round_name
+        return self.game.name

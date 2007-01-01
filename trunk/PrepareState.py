@@ -23,6 +23,11 @@ class PrepareState(State):
         self.font = pygame.font.SysFont("Arial", 36)
         self.label = Label(self.font, Color.white, Color.medium_blue)
 
+    def entered(self):
+        self.tick_count = 0
+        self.last_tick = pygame.time.get_ticks()
+        self.label.set_text(self.create_round_text(1))
+
     def delay(self):
         pygame.time.wait(30)
 

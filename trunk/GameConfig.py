@@ -3,15 +3,14 @@
 # Released under the GPL version 2.0 or later.
 #
 
-from DefaultRules import *
 from SkillLevels import *
+from Match import Match
 
 class GameConfig:
     """ Game configuration information """
 
     def __init__(self):
         self.num_players = 4
-        self.rules = RedBlackUpRules()
-        self.round_name = 'Red Black Up'
-        self.home_pile_size = 13
         self.computer_skill = NormalSkillLevel()
+        self.home_pile_size = 13
+        self.match = Match()
