@@ -5,6 +5,7 @@
 
 import pygame
 import louie
+import sys
 from Button import Button
 from Color import Color
 from GameConfig import GameConfig
@@ -33,6 +34,10 @@ class StartState(State):
 
     def handle(self, event):
         self.widget.handle(event)
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                sys.exit()
 
     def update(self):
         if self.widget.empty():
