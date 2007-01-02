@@ -50,7 +50,7 @@ class RectContainer:
 
     def draw_background(self, surface):
         self.background_rect.centerx = surface.get_width() / 2
-        pygame.draw.rect(surface, self.background_color, self.background_rect)
+        surface.fill(self.background_color, self.background_rect)
 
     def handle(self, event):
         for widget in self.widgets:
