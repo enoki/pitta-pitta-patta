@@ -67,7 +67,11 @@ class Application:
         self.state = self.states[state_name]
         self.state.entered()
 
+    def reset_state(self, state_name, new_state):
+        self.states[state_name] = new_state
+
     def goto_game_over(self):
+        self.reset_state('game_over', GameOverState(self.playing_field))
         self.transition('game_over')
 
     def goto_start(self, game_config):
