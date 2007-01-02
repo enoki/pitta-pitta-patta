@@ -28,7 +28,9 @@ class PausedState(State):
 
     def handle(self, event):
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RETURN:
+            if event.key == pygame.K_ESCAPE:
+                self.finish()
+            elif event.key == pygame.K_RETURN:
                 sys.exit()
 
         self.widget.handle(event)
