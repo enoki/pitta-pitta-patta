@@ -45,7 +45,7 @@ class StartState(State):
 
     def create_ui(self):
         label = self.make_label('\nPitta Pitta Patta\n')
-        label.set_y(150)
+        label.set_y(200)
         
         label_spacer0 = self.make_label(' ')
 

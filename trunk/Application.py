@@ -61,6 +61,7 @@ class Application:
         louie.connect(self.goto_paused, PlayState.paused)
         louie.connect(self.goto_paused, PrepareState.paused)
         louie.connect(self.restart, GameOverState.new_game)
+        louie.connect(self.return_to_start, GameOverState.escape_pressed)
 
     def transition(self, state_name):
         self.state.exited()
@@ -73,6 +74,9 @@ class Application:
     def goto_game_over(self):
         self.reset_state('game_over', GameOverState(self.playing_field))
         self.transition('game_over')
+
+    def return_to_start(self):
+        self.transition('start')
 
     def goto_start(self, game_config):
         self.transition('start')

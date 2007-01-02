@@ -5,7 +5,6 @@
 
 import pygame
 import louie
-import sys
 from Button import Button
 from Color import Color
 from Label import Label
@@ -16,6 +15,7 @@ class GameOverState(State):
     """ The state shown after a game ends. """
 
     new_game = louie.Signal()
+    escape_pressed = louie.Signal()
 
     def __init__(self, playing_field):
         self.playing_field = playing_field
@@ -38,7 +38,7 @@ class GameOverState(State):
             elif event.key == pygame.K_RETURN:
                 self.new_game()
             elif event.key == pygame.K_ESCAPE:
-                sys.exit()
+                louie.send(GameOverState.escape_pressed)
 
         for handler in self.handlers:
             handler.handle(event)
