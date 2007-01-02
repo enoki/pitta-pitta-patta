@@ -59,6 +59,7 @@ class Application:
         louie.connect(self.goto_play, PrepareState.finished)
         louie.connect(self.goto_play, PausedState.finished)
         louie.connect(self.goto_paused, PlayState.paused)
+        louie.connect(self.goto_paused, PrepareState.paused)
         louie.connect(self.restart, GameOverState.new_game)
 
     def transition(self, state_name):

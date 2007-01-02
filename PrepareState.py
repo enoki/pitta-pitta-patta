@@ -13,12 +13,14 @@ class PrepareState(State):
     """ The state where players are shown a message to get ready to play. """
 
     finished = louie.Signal()
+    paused = louie.Signal()
 
     def __init__(self, playing_field):
         self.playing_field = playing_field
         self.num_ticks = 4
         self.time_to_tick = 500
         self.tick_count = 0
+        self.is_paused = False
         self.last_tick = pygame.time.get_ticks()
         self.font = pygame.font.SysFont("Arial", 36)
         self.label = Label(self.font, Color.white, Color.medium_blue)
@@ -32,9 +34,14 @@ class PrepareState(State):
         pygame.time.wait(30)
 
     def handle(self, event):
-        pass
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                self.pause()
 
     def update(self):
+        if self.is_paused:
+            return
+
         if self.label.empty():
             self.label.set_text(self.create_round_text(1))
 
@@ -64,3 +71,11 @@ class PrepareState(State):
         self.playing_field.draw(surface)
         self.label.center_vertically_on(surface)
         self.label.draw(surface)
+
+    def pause(self):
+        self.is_paused = not self.is_paused
+
+        if self.is_paused:
+            self.label.set_text(self.create_round_text('Paused'))
+        else:
+            self.label.set_text(self.create_round_text(self.tick_count))
