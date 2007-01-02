@@ -58,6 +58,7 @@ class Application:
         louie.connect(self.goto_start, OptionsState.finished)
         louie.connect(self.goto_play, PrepareState.finished)
         louie.connect(self.goto_play, PausedState.finished)
+        louie.connect(self.goto_paused, PlayState.paused)
         louie.connect(self.restart, GameOverState.new_game)
 
     def transition(self, state_name):
@@ -84,12 +85,6 @@ class Application:
     def goto_play(self):
         self.transition('play')
 
-    def toggle_paused(self):
-        if self.state == self.states['play']:
-            self.transition('paused')
-        elif self.state == self.states['paused']:
-            self.transition('play')
-
     def goto_paused(self):
         self.transition('paused')
 
@@ -108,9 +103,7 @@ class Application:
                 if event.type == pygame.QUIT:
                     sys.exit()
                 elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        self.toggle_paused()
-                    elif event.key == pygame.K_F4:
+                    if event.key == pygame.K_F4:
                         if pygame.key.get_mods() and pygame.KMOD_ALT:
                             sys.exit()
 
