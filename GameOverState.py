@@ -5,6 +5,7 @@
 
 import pygame
 import louie
+import sys
 from Button import Button
 from Color import Color
 from Label import Label
@@ -36,6 +37,8 @@ class GameOverState(State):
                 self.toggle_informative()
             elif event.key == pygame.K_RETURN:
                 self.new_game()
+            elif event.key == pygame.K_ESCAPE:
+                sys.exit()
 
         for handler in self.handlers:
             handler.handle(event)
