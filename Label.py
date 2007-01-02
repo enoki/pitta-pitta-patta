@@ -44,13 +44,10 @@ class Label:
         self.background_rect.size = self.width, self.height
 
     def calculate_size(self):
-        self.y_spacing = 0
-
         for image in self.images:
             rect = image.get_rect()
             self.width = max(self.width, rect.width)
-            self.y_spacing = max(self.y_spacing, rect.height * 1.5)
-            self.height += self.y_spacing
+            self.height += rect.height
 
         self.width += self.horiz_margins
 
@@ -79,7 +76,7 @@ class Label:
         for image in self.images:
             image_rect = image.get_rect(centerx=self.center_x, y=y)
             surface.blit(image, image_rect)
-            y += self.y_spacing
+            y += image_rect.height
 
     def draw_background(self, surface):
         if self.background_rect:
