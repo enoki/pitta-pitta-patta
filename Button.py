@@ -18,19 +18,12 @@ class Button(Label):
         Label.__init__(self, font, text_color, background_color, y, text)
         self.normal_color = background_color
         self.selected_color = selected_color
-        self.border_rect = pygame.Rect(0, 0, 0, 0)
-        self.border_width = 3
+        self.border_color = Color.black
         self.checked = False
         self.check_color = Color.black
 
     def set_text(self, text):
         Label.set_text(self, text)
-        self.calculate_border()
-
-    def calculate_border(self):
-        self.border_rect = self.background_rect
-        self.border_rect.width -= 5
-        self.border_rect.height -= 1
 
     def draw(self, surface):
         Label.draw(self, surface)
@@ -40,7 +33,11 @@ class Button(Label):
         if self.checked:
             x, y = self.position(surface)
             x -= 10
-            pygame.draw.circle(surface, self.check_color, (x, y) , 3)
+            pygame.draw.circle(surface, self.check_color, (x, y), 3)
+
+    def draw_border(self, surface):
+        border_rect = self.background_rect
+        pygame.draw.rect(surface, self.border_color, border_rect, 1)
 
     def position(self, surface):
         """ Note: this returns the position of the first line only. """
