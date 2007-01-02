@@ -82,7 +82,7 @@ class Label:
         if self.background_rect:
             self.background_rect.centerx = self.center_x
             self.background_rect.y = self.y
-            pygame.draw.rect(surface, self.background_color, self.background_rect)
+            surface.fill(self.background_color, self.background_rect)
 
     def empty(self):
         return len(self.images) == 0
