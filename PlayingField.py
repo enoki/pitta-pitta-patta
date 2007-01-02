@@ -67,6 +67,7 @@ class PlayingField:
             updateable.update()
 
     def on_game_over(self):
+        self.record_scores()
         louie.send(PlayingField.game_over)
 
     def get_winner(self):
@@ -84,3 +85,7 @@ class PlayingField:
 
     def get_round_name(self):
         return self.game.name
+
+    def record_scores(self):
+        for player in self.players:
+            self.game.add_score(player, player.get_score())

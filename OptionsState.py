@@ -33,13 +33,17 @@ class OptionsState(State):
     def handle(self, event):
         self.widget.handle(event)
 
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                self.finish_up()
+
     def update(self):
         if self.widget.empty():
             self.create_ui()
 
     def create_ui(self):
         label = self.make_label('\nPitta Pitta Patta Options\n')
-        label.set_y(100)
+        label.set_y(160)
         
         two_p_button = self.make_button('2 Players')
         three_p_button = self.make_button('3 Players')

@@ -75,8 +75,5 @@ class RectContainer:
             widget.set_y(y)
             self.set_layout()
 
-    def center_vertically_on(self, surface):
-        self.set_y((surface.get_height() - self.get_height()) / 2)
-
     def empty(self):
         return len(self.widgets) == 0
