@@ -39,6 +39,8 @@ class PausedState(State):
         label = Label(self.title_font, Color.white, Color.medium_blue)
         label.set_text('Paused')
         label.set_y(200)
+
+        a, b = self.make_spacer(), self.make_spacer()
         
         resume_button = self.make_button('Resume (Escape)')
         exit_button = self.make_button('Exit Game')
@@ -46,7 +48,12 @@ class PausedState(State):
         louie.connect(self.finish, Button.clicked, resume_button)
         louie.connect(self.exit, Button.clicked, exit_button)
 
-        self.widget.create_ui([label, resume_button, exit_button])
+        self.widget.create_ui([label, a, resume_button, exit_button, b])
+
+    def make_spacer(self):
+        spacer = Label(self.button_font, Color.white, Color.medium_blue)
+        spacer.set_text(' ')
+        return spacer
 
     def make_button(self, text):
         return Button(self.button_font,
