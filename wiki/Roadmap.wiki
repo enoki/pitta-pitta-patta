@@ -4,14 +4,14 @@
 
 == 0.4 ==
   * Multiple difficulty levels
-  * Choice of game type: red-black, same-color, or same-suit
+  * Multiple games, e.g. sets of 3 with variations
+  * Better score keeping
   * Pause game
   * Options screen
 
 Features for a future release:
-  * Multiple games, e.g. sets of 3 with variations
-  * Better score keeping
   * High scores list
+  * Merging of start and pause screens into a menu
   * Have to manually move home pile cards to cells
   * Drag and drop of cards
   * Save/load game state
