@@ -14,3 +14,6 @@ class Game:
 
     def add_score(self, name, score):
         self.scores[name] = score
+
+    def total_score_for(self, name):
+        return self.scores[name]

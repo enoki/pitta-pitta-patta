@@ -90,8 +90,8 @@ class PlayingField:
         for player in self.players:
             self.game.add_score(player.get_name(), player.get_score())
 
-    def score_summary(self):
-        """ Returns a summary of all the player's score. """
+    def game_score_summary(self):
+        """ Returns a summary of all the player's score for the last game. """
 
         total_summary = []
 
@@ -104,6 +104,29 @@ class PlayingField:
 
             summary = map(str, summary)
 
+            total_summary.append(summary)
+
+        return total_summary
+
+    def set_score_summary(self):
+        """ Returns a summary of all the player's score for the current set. """
+        total_summary = []
+
+        set = self.game_config.match.current_set()
+
+        for player in self.players:
+            player_name = player.get_name()
+            summary = [player_name]
+
+            for game in set.all_played_games():
+                summary.append(game.total_score_for(player_name))
+
+            for game in set.all_unplayed_games():
+                summary.append(' ')
+
+            summary.append(set.total_score_for(player_name))
+
+            summary = map(str, summary)
             total_summary.append(summary)
 
         return total_summary

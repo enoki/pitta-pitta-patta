@@ -40,6 +40,10 @@ class Set:
         for game in self.played_games:
             yield game
 
+    def all_unplayed_games(self):
+        for game in self.games:
+            yield game
+
     def empty(self):
         return len(self.games) <= 0
 
