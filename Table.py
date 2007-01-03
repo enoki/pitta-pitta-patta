@@ -201,13 +201,13 @@ class Table:
         for cell in self.each_row(row):
             cell.set_font(font)
 
-    def set_col_text_color(self, col, color):
+    def set_col_bg_color(self, col, color):
         for cell in self.each_col(col):
-            cell.set_text_color(color)
+            cell.set_background_color(color)
 
-    def set_row_text_color(self, row, color):
+    def set_row_bg_color(self, row, color):
         for cell in self.each_row(row):
-            cell.set_text_color(color)
+            cell.set_background_color(color)
 
     def each_index(self):
         num_rows = self.num_rows()

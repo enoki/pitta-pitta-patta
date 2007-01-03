@@ -99,8 +99,7 @@ class PlayingField:
             summary = [player.get_name(),
                        player.num_good_cards(), 
                        -player.num_bad_cards() * 2,
-                       player.get_score(),
-                       self.game_config.match.total_score_for(player.get_name())]
+                       player.get_score()]
 
             summary = map(str, summary)
 
