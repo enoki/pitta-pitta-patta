@@ -36,9 +36,17 @@ class Set:
         self.played_games.append(game)
         return game
 
-    def all_games(self):
-        for game in self.games:
+    def all_played_games(self):
+        for game in self.played_games:
             yield game
 
     def empty(self):
         return len(self.games) <= 0
+
+    def total_score_for(self, player_name):
+        total = 0
+
+        for game in self.all_played_games():
+            total += game.scores[player_name]
+
+        return total

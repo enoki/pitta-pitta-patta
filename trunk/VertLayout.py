@@ -12,7 +12,9 @@ class VertLayout:
 
     def layout(self):
         y = 0
+        if len(self.widgets) > 0:
+            y = self.widgets[0].get_y()
+
         for widget in self.widgets:
-            y += widget.get_y()
             widget.set_y(y)
             y += widget.get_height()
