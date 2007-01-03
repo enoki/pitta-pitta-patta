@@ -88,4 +88,22 @@ class PlayingField:
 
     def record_scores(self):
         for player in self.players:
-            self.game.add_score(player, player.get_score())
+            self.game.add_score(player.get_name(), player.get_score())
+
+    def score_summary(self):
+        """ Returns a summary of all the player's score. """
+
+        total_summary = []
+
+        for player in self.players:
+            summary = [player.get_name(),
+                       player.num_good_cards(), 
+                       -player.num_bad_cards() * 2,
+                       player.get_score(),
+                       self.game_config.match.total_score_for(player.get_name())]
+
+            summary = map(str, summary)
+
+            total_summary.append(summary)
+
+        return total_summary

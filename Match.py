@@ -28,3 +28,11 @@ class Match:
     def all_sets(self):
         for set in self.sets:
             yield set
+
+    def total_score_for(self, player_name):
+        total = 0
+
+        for set in self.all_sets():
+            total += set.total_score_for(player_name)
+
+        return total
