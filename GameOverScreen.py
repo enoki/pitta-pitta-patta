@@ -87,21 +87,32 @@ class Cell:
 class Table:
     """ A simple table widget for displaying on pygame surfaces. """
 
-    def __init__(self, font, text_color, background_color, data=None):
+    def __init__(self, font, text_color, background_color, data=None, title=''):
         self.cells = []
         self.font = font
         self.text_color = text_color
         self.background_color = background_color
+        self.titles = []
         self.x, self.y = (0, 0)
         self.row_height = 0
         self.spacing = ' '
 
+        self.set_title(title)
         self.set_data(data)
 
     def set_data(self, data):
         if data:
             self.make_cells(data)
             self.render()
+
+    def set_title(self, title):
+        if len(title) > 0:
+            title_text = title.split('\n')
+
+            for line in title_text:
+                cell = Cell(line, self.font, self.text_color, self.background_color)
+                cell.add_border(BottomSideBorder())
+                self.titles.append(cell)
 
     def cell_at(self, row, col):
         if self.empty():
@@ -126,6 +137,9 @@ class Table:
     def render(self):
         for cell in self.each_cell():
             cell.render()
+
+        for title in self.titles:
+            title.render()
 
         self.calc_dimensions()
         
@@ -160,6 +174,10 @@ class Table:
     def draw(self, surface):
         self.x = (surface.get_width() - self.get_width()) / 2
         y = self.y
+
+        for title in self.titles:
+            x = (surface.get_width() - title.width()) / 2
+            title.draw(surface, x, y)
 
         for row in self.cells:
             x = self.x
@@ -237,7 +255,7 @@ class Table:
         self.x = x
 
     def get_height(self):
-        return self.row_height * (self.num_rows() + 1)
+        return self.row_height * (self.num_rows() + 1 + len(self.titles))
 
     def get_width(self):
         if self.num_rows() == 0:
@@ -265,7 +283,8 @@ class GameOverScreen:
     escape_pressed = louie.Signal()
 
     def __init__(self):
-        self.font = pygame.font.SysFont("Arial", 24)
+        self.title_font = pygame.font.SysFont("Arial", 24)
+        self.font = pygame.font.SysFont("Arial", 20)
         self.main_widget = RectContainer(Color.medium_blue)
 
         self.drawables = []
@@ -285,39 +304,43 @@ class GameOverScreen:
         pass
 
     def create_ui(self, game_score_summary, set_score_summary):
-        title_label = self.make_label('Game Over')
-        spacer = self.make_label('\n')
+        title_label = self.make_label('Stats\n', self.title_font)
+        spacer = self.make_label(' ')
         spacer0 = self.make_label(' ')
         game_box_scores = self.make_game_table(game_score_summary)
         set_box_scores = self.make_set_table(set_score_summary)
 
-        title_label.set_y(50)
+        title_label.set_y(75)
 
         new_game_button = self.make_button('Continue')
         louie.connect(self.new_game, Button.clicked, new_game_button)
 
         main_widget_children = [title_label,
                                 game_box_scores, 
-                                set_box_scores, spacer,
+                                set_box_scores, 
                                 new_game_button]
         self.main_widget.create_ui(main_widget_children)
 
         self.drawables = [self.main_widget]
         self.handlers = [self.main_widget]
 
-    def make_label(self, text):
-        label = Label(self.font, Color.white, Color.medium_blue)
+    def make_label(self, text, font=None):
+        if not font:
+            font = self.font
+
+        label = Label(font, Color.white, Color.medium_blue)
         label.set_text(text)
         return label
 
     def make_game_table(self, score_summary):
         """ Returns the box score table for the last game. """
 
+        title = 'Game'
         data = [['Name', 'Put out', 'Subtract', 'Score', 'Total']]
 
         data.extend(score_summary)
 
-        table = Table(self.font, Color.white, Color.medium_blue, data)
+        table = Table(self.font, Color.white, Color.medium_blue, data, title)
         table.set_right_col_border(0)
         table.set_right_col_border(-2)
         table.set_bottom_row_border(0)
@@ -326,11 +349,12 @@ class GameOverScreen:
     def make_set_table(self, score_summary):
         """ Returns the box score table for the current set. """
 
+        title = 'Set'
         data = [['Name', '1 ', '2 ', '3 ', '4 ', '5 ', '6 ', 'Total']]
 
         data.extend(score_summary)
 
-        table = Table(self.font, Color.white, Color.medium_blue, data)
+        table = Table(self.font, Color.white, Color.medium_blue, data, title)
         table.set_right_col_border(0)
         table.set_right_col_border(-2)
         table.set_bottom_row_border(0)

@@ -122,7 +122,7 @@ class PlayingField:
                 summary.append(game.total_score_for(player_name))
 
             for game in set.all_unplayed_games():
-                summary.append(' ')
+                summary.append('-')
 
             summary.append(set.total_score_for(player_name))
 

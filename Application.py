@@ -49,7 +49,7 @@ class Application:
                         'prepare' : PrepareState(self.playing_field),
                         'play' : PlayState(self.playing_field),
                         'paused' : PausedState(self.playing_field),
-                        'game_over' : GameOverState(self.playing_field) }
+                        'game_over' : None }
         self.state = self.states['start']
 
     def connect(self):
