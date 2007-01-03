@@ -16,13 +16,18 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((430, 660), pygame.HWSURFACE | pygame.DOUBLEBUF)
 
-    data = [['Grant', '3',  '-5', '3', '10'],
-            ['Ally',  '4',  '-2', '2', '12'],
-            ['Bob',   '10', '-2', '8', '15'],
-            ['Sue',   '11', '-4', '7', '35']]
+    game_data = [['Grant', '3',  '-5', '3', '10'],
+                 ['Ally',  '4',  '-2', '2', '12'],
+                 ['Bob',   '10', '-2', '8', '15'],
+                 ['Sue',   '11', '-4', '7', '35']]
+
+    set_data = [['Grant', '3',  '5', '3', '', '', '', '10'],
+                ['Ally',  '4',  '2', '2', '', '', '', '12'],
+                ['Bob',   '10', '2', '8', '', '', '', '15'],
+                ['Sue',   '11', '4', '7', '', '', '', '35']]
 
     a = GameOverScreen()
-    a.create_ui(data)
+    a.create_ui(game_data, set_data)
 
     logging.basicConfig(level=logging.DEBUG)
     def dump(x):

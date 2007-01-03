@@ -18,7 +18,8 @@ class GameOverState(State):
     def __init__(self, playing_field):
         self.playing_field = playing_field
         self.screen = GameOverScreen()
-        self.screen.create_ui(self.playing_field.score_summary())
+        self.screen.create_ui(self.playing_field.game_score_summary(),
+                              self.playing_field.set_score_summary())
 
         louie.connect(self.new_game, GameOverScreen.new_game)
         louie.connect(self.escape_pressed, GameOverScreen.escape_pressed)

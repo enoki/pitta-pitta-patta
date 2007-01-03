@@ -284,18 +284,21 @@ class GameOverScreen:
     def update(self):
         pass
 
-    def create_ui(self, score_summary):
+    def create_ui(self, game_score_summary, set_score_summary):
         title_label = self.make_label('Game Over')
-        spacer = self.make_label(' ')
+        spacer = self.make_label('\n')
         spacer0 = self.make_label(' ')
-        box_scores = self.make_table(score_summary)
+        game_box_scores = self.make_game_table(game_score_summary)
+        set_box_scores = self.make_set_table(set_score_summary)
 
-        title_label.set_y(150)
+        title_label.set_y(50)
 
         new_game_button = self.make_button('Continue')
         louie.connect(self.new_game, Button.clicked, new_game_button)
 
-        main_widget_children = [title_label, box_scores, spacer,
+        main_widget_children = [title_label,
+                                game_box_scores, 
+                                set_box_scores, spacer,
                                 new_game_button]
         self.main_widget.create_ui(main_widget_children)
 
@@ -307,10 +310,23 @@ class GameOverScreen:
         label.set_text(text)
         return label
 
-    def make_table(self, score_summary):
-        """ Returns the box score table. """
+    def make_game_table(self, score_summary):
+        """ Returns the box score table for the last game. """
 
         data = [['Name', 'Put out', 'Subtract', 'Score', 'Total']]
+
+        data.extend(score_summary)
+
+        table = Table(self.font, Color.white, Color.medium_blue, data)
+        table.set_right_col_border(0)
+        table.set_right_col_border(-2)
+        table.set_bottom_row_border(0)
+        return table
+
+    def make_set_table(self, score_summary):
+        """ Returns the box score table for the current set. """
+
+        data = [['Name', '1 ', '2 ', '3 ', '4 ', '5 ', '6 ', 'Total']]
 
         data.extend(score_summary)
 

@@ -29,6 +29,9 @@ class Match:
         for set in self.sets:
             yield set
 
+    def current_set(self):
+        return self.set
+
     def total_score_for(self, player_name):
         total = 0
 
