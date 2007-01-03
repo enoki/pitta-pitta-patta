@@ -21,6 +21,7 @@ class GameOverScreen:
     def __init__(self):
         self.title_font = pygame.font.SysFont("Arial", 24)
         self.font = pygame.font.SysFont("Arial", 20)
+        self.font_bold = pygame.font.SysFont("Arial", 20, bold=True)
         self.main_widget = RectContainer(Color.medium_blue)
 
         self.drawables = []
