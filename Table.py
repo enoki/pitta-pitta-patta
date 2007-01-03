@@ -106,6 +106,8 @@ class Table:
         if len(title) > 0:
             title_text = title.split('\n')
 
+            self.titles = []
+
             for line in title_text:
                 cell = Cell(line, self.font, self.text_color, self.background_color)
                 cell.add_border(BottomSideBorder())
@@ -120,6 +122,8 @@ class Table:
         return self.cells[row][col]
 
     def make_cells(self, data):
+        self.cells = []
+
         for row in data:
             self.cells.append([])
 
