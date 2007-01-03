@@ -68,11 +68,23 @@ class GameOverScreen:
         label.set_text(text)
         return label
 
+    def find_high_score_row(self, score_summary):
+        high_score = -100000
+        high_row = 0
+
+        for row_i, row in enumerate(score_summary):
+            score = int(row[-1])
+            if score > high_score:
+                high_score = score
+                high_row = row_i + 1
+
+        return high_row
+
     def make_game_table(self, score_summary):
         """ Returns the box score table for the last game. """
 
         title = 'Game'
-        data = [['Name', 'Put out', 'Subtract', 'Score', 'Total']]
+        data = [['Name', 'Put out', 'Subtract', 'Score']]
 
         data.extend(score_summary)
 
@@ -80,13 +92,14 @@ class GameOverScreen:
         table.set_right_col_border(0)
         table.set_right_col_border(-2)
         table.set_bottom_row_border(0)
+        table.set_row_bg_color(self.find_high_score_row(score_summary), Color.red)
         return table
 
     def make_set_table(self, score_summary):
         """ Returns the box score table for the current set. """
 
         title = 'Set'
-        data = [['Name', '1 ', '2 ', '3 ', '4 ', '5 ', '6 ', 'Total']]
+        data = [['Name', '1  ', '2  ', '3  ', '4  ', '5  ', '6  ', 'Total']]
 
         data.extend(score_summary)
 
@@ -94,6 +107,7 @@ class GameOverScreen:
         table.set_right_col_border(0)
         table.set_right_col_border(-2)
         table.set_bottom_row_border(0)
+        table.set_row_bg_color(self.find_high_score_row(score_summary), Color.red)
         return table
 
     def make_table(self, data, title):
