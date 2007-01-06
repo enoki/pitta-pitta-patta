@@ -11,7 +11,7 @@ class SharedImages:
     """ Private class to store shared images. """
     card_images = None
 
-def Deck():
+def Deck(name):
     """ Creates a deck of cards. """
 
     if SharedImages.card_images is None:
@@ -21,8 +21,10 @@ def Deck():
 
     cards = []
 
+    back_image = ci.get_back(name)
+
     for number, suit, image in ci.images():
-        cards.append(Card(number, suit, image, ci.get_back(), 30, 30))
+        cards.append(Card(number, suit, image, back_image, 30, 30))
 
     deck = CardGroup(cards)
     deck.shuffle()
