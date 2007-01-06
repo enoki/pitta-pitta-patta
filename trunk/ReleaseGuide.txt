@@ -1,0 +1,2 @@
+To tag the current trunk as version 0.4, for instance:
+svn copy https://pitta-pitta-patta.googlecode.com/svn/trunk https://pitta-pitta-patta.googlecode.com/svn/tags/0.4
