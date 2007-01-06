@@ -2,17 +2,10 @@
 
 = Roadmap =
 
-== 0.4 ==
-  * Multiple difficulty levels
-  * Multiple games, e.g. sets of 3 with variations
-  * Better score keeping
-  * More comprehensive Game Over screen
-  * Pause game
-  * Options screen
-  * Shows cards underneath the top card
+== 0.5 ==
+  * High scores list
 
 Features for a future release:
-  * High scores list
   * Merging of start and pause screens into a menu
   * Have to manually move home pile cards to cells
   * Drag and drop of cards
