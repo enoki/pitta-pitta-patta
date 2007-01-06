@@ -9,6 +9,15 @@
 
 == Recent Changes ==
 
+=== New in 0.4 ===
+  * Multiple difficulty levels
+  * Multiple games, e.g. sets of 3 with variations
+  * Better score keeping
+  * More comprehensive Game Over screen
+  * Pause game
+  * Options screen
+  * Shows cards underneath the top card
+
 === New in 0.3 ===
   * A startup screen for customizing the game
   * More attractive empty foundation piles
@@ -20,4 +29,5 @@
   * More than one computer opponent
   * Better AI
   * Better game over screen
+
 
