@@ -34,7 +34,7 @@ class Application:
         if num_players < 2 or num_players > 4:
             return
 
-        resolutions = [(430, 660), (850, 660), (850, 660), (850, 660)]
+        resolutions = [(430, 700), (850, 700), (850, 700), (850, 700)]
         resolution = resolutions[num_players-2]
         display_flags = pygame.HWSURFACE | pygame.DOUBLEBUF
         self.screen = pygame.display.set_mode(resolution, display_flags)

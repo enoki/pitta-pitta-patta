@@ -14,7 +14,7 @@ from Color import Color
 def main():
     """ Tests just the game over screen. """
     pygame.init()
-    screen = pygame.display.set_mode((430, 660), pygame.HWSURFACE | pygame.DOUBLEBUF)
+    screen = pygame.display.set_mode((430, 700), pygame.HWSURFACE | pygame.DOUBLEBUF)
 
     game_data = [['Grant', '3',  '-5', '-2'],
                  ['Ally',  '4',  '-2', '2'],
