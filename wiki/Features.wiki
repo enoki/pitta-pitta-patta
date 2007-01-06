@@ -1,4 +1,5 @@
 #summary What you can expect
+#labels Featured
 
 = Features =
 
@@ -29,4 +30,3 @@
   * More than one computer opponent
   * Better AI
   * Better game over screen
-
