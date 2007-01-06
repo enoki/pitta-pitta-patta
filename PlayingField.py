@@ -7,6 +7,7 @@ import louie
 from Player import Player
 from Computer import Computer
 from FoundationPiles import FoundationPiles
+from StatusBar import StatusBar
 
 class PlayingField:
     """ The playing field comprises the foundation piles
@@ -20,6 +21,7 @@ class PlayingField:
         self.player = None
         self.rules = None
         self.foundation_piles = None
+        self.status_bar = None
 
         self.drawables = []
         self.handlers = []
@@ -34,6 +36,7 @@ class PlayingField:
         self.foundation_piles = FoundationPiles(self.player,
                                                 self.rules,
                                                 game_config.num_players)
+        self.status_bar = StatusBar(self.player, self.game)
         self.players = [self.player]
         self.humans = [self.player]
 
@@ -44,7 +47,7 @@ class PlayingField:
 
         louie.connect(self.on_game_over, Player.finished)
 
-        self.drawables = [self.foundation_piles]
+        self.drawables = [self.foundation_piles, self.status_bar]
         self.drawables.extend(self.players)
         self.handlers = [self.player, self.foundation_piles]
         self.updateables = [self.foundation_piles]
