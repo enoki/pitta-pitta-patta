@@ -58,7 +58,7 @@ class PrepareState(State):
                 self.label.set_text(self.create_round_text(self.tick_count))
 
     def create_round_text(self, number):
-        text = 'Round 1: '
+        text = 'Round ' + str(self.playing_field.get_round_count()) + ': '
         text += self.playing_field.get_round_name()
         text += '\n'
         text += str(number)

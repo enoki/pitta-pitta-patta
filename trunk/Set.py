@@ -36,6 +36,9 @@ class Set:
         self.played_games.append(game)
         return game
 
+    def current_game(self):
+        return self.played_games[-1]
+
     def all_played_games(self):
         for game in self.played_games:
             yield game
@@ -43,6 +46,15 @@ class Set:
     def all_unplayed_games(self):
         for game in self.games:
             yield game
+
+    def num_played_games(self):
+        return len(self.played_games)
+
+    def num_unplayed_games(self):
+        return len(self.games)
+
+    def num_total_games(self):
+        return self.num_played_games() + self.num_unplayed_games()
 
     def empty(self):
         return len(self.games) <= 0
