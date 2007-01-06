@@ -4,8 +4,8 @@
 
 == Key Features ==
   * Play in real time against up to four computer opponents
-  * Tackle three different game modes: red-black, same-color, and same-suit (coming soon)
-  * Adjustable difficulty levels (coming soon)
+  * Tackle three different game modes: red-black, same-color, and same-suit
+  * Adjustable difficulty levels
 
 == Recent Changes ==
 
@@ -29,5 +29,4 @@
   * More than one computer opponent
   * Better AI
   * Better game over screen
-
 
