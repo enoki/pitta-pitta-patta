@@ -22,11 +22,16 @@ class CardImages:
             self.card_images[(num, suit)] = \
                 pygame.image.load(image_name).convert()
 
-        self.back_image = pygame.image.load("%s/back_blue.png" % image_dir)
+        self.back_images = {}
+        back_image_names = ['blue', 'red']
+
+        for name in back_image_names:
+            self.back_images[name] = \
+                pygame.image.load("%s/back_%s.png" % (image_dir, name))
 
     def images(self):
         for (number, suit), image in self.card_images.iteritems():
             yield (number, suit, image)
 
-    def get_back(self):
-        return self.back_image
+    def get_back(self, name):
+        return self.back_images[name]

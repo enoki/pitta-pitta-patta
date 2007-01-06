@@ -17,7 +17,7 @@ class Computer(Player):
     def __init__(self, rules, foundation_piles, game_config, position):
         self.position = position
         name = self.get_position_name(position)
-        Player.__init__(self, name, game_config)
+        Player.__init__(self, name, 'red', game_config)
         self.rules = rules
         self.skill = game_config.computer_skill
         self.foundation_piles = foundation_piles
@@ -117,11 +117,11 @@ class Computer(Player):
 
     def get_position_name(self, position):
         if self.position == Computer.NorthWest:
-            return 'Grant (North-West)'
+            return 'Computer 1'
         elif self.position == Computer.NorthEast:
-            return 'Bob (North-East)'
+            return 'Computer 2'
         if self.position == Computer.SouthEast:
-            return 'Susan (South-East)'
+            return 'Computer 3'
 
     def update(self):
         """ Handle a clock tick. """
