@@ -1,0 +1,46 @@
+Class Relationships
+-------------------
+
+PlayingCard
+    Card
+    EmptyCard (duck)
+
+CardGroup (Card*)
+    Deck
+
+CardImages (pygame.Image)
+
+CardLocation
+
+Pile (CardGroup)
+    DiscardPile
+    HomePile
+    StockPile
+
+CellCards (CardGroup)
+RightHand (CardGroup)
+
+Rule
+    DownRule
+    UpRule
+    RedBlackRule
+    SameColorRule
+    SameSuitRule
+
+Rules (Rule*)
+    RedBlackUpRules
+    SameColorUpRules
+    SameSuitUpRules
+    RedBlackDownRules
+    SameColorDownRules
+    SameSuitDownRules
+
+FoundationPiles (Pile*)
+Computer
+Player (HomePile, StockPile, DiscardPile, CellCards, RightHand)
+
+PlayingField (Player, Computer, FoundationPiles)
+
+TestCase
+    TestCardGroup
+    TestRules
