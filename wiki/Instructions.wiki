@@ -1,4 +1,5 @@
 #summary How to play the game
+#labels Featured
 
 = Instructions =
 
@@ -49,7 +50,6 @@ You are always located on the lower left corner of the screen.
   * Left click on a card to select it, then left click on a destination to move it there.
   * Press space bar to deal cards into your hand.
   * Press escape to pause or unpause the game.
-
 
 
 
