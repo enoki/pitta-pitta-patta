@@ -5,7 +5,9 @@
 == Introduction ==
 Pitta pitta patta is a speed card game.
 
-These instructions assume you already know how to play the game. For the basics of pitta pitta patta, see [HowToPlay here].
+These instructions assume you already know how to play the game.
+
+For the basics of pitta pitta patta, see [HowToPlay here].
 
 == Card layout ==
 
