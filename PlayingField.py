@@ -36,7 +36,7 @@ class PlayingField:
         self.foundation_piles = FoundationPiles(self.player,
                                                 self.rules,
                                                 game_config.num_players)
-        self.status_bar = StatusBar(self.player, self.game)
+        self.status_bar = StatusBar(self.player, game_config)
         self.players = [self.player]
         self.humans = [self.player]
 
@@ -88,6 +88,9 @@ class PlayingField:
 
     def get_round_name(self):
         return self.game.name
+
+    def get_round_count(self):
+        return self.game_config.match.current_set().num_played_games()
 
     def record_scores(self):
         for player in self.players:
