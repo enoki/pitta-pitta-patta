@@ -6,8 +6,10 @@
   * Multiple difficulty levels
   * Multiple games, e.g. sets of 3 with variations
   * Better score keeping
+  * More comprehensive Game Over screen
   * Pause game
   * Options screen
+  * Shows cards underneath the top card
 
 Features for a future release:
   * High scores list
