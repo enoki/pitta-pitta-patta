@@ -4,9 +4,14 @@
 
 == 0.5 ==
   * High scores list
+  * Status bar with current game type
+  * Status of number of cards left
+  * Status of current score (?)
 
 Features for a future release:
   * Merging of start and pause screens into a menu
+  * Set over screen
+  * Toolbar for pausing, starting a new game
   * Have to manually move home pile cards to cells
   * Drag and drop of cards
   * Save/load game state
