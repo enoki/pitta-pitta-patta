@@ -1,0 +1,126 @@
+Index: Selection.py
+===================================================================
+--- Selection.py	(revision 155)
++++ Selection.py	(working copy)
+@@ -17,32 +17,27 @@
+         if not self.empty():
+             self.home.transfer(self.card, pile)
+ 
+-    def draw(self, surface):
+-        """ Draws a box around the selected card. """
+-        if not self.empty():
+-            pygame.draw.rect(surface, (0xff,0xff,0x00), self.rect, 3)
+-
+-    def make_rectangle(self):
+-        """ Creates the rectangle that surrounds the selected card. """
+-        if not self.empty():
+-            self.rect = pygame.Rect(0,0,0,0)
+-            self.rect.x = self.card.rect.x - 2
+-            self.rect.width = self.card.rect.width + 4
+-            self.rect.y = self.card.rect.y - 2
+-            self.rect.height = self.card.rect.height + 4
+-
+     def empty(self):
+         return self.is_empty
+ 
+     def clear(self):
+-        " Clears the selection "
++        " Clears the selection and moves the card back to the original location"
+         self.is_empty = True
++        self.move_back()
+ 
++    def move_back(self):
++        self.card.move_to(self.original_x, self.original_y)
++
++    def move(self, dx, dy):
++        self.card.move(dx, dy)
++
++    def draw(self, surface):
++        pass
++
+     def set(self, card, home):
+         """ Changes the selection to include the card and
+             the card's home. """
+         self.card = card
+         self.home = home
++        self.original_x, self.original_y = card.position()
+         self.is_empty = False
+-
+-        self.make_rectangle()
+Index: Player.py
+===================================================================
+--- Player.py	(revision 155)
++++ Player.py	(working copy)
+@@ -120,6 +120,12 @@
+             elif event.button == 3:
+                 self.handle_right_mouse_down(event)
+ 
++        elif event.type == pygame.MOUSEMOTION:
++            if event.buttons[0]:
++                if self.has_selection():
++                    selection = self.get_selection()
++                    selection.move(event.rel[0], event.rel[1])
++
+         elif event.type == pygame.KEYDOWN:
+             if event.key == pygame.K_SPACE:
+                 self.handle_space_bar()
+@@ -131,13 +137,7 @@
+         for clickable in self.clickables:
+             card = clickable.get_card(x, y)
+             if card is not None:
+-                if not self.selection.empty() and \
+-                       self.selection.card == card:
+-                    # Clear the selection if the card is already selected
+-                    self.selection.clear()
+-                else:
+-                    # Otherwise select the card
+-                    self.selection.set(card, clickable)
++                self.selection.set(card, clickable)
+                 return
+ 
+     def handle_right_mouse_down(self, event):
+@@ -161,11 +161,6 @@
+             self.discard_pile.take_from(self.right_hand)
+             self.discard_pile.calibrate()
+             self.xxxcount = 0
+-
+-            if self.has_selection() and \
+-               self.selection.home == self.discard_pile:
+-                # Clear the selection if it's the discard pile
+-                self.clear_selection()
+         else:
+             if self.stock_pile.cards.empty():
+                 self.stock_pile.take_from(self.discard_pile.cards)
+Index: FoundationPiles.py
+===================================================================
+--- FoundationPiles.py	(revision 155)
++++ FoundationPiles.py	(working copy)
+@@ -69,16 +69,13 @@
+         pass
+ 
+     def handle(self, event):
+-        if event.type == pygame.MOUSEBUTTONDOWN:
++        if event.type == pygame.MOUSEBUTTONUP:
+             if event.button == 1:
+-                self.handle_left_mouse_down(event)
++                self.handle_left_mouse_up(event)
+ 
+-    def handle_left_mouse_down(self, event):
++    def handle_left_mouse_up(self, event):
+         (x, y) = (event.pos[0], event.pos[1])
+ 
+-        if not self.rect.collidepoint(x, y):
+-            return
+-
+         if self.player.has_selection():
+             selection = self.player.get_selection()
+ 
+@@ -87,7 +84,6 @@
+                     if self.rules.is_valid(selection.card, pile):
+                         selection.transfer_to(pile)
+                         self.player.inc_score()
+-                    self.player.clear_selection()
+-                    return
++                        return
+ 
+             self.player.clear_selection()
