@@ -27,6 +27,7 @@ class Application:
         self.connect()
 
     def init_display(self):
+        self.resolution = None
         self.set_resolution(2) 
         caption = 'Pitta Pitta Patta'
         pygame.display.set_caption(caption)
@@ -35,21 +36,23 @@ class Application:
         if num_players < 2 or num_players > 4:
             return
 
+        display_flags = pygame.HWSURFACE | pygame.DOUBLEBUF
+
         resolutions = [(430, 700), (850, 700), (850, 700), (850, 700)]
         resolution = resolutions[num_players-2]
-        display_flags = pygame.HWSURFACE | pygame.DOUBLEBUF
-        self.screen = pygame.display.set_mode(resolution, display_flags)
+
+        if resolution != self.resolution:
+            self.resolution = resolution
+            self.screen = pygame.display.set_mode(resolution, display_flags)
 
     def init_playing_field(self):
         self.playing_field = PlayingField()
         louie.connect(self.goto_game_over, PlayingField.game_over)
 
     def config_playing_field(self, game_config):
-        if game_config.dirty:
-            game_config.dirty = False
-            self.playing_field.configure(game_config)
-            self.set_resolution(game_config.num_players)
-            self.next_game_config = game_config # FIXME
+        self.playing_field.configure(game_config)
+        self.set_resolution(game_config.num_players)
+        self.next_game_config = game_config # FIXME
 
     def init_states(self):
         self.states = { 'start' : StartState(self.playing_field),
