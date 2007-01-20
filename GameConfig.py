@@ -4,7 +4,6 @@
 #
 
 from SkillLevels import *
-from Match import Match
 
 class GameConfig:
     """ Game configuration information """
@@ -13,4 +12,3 @@ class GameConfig:
         self.num_players = 4
         self.computer_skill = NormalSkillLevel()
         self.home_pile_size = 13
-        self.match = Match()

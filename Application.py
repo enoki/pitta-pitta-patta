@@ -14,6 +14,7 @@ from PausedState import PausedState
 from GameOverState import GameOverState
 from PlayingField import PlayingField
 from GameConfig import GameConfig
+from Match import Match
 
 
 class Application:
@@ -46,11 +47,12 @@ class Application:
             self.screen = pygame.display.set_mode(resolution, display_flags)
 
     def init_playing_field(self):
+        self.match = Match()
         self.playing_field = PlayingField()
         louie.connect(self.goto_game_over, PlayingField.game_over)
 
-    def config_playing_field(self, game_config):
-        self.playing_field.configure(game_config)
+    def config_playing_field(self, game_config, match):
+        self.playing_field.configure(game_config, match)
         self.set_resolution(game_config.num_players)
         self.next_game_config = game_config # FIXME
 
@@ -62,7 +64,7 @@ class Application:
                         'paused' : PausedState(self.playing_field),
                         'game_over' : None }
         self.state = self.states['start']
-        self.config_playing_field(self.states['options'].game_config)
+        self.config_playing_field(GameConfig(), Match())
 
     def connect(self):
         louie.connect(self.goto_prepare, StartState.finished)
@@ -91,7 +93,7 @@ class Application:
         self.transition('start')
 
     def goto_start(self, game_config):
-        self.config_playing_field(game_config)
+        self.config_playing_field(game_config, Match())
         self.transition('start')
         self.state.game_config = game_config
 
@@ -99,7 +101,7 @@ class Application:
         self.transition('options')
 
     def goto_prepare(self, game_config):
-        self.config_playing_field(game_config)
+        self.config_playing_field(game_config, self.match)
         self.transition('prepare')
         self.state.configure(game_config)
 
