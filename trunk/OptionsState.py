@@ -125,8 +125,6 @@ class OptionsState(State):
 
     def set_nump(self, num_players):
         self.game_config.num_players = num_players
-        self.game_config.dirty = True
 
     def set_skill(self, skill):
         self.game_config.computer_skill = skill
-        self.game_config.dirty = True

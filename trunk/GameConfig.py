@@ -14,4 +14,3 @@ class GameConfig:
         self.computer_skill = NormalSkillLevel()
         self.home_pile_size = 13
         self.match = Match()
-        self.dirty = True
