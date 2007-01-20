@@ -40,6 +40,9 @@ class CardCell:
     def face_down(self):
         self.card.face_down()
 
+    def flip(self):
+        self.card.flip()
+
     def resize(self):
         " Resizes the location to the card in it "
         card_rect = self.card.rect

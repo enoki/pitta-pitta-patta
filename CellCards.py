@@ -14,6 +14,9 @@ class CellCards:
         self.size = 3
         self.cells = [CardCell() for i in range(self.size)]
 
+    def get_cell(self, cell_index):
+        return self.cells[cell_index]
+
     def set_size(self, width, height):
         """ Sets the sizes of each of the cells to be the same. """
         for cell in self.cells:
@@ -108,3 +111,7 @@ class CellCards:
                 cards.append(cell.get_card())
 
         return cards
+
+    def each_cell(self):
+        for cell in self.cells:
+            yield cell

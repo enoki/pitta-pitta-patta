@@ -135,3 +135,7 @@ class PlayingField:
             total_summary.append(summary)
 
         return total_summary
+
+    def flip_cells(self, cell_index):
+        for player in self.players:
+            player.flip_cell(cell_index)

@@ -43,6 +43,10 @@ class Player:
         self.cell_cards.calibrate()
         self.stock_pile.calibrate()
 
+        # Start out with cell cards face down
+        for cell in self.cell_cards.each_cell():
+            cell.face_down()
+
         #
         self.selection = Selection()
 
@@ -211,3 +215,6 @@ class Player:
 
     def get_name(self):
         return self.name
+
+    def flip_cell(self, cell_index):
+        self.cell_cards.get_cell(cell_index).flip()
