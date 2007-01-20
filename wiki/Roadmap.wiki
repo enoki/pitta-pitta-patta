@@ -7,7 +7,7 @@
   * Status bar with current game type
   * Status of number of cards left
   * Status of current score (?)
-  * Friendlier start screen
+  * Friendlier start and pause screens
   * To start the game, cell cards are flipped over
 
 Features for a future release:
