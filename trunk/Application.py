@@ -98,6 +98,7 @@ class Application:
     def goto_prepare(self, game_config):
         self.config_playing_field(game_config)
         self.transition('prepare')
+        self.state.configure(game_config)
 
     def goto_play(self):
         self.transition('play')
