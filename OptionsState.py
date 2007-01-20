@@ -20,7 +20,8 @@ class OptionsState(State):
     # Sends (game_config=GameConfig()) as argument
     finished = louie.Signal() 
 
-    def __init__(self):
+    def __init__(self, playing_field):
+        self.playing_field = playing_field
         self.game_config = GameConfig()
         self.widget = RectContainer(Color.medium_blue)
         self.font = pygame.font.SysFont("Arial", 16)
@@ -98,6 +99,7 @@ class OptionsState(State):
         surface.fill(Color.bright_green)
 
     def draw(self, surface):
+        self.playing_field.draw(surface)
         self.widget.draw(surface)
 
     def set_2p(self):
@@ -123,6 +125,8 @@ class OptionsState(State):
 
     def set_nump(self, num_players):
         self.game_config.num_players = num_players
+        self.game_config.dirty = True
 
     def set_skill(self, skill):
         self.game_config.computer_skill = skill
+        self.game_config.dirty = True

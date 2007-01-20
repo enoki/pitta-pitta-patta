@@ -13,6 +13,7 @@ from PlayState import PlayState
 from PausedState import PausedState
 from GameOverState import GameOverState
 from PlayingField import PlayingField
+from GameConfig import GameConfig
 
 
 class Application:
@@ -43,14 +44,22 @@ class Application:
         self.playing_field = PlayingField()
         louie.connect(self.goto_game_over, PlayingField.game_over)
 
+    def config_playing_field(self, game_config):
+        if game_config.dirty:
+            game_config.dirty = False
+            self.playing_field.configure(game_config)
+            self.set_resolution(game_config.num_players)
+            self.next_game_config = game_config # FIXME
+
     def init_states(self):
         self.states = { 'start' : StartState(self.playing_field),
-                        'options' : OptionsState(),
+                        'options' : OptionsState(self.playing_field),
                         'prepare' : PrepareState(self.playing_field),
                         'play' : PlayState(self.playing_field),
                         'paused' : PausedState(self.playing_field),
                         'game_over' : None }
         self.state = self.states['start']
+        self.config_playing_field(self.states['options'].game_config)
 
     def connect(self):
         louie.connect(self.goto_prepare, StartState.finished)
@@ -79,6 +88,7 @@ class Application:
         self.transition('start')
 
     def goto_start(self, game_config):
+        self.config_playing_field(game_config)
         self.transition('start')
         self.state.game_config = game_config
 
@@ -86,9 +96,7 @@ class Application:
         self.transition('options')
 
     def goto_prepare(self, game_config):
-        self.playing_field.configure(game_config)
-        self.set_resolution(game_config.num_players)
-        self.next_game_config = game_config # FIXME
+        self.config_playing_field(game_config)
         self.transition('prepare')
 
     def goto_play(self):
