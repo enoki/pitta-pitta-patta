@@ -9,7 +9,7 @@
   * Status of current score (?)
 
 Features for a future release:
-  * Merging of start and pause screens into a menu
+  * Friendlier start screen that doubles as a pause screen
   * Set over screen
   * Speech bubbles (e.g. saying "doh!" if an incorrect move is attempted)
   * Player names visible near their hand
