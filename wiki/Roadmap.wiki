@@ -7,10 +7,13 @@
   * Status bar with current game type
   * Status of number of cards left
   * Status of current score (?)
+  * Friendlier start screen
+  * To start the game, cell cards are flipped over
 
 Features for a future release:
-  * Friendlier start screen that doubles as a pause screen
   * Set over screen
+  * Kings can be removed from the playing field
+  * Four cell cards for same suit
   * Speech bubbles (e.g. saying "doh!" if an incorrect move is attempted)
   * Player names visible near their hand
   * Toolbar for pausing, starting a new game
