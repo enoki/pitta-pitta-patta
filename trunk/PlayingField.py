@@ -27,16 +27,17 @@ class PlayingField:
         self.handlers = []
         self.updateables = []
 
-    def configure(self, game_config):
+    def configure(self, game_config, match):
         """ Configures the playing field using the supplied GameConfig """
         self.game_config = game_config
-        self.game = self.game_config.match.next_game()
+        self.match = match
+        self.game = match.next_game()
         self.player = Player('You', 'blue', game_config)
         self.rules = self.game.rules
         self.foundation_piles = FoundationPiles(self.player,
                                                 self.rules,
                                                 game_config.num_players)
-        self.status_bar = StatusBar(self.player, game_config)
+        self.status_bar = StatusBar(self.player, match)
         self.players = [self.player]
         self.humans = [self.player]
 
@@ -90,7 +91,7 @@ class PlayingField:
         return self.game.name
 
     def get_round_count(self):
-        return self.game_config.match.current_set().num_played_games()
+        return self.match.current_set().num_played_games()
 
     def record_scores(self):
         for player in self.players:
@@ -117,7 +118,7 @@ class PlayingField:
         """ Returns a summary of all the player's score for the current set. """
         total_summary = []
 
-        set = self.game_config.match.current_set()
+        set = self.match.current_set()
 
         for player in self.players:
             player_name = player.get_name()

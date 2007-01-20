@@ -8,12 +8,11 @@ from Color import Color
 from Label import Label
 
 class StatusBar:
-    def __init__(self, player, game_config):
+    def __init__(self, player, match):
         self.player = player
-        self.game_config = game_config
         self.rect = pygame.Rect(0,0,0,40)
         self.font = pygame.font.SysFont("Arial", 20)
-        set = game_config.match.current_set()
+        set = match.current_set()
         self.label = self.make_label(self.make_label_text(set))
         self.drawables = [self.label]
 
