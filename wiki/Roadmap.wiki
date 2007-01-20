@@ -11,6 +11,8 @@
 Features for a future release:
   * Merging of start and pause screens into a menu
   * Set over screen
+  * Speech bubbles (e.g. saying "doh!" if an incorrect move is attempted)
+  * Player names visible near their hand
   * Toolbar for pausing, starting a new game
   * Have to manually move home pile cards to cells
   * Drag and drop of cards
