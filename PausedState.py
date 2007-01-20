@@ -42,8 +42,8 @@ class PausedState(State):
 
         a, b = self.make_spacer(), self.make_spacer()
         
-        resume_button = self.make_button('Resume (Escape)')
-        exit_button = self.make_button('Exit Game')
+        resume_button = self.make_button('Return to Game')
+        exit_button = self.make_button('Quit')
 
         louie.connect(self.finish, Button.clicked, resume_button)
         louie.connect(self.exit, Button.clicked, exit_button)
