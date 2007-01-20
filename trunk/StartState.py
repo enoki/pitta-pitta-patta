@@ -73,6 +73,7 @@ class StartState(State):
         surface.fill(Color.bright_green)
 
     def draw(self, surface):
+        self.playing_field.draw(surface)
         self.widget.draw(surface)
 
     def start_game(self):
