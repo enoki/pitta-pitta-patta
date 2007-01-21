@@ -144,6 +144,12 @@ class Player:
                     self.selection.set(card, clickable)
                 return
 
+        # Stock pile clicks
+        card = self.stock_pile.get_card(x, y)
+        if card is not None:
+            self.deal_card()
+            return
+
     def handle_right_mouse_down(self, event):
         """ Handle a right click. """
         self.deal_card()
