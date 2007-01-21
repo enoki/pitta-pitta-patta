@@ -29,7 +29,7 @@ class Application:
 
     def init_display(self):
         self.resolution = None
-        self.set_resolution(2) 
+        self.set_resolution(4) 
         caption = 'Pitta Pitta Patta'
         pygame.display.set_caption(caption)
 
@@ -47,24 +47,19 @@ class Application:
             self.screen = pygame.display.set_mode(resolution, display_flags)
 
     def init_playing_field(self):
+        self.game_config = GameConfig()
         self.match = Match()
-        self.playing_field = PlayingField()
+        self.playing_field = PlayingField(self.game_config)
         louie.connect(self.goto_game_over, PlayingField.game_over)
 
-    def config_playing_field(self, game_config, match):
-        self.playing_field.configure(game_config, match)
-        self.set_resolution(game_config.num_players)
-        self.next_game_config = game_config # FIXME
-
     def init_states(self):
-        self.states = { 'start' : StartState(self.playing_field),
-                        'options' : OptionsState(self.playing_field),
-                        'prepare' : PrepareState(self.playing_field),
+        self.states = { 'start' : StartState(self.playing_field, self.game_config),
+                        'options' : OptionsState(self.playing_field, self.game_config),
+                        'prepare' : PrepareState(self.playing_field, self.game_config),
                         'play' : PlayState(self.playing_field),
                         'paused' : PausedState(self.playing_field),
                         'game_over' : None }
         self.state = self.states['start']
-        self.config_playing_field(GameConfig(), Match())
 
     def connect(self):
         louie.connect(self.goto_prepare, StartState.finished)
@@ -92,18 +87,16 @@ class Application:
     def return_to_start(self):
         self.transition('start')
 
-    def goto_start(self, game_config):
-        self.config_playing_field(game_config, Match())
+    def goto_start(self):
+        self.set_resolution(self.game_config.num_players)
         self.transition('start')
-        self.state.game_config = game_config
 
     def goto_options(self):
         self.transition('options')
 
-    def goto_prepare(self, game_config):
-        self.config_playing_field(game_config, self.match)
+    def goto_prepare(self):
+        self.playing_field.configure(self.match)
         self.transition('prepare')
-        self.state.configure(game_config)
 
     def goto_play(self):
         self.transition('play')

@@ -16,16 +16,13 @@ from State import State
 class StartState(State):
     """ The first screen players see. """
 
-    # Sends (game_config=GameConfig()) as argument
     finished = louie.Signal() 
-
-    # no arguments
     options = louie.Signal()
 
 
-    def __init__(self, playing_field):
+    def __init__(self, playing_field, game_config):
         self.playing_field = playing_field
-        self.game_config = GameConfig()
+        self.game_config = game_config
         self.widget = RectContainer(Color.medium_blue)
         self.font = pygame.font.SysFont("Arial", 24)
 
@@ -77,7 +74,7 @@ class StartState(State):
         self.widget.draw(surface)
 
     def start_game(self):
-        louie.send(StartState.finished, game_config=self.game_config)
+        louie.send(StartState.finished)
 
     def set_options(self):
         louie.send(StartState.options)

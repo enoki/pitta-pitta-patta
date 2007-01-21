@@ -17,12 +17,11 @@ from SkillLevels import *
 class OptionsState(State):
     """ The first screen players see. """
 
-    # Sends (game_config=GameConfig()) as argument
     finished = louie.Signal() 
 
-    def __init__(self, playing_field):
+    def __init__(self, playing_field, game_config):
         self.playing_field = playing_field
-        self.game_config = GameConfig()
+        self.game_config = game_config
         self.widget = RectContainer(Color.medium_blue)
         self.font = pygame.font.SysFont("Arial", 16)
         self.nump_buttons = ButtonGroup()
@@ -121,7 +120,7 @@ class OptionsState(State):
         self.set_skill(HardSkillLevel())
 
     def finish_up(self):
-        louie.send(OptionsState.finished, game_config=self.game_config)
+        louie.send(OptionsState.finished)
 
     def set_nump(self, num_players):
         self.game_config.num_players = num_players
