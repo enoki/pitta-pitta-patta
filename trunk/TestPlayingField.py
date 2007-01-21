@@ -14,9 +14,11 @@ from PlayingField import PlayingField
 from Color import Color
 
 def main():
-    """ Tests just the game over screen. """
+    """ Simulates the playing field. """
     pygame.init()
-    screen = pygame.display.set_mode((850, 700), pygame.HWSURFACE | pygame.DOUBLEBUF)
+    resolution = (850, 700)
+    display_flags = pygame.HWSURFACE | pygame.DOUBLEBUF
+    screen = pygame.display.set_mode(resolution, display_flags)
 
     match = Match()
     game_config = GameConfig()
