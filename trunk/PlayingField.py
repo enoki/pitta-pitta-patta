@@ -15,33 +15,33 @@ class PlayingField:
 
     game_over = louie.Signal()
 
-    def __init__(self):
+    def __init__(self, game_config):
         self.players = []
         self.humans = []
         self.player = None
         self.rules = None
         self.foundation_piles = None
         self.status_bar = None
+        self.game_config = game_config
 
         self.drawables = []
         self.handlers = []
         self.updateables = []
 
-    def configure(self, game_config, match):
+    def configure(self, match):
         """ Configures the playing field using the supplied GameConfig """
-        self.game_config = game_config
         self.match = match
         self.game = match.next_game()
-        self.player = Player('You', 'blue', game_config)
+        self.player = Player('You', 'blue', self.game_config)
         self.rules = self.game.rules
         self.foundation_piles = FoundationPiles(self.player,
                                                 self.rules,
-                                                game_config.num_players)
+                                                self.game_config.num_players)
         self.status_bar = StatusBar(self.player, match)
         self.players = [self.player]
         self.humans = [self.player]
 
-        for i in range(game_config.num_players-len(self.humans)):
+        for i in range(self.game_config.num_players-len(self.humans)):
             self.players.append(self.make_computer(i))
 
         assert(len(self.players) >= 2 and len(self.players) <= 4)

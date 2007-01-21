@@ -15,8 +15,9 @@ class PrepareState(State):
     finished = louie.Signal()
     paused = louie.Signal()
 
-    def __init__(self, playing_field):
+    def __init__(self, playing_field, game_config):
         self.playing_field = playing_field
+        self.game_config = game_config
         self.time_to_tick = 200
         self.tick_count = 0
         self.is_paused = False
@@ -26,9 +27,7 @@ class PrepareState(State):
     def entered(self):
         self.tick_count = 0
         self.last_tick = pygame.time.get_ticks()
-
-    def configure(self, game_config):
-        self.num_ticks = 3 #game_config.num_cells
+        self.num_ticks = 3 #self.game_config.num_cells
 
     def delay(self):
         pygame.time.wait(30)
