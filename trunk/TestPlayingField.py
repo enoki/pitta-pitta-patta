@@ -24,6 +24,8 @@ def main():
     game_config = GameConfig()
     playing_field = PlayingField(game_config)
     playing_field.configure(match)
+    for i in range(3):
+        playing_field.flip_cells(i)
     a = playing_field
 
     logging.basicConfig(level=logging.DEBUG)
