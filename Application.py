@@ -106,7 +106,7 @@ class Application:
 
     def restart(self):
         """ Start a new game. deprecated? """
-        self.playing_field.configure(self.next_game_config)
+        self.playing_field.configure(self.match)
         self.transition('prepare')
 
     def main(self):
