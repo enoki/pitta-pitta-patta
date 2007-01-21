@@ -9,6 +9,7 @@
   * Status of current score (?)
   * Friendlier start and pause screens
   * To start the game, cell cards are flipped over
+  * Clicking on the stock pile deals a card
 
 Features for a future release:
   * Set over screen
