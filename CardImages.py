@@ -27,7 +27,7 @@ class CardImages:
 
         for name in back_image_names:
             self.back_images[name] = \
-                pygame.image.load("%s/back_%s.png" % (image_dir, name))
+                pygame.image.load("%s/back_%s.png" % (image_dir, name)).convert()
 
     def images(self):
         for (number, suit), image in self.card_images.iteritems():
