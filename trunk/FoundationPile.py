@@ -20,7 +20,7 @@ class FoundationPile(Pile):
 
     def get_ghost_image(self):
         if SharedImages.ghost_image is None:
-            SharedImages.ghost_image = pygame.image.load('images/ghost.png')
+            SharedImages.ghost_image = pygame.image.load('images/ghost.png').convert()
         return SharedImages.ghost_image
 
     def calibrate(self):
